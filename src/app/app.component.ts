@@ -10,4 +10,16 @@ import { RouterOutlet } from '@angular/router';
 })
 export class AppComponent {
   title = 'Clinica_olivera';
+  isSidebarCollapsed = false;
+
+ 
+  ngOnInit(): void {
+    // O puedes hacerlo en ngOnInit para un control más fino
+    this.toggleSidebar();
+  }
+
+  toggleSidebar(): void {
+    this.isSidebarCollapsed = !this.isSidebarCollapsed;
+    document.body.classList.toggle('sidebar-collapse', this.isSidebarCollapsed);
+  }
 }

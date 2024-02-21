@@ -1,52 +1,50 @@
 <app-menu></app-menu>
 <app-sidebar></app-sidebar>
-<div class="content-wrapper" style="min-height: 1604.8px;">
+<div class="content-wrapper" style="min-height: 1604.8px">
+  <section class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1>Pacientes</h1>
+        </div>
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a href="#">fechade actual</a></li>
+            <li class="breadcrumb-item active">{{ fechaFormateada }}</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </section>
 
-    <section class="content-header">
+  <section class="content">
     <div class="container-fluid">
-    <div class="row mb-2">
-    <div class="col-sm-6">
-    <h1>Pacientes</h1>
-    </div> 
-    <div class="col-sm-6">
-        <ol class="breadcrumb float-sm-right">
-        <li class="breadcrumb-item"><a href="#">fechade hoy</a></li>
-        <li class="breadcrumb-item active">User Profile</li>
-        </ol>
-        </div>  
-    </div>
-    </div>
-    </section>
-    
-    <section class="content">
-    <div class="container-fluid">
-    <div class="row">
-    <div class="col-md-3">
-    
-    <div class="card card-primary card-outline">
-    <div class="card-body box-profile">
-    <div class="text-center">
-    </div>
-    <h3 class="profile-username text-center">Nombre del paciente con consulta mas cerca</h3>
-    <p class="text-muted text-center">edad</p>
-    <ul class="list-group list-group-unbordered mb-3">
-    <li class="list-group-item">
-    <b>Ùltima consulta</b> <a class="float-right">fecha ultimaconsulta</a>
-    </li>
-    <li class="list-group-item">
-    <b>Telèfono</b> <a class="float-right">telefonopaciente</a>
-    </li>
-    <li class="list-group-item">
-    <b>Email</b> <a class="float-right">emailpaciente</a>
-    </li>
-    </ul>
-    <a href="#" class="btn btn-primary btn-block"><b>link de espediente</b></a>
-    </div>
-    
-    </div>
-    
-    
-    <!-- <div class="card card-primary">
+      <div class="row">
+        <div class="col-md-3">
+          <div class="card card-primary card-outline">
+            <div class="card-body box-profile">
+              <div class="text-center"></div>
+              <h3 class="profile-username text-center">{{ nombre }}</h3>
+              <p class="text-muted text-center">Edad:{{ edad }}</p>
+              <ul class="list-group list-group-unbordered mb-3">
+                <li class="list-group-item">
+                  <b>Ùltima consulta</b>
+                  <a class="float-right">{{ fecha_ultimaconsulta }}</a>
+                </li>
+                <li class="list-group-item">
+                  <b>Telèfono</b> <a class="float-right">{{ telefono }}</a>
+                </li>
+                <li class="list-group-item">
+                  <b>Email</b> <a class="float-right">{{ email }}</a>
+                </li>
+              </ul>
+              <a href="#" class="btn btn-primary btn-block"
+                ><b>link de espediente</b></a
+              >
+            </div>
+          </div>
+
+          <!-- <div class="card card-primary">
     <div class="card-header">
     <h3 class="card-title">About Me</h3>
     </div>
@@ -74,262 +72,255 @@
     </div>
     
     </div> -->
-    
-    </div>
-    
-    <div class="col-md-9">
-    <div class="card">
-    <div class="card-header p-2">
-    <ul class="nav nav-pills">
-    <li class="nav-item"><a class="nav-link active" href="#activity" data-toggle="tab">Activity</a></li>
-    <li class="nav-item"><a class="nav-link" href="#timeline" data-toggle="tab">Timeline</a></li>
-    <li class="nav-item"><a class="nav-link" href="#settings" data-toggle="tab">Settings</a></li>
-    </ul>
-    </div>
-    <div class="card-body">
-    <div class="tab-content">
-    <div class="active tab-pane" id="activity">
-    
-        <div class="row">
-            <div class="col-12">
-            <div class="card">
-            <div class="card-header">
-            <h3 class="card-title">Fixed Header Table</h3>
-            <div class="card-tools">
-            <div class="input-group input-group-sm" style="width: 150px;">
-            <input type="text" name="table_search" class="form-control float-right" placeholder="Search">
-            <div class="input-group-append">
-            <button type="submit" class="btn btn-default">
-            <i class="fas fa-search"></i>
-            </button>
+        </div>
+
+        <div class="col-md-9">
+          <div class="card">
+            <div class="card-header p-2">
+              <ul class="nav nav-pills">
+                <li class="nav-item">
+                  <a class="nav-link active" href="#activity" data-toggle="tab"
+                    >Activity</a
+                  >
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#timeline" data-toggle="tab"
+                    >Timeline</a
+                  >
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#settings" data-toggle="tab"
+                    >Settings</a
+                  >
+                </li>
+              </ul>
             </div>
+            <div class="card-body">
+              <div
+                id="example1_wrapper"
+                class="dataTables_wrapper dt-bootstrap4"
+              >
+                <div class="row">
+                  <div class="col-sm-6 col-md-6">
+                    <div class="dt-buttons btn-group flex-wrap">
+                      <button
+                        class="btn btn-secondary buttons-csv buttons-html5"
+                        tabindex="0"
+                        aria-controls="example1"
+                        type="button"
+                      >
+                        <span>CSV</span>
+                      </button>
+                      <button
+                        class="btn btn-secondary buttons-excel buttons-html5"
+                        tabindex="0"
+                        aria-controls="example1"
+                        type="button"
+                      >
+                        <span>Excel</span>
+                      </button>
+                      <button
+                        class="btn btn-secondary buttons-pdf buttons-html5"
+                        tabindex="0"
+                        aria-controls="example1"
+                        type="button"
+                      >
+                        <span>PDF</span>
+                      </button>
+                      <button
+                        class="btn btn-secondary buttons-print"
+                        tabindex="0"
+                        aria-controls="example1"
+                        type="button"
+                      >
+                        <span>Print</span>
+                      </button>
+                      <div class="btn-group">
+                        <button
+                          class="btn btn-secondary buttons-collection dropdown-toggle buttons-colvis"
+                          tabindex="0"
+                          aria-controls="example1"
+                          type="button"
+                          aria-haspopup="true"
+                        >
+                          <span>Column visibility</span
+                          ><span class="dt-down-arrow"></span>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-sm-12 col-md-6">
+                    <div id="example1_filter" class="dataTables_filter">
+                      <label
+                        >Search:<input
+                          type="search"
+                          class="form-control form-control-sm"
+                          placeholder=""
+                          aria-controls="example1"
+                      /></label>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-sm-12">
+                   
+
+                    <table mat-table [dataSource]="dataSource" matSort
+                    class="mat-elevation-z8">
+             
+               <!-- Position Column -->
+               <ng-container matColumnDef="position">
+                 <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by number">
+                   No.
+                 </th>
+                 <td mat-cell *matCellDef="let element"> {{element.position}} </td>
+               </ng-container>
+             
+               <!-- Name Column -->
+               <ng-container matColumnDef="name">
+                 <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by name">
+                   Name
+                 </th>
+                 <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+               </ng-container>
+             
+               <!-- Weight Column -->
+               <ng-container matColumnDef="weight">
+                 <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by weight">
+                   Weight
+                 </th>
+                 <td mat-cell *matCellDef="let element"> {{element.weight}} </td>
+               </ng-container>
+             
+               <!-- Symbol Column -->
+               <ng-container matColumnDef="symbol">
+                 <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by symbol">
+                   Symbol
+                 </th>
+                 <td mat-cell *matCellDef="let element"> {{element.symbol}} </td>
+               </ng-container>
+             
+               <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+               <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+             </table>
+             
+
+
+
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-sm-12 col-md-5">
+                    <div
+                      class="dataTables_info"
+                      id="example1_info"
+                      role="status"
+                      aria-live="polite"
+                    >
+                      Showing 1 to 10 of 57 entries
+                    </div>
+                  </div>
+                  <div class="col-sm-12 col-md-7">
+                    <div
+                      class="dataTables_paginate paging_simple_numbers"
+                      id="example1_paginate"
+                    >
+                      <ul class="pagination">
+                        <li
+                          class="paginate_button page-item previous disabled"
+                          id="example1_previous"
+                        >
+                          <a
+                            href="#"
+                            aria-controls="example1"
+                            data-dt-idx="0"
+                            tabindex="0"
+                            class="page-link"
+                            >Previous</a
+                          >
+                        </li>
+                        <li class="paginate_button page-item active">
+                          <a
+                            href="#"
+                            aria-controls="example1"
+                            data-dt-idx="1"
+                            tabindex="0"
+                            class="page-link"
+                            >1</a
+                          >
+                        </li>
+                        <li class="paginate_button page-item">
+                          <a
+                            href="#"
+                            aria-controls="example1"
+                            data-dt-idx="2"
+                            tabindex="0"
+                            class="page-link"
+                            >2</a
+                          >
+                        </li>
+                        <li class="paginate_button page-item">
+                          <a
+                            href="#"
+                            aria-controls="example1"
+                            data-dt-idx="3"
+                            tabindex="0"
+                            class="page-link"
+                            >3</a
+                          >
+                        </li>
+                        <li class="paginate_button page-item">
+                          <a
+                            href="#"
+                            aria-controls="example1"
+                            data-dt-idx="4"
+                            tabindex="0"
+                            class="page-link"
+                            >4</a
+                          >
+                        </li>
+                        <li class="paginate_button page-item">
+                          <a
+                            href="#"
+                            aria-controls="example1"
+                            data-dt-idx="5"
+                            tabindex="0"
+                            class="page-link"
+                            >5</a
+                          >
+                        </li>
+                        <li class="paginate_button page-item">
+                          <a
+                            href="#"
+                            aria-controls="example1"
+                            data-dt-idx="6"
+                            tabindex="0"
+                            class="page-link"
+                            >6</a
+                          >
+                        </li>
+                        <li
+                          class="paginate_button page-item next"
+                          id="example1_next"
+                        >
+                          <a
+                            href="#"
+                            aria-controls="example1"
+                            data-dt-idx="7"
+                            tabindex="0"
+                            class="page-link"
+                            >Next</a
+                          >
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
-            </div>
-            </div>
-            
-            <div class="card-body table-responsive p-0" style="height: 300px;">
-            <table class="table table-head-fixed text-nowrap">
-            <thead>
-            <tr>
-            <th>ID</th>
-            <th>User</th>
-            <th>Date</th>
-            <th>Status</th>
-            <th>Reason</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-            <td>183</td>
-            <td>John Doe</td>
-            <td>11-7-2014</td>
-            <td><span class="tag tag-success">Approved</span></td>
-            <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
-            </tr>
-            <tr>
-            <td>219</td>
-            <td>Alexander Pierce</td>
-            <td>11-7-2014</td>
-            <td><span class="tag tag-warning">Pending</span></td>
-            <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
-            </tr>
-            <tr>
-            <td>657</td>
-            <td>Bob Doe</td>
-            <td>11-7-2014</td>
-            <td><span class="tag tag-primary">Approved</span></td>
-            <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
-            </tr>
-            <tr>
-            <td>175</td>
-            <td>Mike Doe</td>
-            <td>11-7-2014</td>
-            <td><span class="tag tag-danger">Denied</span></td>
-            <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
-            </tr>
-            <tr>
-            <td>134</td>
-            <td>Jim Doe</td>
-            <td>11-7-2014</td>
-            <td><span class="tag tag-success">Approved</span></td>
-            <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
-            </tr>
-            <tr>
-            <td>494</td>
-            <td>Victoria Doe</td>
-            <td>11-7-2014</td>
-            <td><span class="tag tag-warning">Pending</span></td>
-            <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
-            </tr>
-            <tr>
-            <td>832</td>
-            <td>Michael Doe</td>
-            <td>11-7-2014</td>
-            <td><span class="tag tag-primary">Approved</span></td>
-            <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
-            </tr>
-            <tr>
-            <td>982</td>
-            <td>Rocky Doe</td>
-            <td>11-7-2014</td>
-            <td><span class="tag tag-danger">Denied</span></td>
-            <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
-            </tr>
-            </tbody>
-            </table>
-            </div>
-            
-            </div>
-            
-            </div>
-            </div>    
-    
-    
+          </div>
+        </div>
+      </div>
     </div>
-    
-    <div class="tab-pane" id="timeline">
-    
-    <div class="timeline timeline-inverse">
-    
-    <div class="time-label">
-    <span class="bg-danger">
-    10 Feb. 2014
-    </span>
-    </div>
-    
-    
-    <div>
-    <i class="fas fa-envelope bg-primary"></i>
-    <div class="timeline-item">
-    <span class="time"><i class="far fa-clock"></i> 12:05</span>
-    <h3 class="timeline-header"><a href="#">Support Team</a> sent you an email</h3>
-    <div class="timeline-body">
-    Etsy doostang zoodles disqus groupon greplin oooj voxy zoodles,
-    weebly ning heekya handango imeem plugg dopplr jibjab, movity
-    jajah plickers sifteo edmodo ifttt zimbra. Babblely odeo kaboodle
-    quora plaxo ideeli hulu weebly balihoo...
-    </div>
-    <div class="timeline-footer">
-    <a href="#" class="btn btn-primary btn-sm">Read more</a>
-    <a href="#" class="btn btn-danger btn-sm">Delete</a>
-    </div>
-    </div>
-    </div>
-    
-    
-    <div>
-    <i class="fas fa-user bg-info"></i>
-    <div class="timeline-item">
-    <span class="time"><i class="far fa-clock"></i> 5 mins ago</span>
-    <h3 class="timeline-header border-0"><a href="#">Sarah Young</a> accepted your friend request
-    </h3>
-    </div>
-    </div>
-    
-    
-    <div>
-    <i class="fas fa-comments bg-warning"></i>
-    <div class="timeline-item">
-    <span class="time"><i class="far fa-clock"></i> 27 mins ago</span>
-    <h3 class="timeline-header"><a href="#">Jay White</a> commented on your post</h3>
-    <div class="timeline-body">
-    Take me to your leader!
-    Switzerland is small and neutral!
-    We are more like Germany, ambitious and misunderstood!
-    </div>
-    <div class="timeline-footer">
-    <a href="#" class="btn btn-warning btn-flat btn-sm">View comment</a>
-    </div>
-    </div>
-    </div>
-    
-    
-    <div class="time-label">
-    <span class="bg-success">
-    3 Jan. 2014
-    </span>
-    </div>
-    
-    
-    <div>
-    <i class="fas fa-camera bg-purple"></i>
-    <div class="timeline-item">
-    <span class="time"><i class="far fa-clock"></i> 2 days ago</span>
-    <h3 class="timeline-header"><a href="#">Mina Lee</a> uploaded new photos</h3>
-    <div class="timeline-body">
-    <img src="https://placehold.it/150x100" alt="...">
-    <img src="https://placehold.it/150x100" alt="...">
-    <img src="https://placehold.it/150x100" alt="...">
-    <img src="https://placehold.it/150x100" alt="...">
-    </div>
-    </div>
-    </div>
-    
-    <div>
-    <i class="far fa-clock bg-gray"></i>
-    </div>
-    </div>
-    </div>
-    
-    <div class="tab-pane" id="settings">
-    <form class="form-horizontal">
-    <div class="form-group row">
-    <label for="inputName" class="col-sm-2 col-form-label">Name</label>
-    <div class="col-sm-10">
-    <input type="email" class="form-control" id="inputName" placeholder="Name">
-    </div>
-    </div>
-    <div class="form-group row">
-    <label for="inputEmail" class="col-sm-2 col-form-label">Email</label>
-    <div class="col-sm-10">
-    <input type="email" class="form-control" id="inputEmail" placeholder="Email">
-    </div>
-    </div>
-    <div class="form-group row">
-    <label for="inputName2" class="col-sm-2 col-form-label">Name</label>
-    <div class="col-sm-10">
-    <input type="text" class="form-control" id="inputName2" placeholder="Name">
-    </div>
-    </div>
-    <div class="form-group row">
-    <label for="inputExperience" class="col-sm-2 col-form-label">Experience</label>
-    <div class="col-sm-10">
-    <textarea class="form-control" id="inputExperience" placeholder="Experience"></textarea>
-    </div>
-    </div>
-    <div class="form-group row">
-    <label for="inputSkills" class="col-sm-2 col-form-label">Skills</label>
-    <div class="col-sm-10">
-    <input type="text" class="form-control" id="inputSkills" placeholder="Skills">
-    </div>
-    </div>
-    <div class="form-group row">
-    <div class="offset-sm-2 col-sm-10">
-    <div class="checkbox">
-    <label>
-    <input type="checkbox"> I agree to the <a href="#">terms and conditions</a>
-    </label>
-    </div>
-    </div>
-    </div>
-    <div class="form-group row">
-    <div class="offset-sm-2 col-sm-10">
-    <button type="submit" class="btn btn-danger">Submit</button>
-    </div>
-    </div>
-    </form>
-    </div>
-    
-    </div>
-    
-    </div>
-    </div>
-    
-    </div>
-    
-    </div>
-    
-    </div>
-    </section>
-    
-    </div>
+  </section>
+</div>
