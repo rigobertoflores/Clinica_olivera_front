@@ -23,7 +23,9 @@
         <div class="col-md-3">
           <div class="card card-primary card-outline">
             <div class="card-body box-profile">
-              <div class="text-center"></div>
+                <div class="text-center">
+                    <img class="profile-user-img img-fluid img-circle" src="assets/user4-128x128.jpg" alt="User profile picture">
+                    </div>
               <h3 class="profile-username text-center">{{ nombre }}</h3>
               <p class="text-muted text-center">Edad:{{ edad }}</p>
               <ul class="list-group list-group-unbordered mb-3">
@@ -98,116 +100,36 @@
             <div class="card-body">
               <div
                 id="example1_wrapper"
-                class="dataTables_wrapper dt-bootstrap4"
-              >
+                class="dataTables_wrapper dt-bootstrap4">
+              
                 <div class="row">
-                  <div class="col-sm-6 col-md-6">
-                    <div class="dt-buttons btn-group flex-wrap">
-                      <button
-                        class="btn btn-secondary buttons-csv buttons-html5"
-                        tabindex="0"
-                        aria-controls="example1"
-                        type="button"
-                      >
-                        <span>CSV</span>
-                      </button>
-                      <button
-                        class="btn btn-secondary buttons-excel buttons-html5"
-                        tabindex="0"
-                        aria-controls="example1"
-                        type="button"
-                      >
-                        <span>Excel</span>
-                      </button>
-                      <button
-                        class="btn btn-secondary buttons-pdf buttons-html5"
-                        tabindex="0"
-                        aria-controls="example1"
-                        type="button"
-                      >
-                        <span>PDF</span>
-                      </button>
-                      <button
-                        class="btn btn-secondary buttons-print"
-                        tabindex="0"
-                        aria-controls="example1"
-                        type="button"
-                      >
-                        <span>Print</span>
-                      </button>
-                      <div class="btn-group">
-                        <button
-                          class="btn btn-secondary buttons-collection dropdown-toggle buttons-colvis"
-                          tabindex="0"
-                          aria-controls="example1"
-                          type="button"
-                          aria-haspopup="true"
-                        >
-                          <span>Column visibility</span
-                          ><span class="dt-down-arrow"></span>
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-sm-12 col-md-6">
-                    <div id="example1_filter" class="dataTables_filter">
-                      <label
-                        >Search:<input
-                          type="search"
-                          class="form-control form-control-sm"
-                          placeholder=""
-                          aria-controls="example1"
-                      /></label>
-                    </div>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-sm-12">
-                   
+                 <div class="mat-elevation-z8">
+  <table mat-table [dataSource]="dataSource">
 
-                    <table mat-table [dataSource]="dataSource" matSort
-                    class="mat-elevation-z8">
-             
-               <!-- Position Column -->
-               <ng-container matColumnDef="position">
-                 <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by number">
-                   No.
-                 </th>
-                 <td mat-cell *matCellDef="let element"> {{element.position}} </td>
-               </ng-container>
-             
-               <!-- Name Column -->
-               <ng-container matColumnDef="name">
-                 <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by name">
-                   Name
-                 </th>
-                 <td mat-cell *matCellDef="let element"> {{element.name}} </td>
-               </ng-container>
-             
-               <!-- Weight Column -->
-               <ng-container matColumnDef="weight">
-                 <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by weight">
-                   Weight
-                 </th>
-                 <td mat-cell *matCellDef="let element"> {{element.weight}} </td>
-               </ng-container>
-             
-               <!-- Symbol Column -->
-               <ng-container matColumnDef="symbol">
-                 <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by symbol">
-                   Symbol
-                 </th>
-                 <td mat-cell *matCellDef="let element"> {{element.symbol}} </td>
-               </ng-container>
-             
-               <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-               <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-             </table>
-             
+    <!-- Position Column -->
+    <ng-container matColumnDef="Nombre">
+      <th mat-header-cell *matHeaderCellDef> Nombre </th>
+      <td mat-cell *matCellDef="let element"> {{element.nombre}} </td>
+    </ng-container>
+
+    <!-- Name Column -->
+    <ng-container matColumnDef="sexo">
+      <th mat-header-cell *matHeaderCellDef> sexo </th>
+      <td mat-cell *matCellDef="let element"> {{element.sexo}} </td>
+    </ng-container>
 
 
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
 
-                  </div>
+  <mat-paginator [pageSizeOptions]="[5, 10, 20]"
+                 showFirstLastButtons
+                 aria-label="Select page of periodic elements">
+  </mat-paginator>
+</div>
+
+
                 </div>
                 <div class="row">
                   <div class="col-sm-12 col-md-5">
