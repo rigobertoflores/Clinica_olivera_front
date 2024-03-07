@@ -1,0 +1,22 @@
+.image-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 10px;
+  }
+  
+  .image-container img {
+    width: 100%; /* Ajusta las imágenes al contenedor */
+    height: auto; /* Mantiene la relación de aspecto */
+    object-fit: cover; /* Cubre el área sin distorsión */
+  }
+  
+.image-thumbnail {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  cursor: pointer;
+}
+.custom-dialog-container img {
+  max-width: 100%;
+  height: auto;
+}

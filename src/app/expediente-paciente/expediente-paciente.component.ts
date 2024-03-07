@@ -1,0 +1,146 @@
+import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { MenuComponent } from '../components/menu/menu.component';
+import { SidebarComponent } from '../components/sidebar/sidebar.component';
+import { ActivatedRoute } from '@angular/router';
+import { Service } from './../Services/Service';
+import { Paciente } from '../interface/Paciente';
+import { FormControl, FormGroup } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import { StandaloneGalleryComponent } from '../standalone-gallery/standalone-gallery.component';
+import { MatDialog } from '@angular/material/dialog';
+import { ImagenPaciente } from '../interface/ImagenPaciente';
+@Component({
+  selector: 'app-expediente-paciente',
+  standalone: true,
+  imports: [MenuComponent, SidebarComponent, ReactiveFormsModule,CommonModule,StandaloneGalleryComponent ],
+  templateUrl: './expediente-paciente.component.html',
+  styleUrl: './expediente-paciente.component.css',
+})
+export class ExpedientePacienteComponent implements OnInit {
+  parametro: string | null = null;
+  pacientedatos: Paciente ;
+  PacienteFormulario: any;
+  images: { src: string; alt: string; }[];
+  imagenesPaciente:ImagenPaciente[];
+
+
+  constructor(private route: ActivatedRoute, private Service: Service,public dialog: MatDialog) {
+   
+  }
+   
+
+  ngOnInit(): void {
+    this.parametro= this.route.snapshot.paramMap.get('id');
+    if(this.parametro)
+    this.cargarContenidoPaciente(this.parametro);
+    this.cargarImagenPaciente(this.parametro);
+
+  }
+  
+
+  cargarContenidoPaciente(parametrourl:any) {
+    this.Service.getUnicoParams('GetPacienteId', parametrourl).subscribe(
+      (data: Paciente) => {
+        this.cargarFormulario(data);
+        this.pacientedatos = data;
+        
+      }
+    );
+  }
+
+  cargarFormulario(data: Paciente) {
+    this.PacienteFormulario = new FormGroup({
+      sexo: new FormControl(
+        data.sexo === 'F' ? 'Femenino' : data.sexo === 'M' ? 'Masculino' : data.sexo
+      ),
+      fechaDeNacimiento: new FormControl(this.formatDate(data.fechaDeNacimiento)),
+      nombre: new FormControl(data.nombre),
+      estadoCivil: new FormControl(data.estadoCivil === 'C.' || data.estadoCivil === 'C'  ? 'Casado' : data.estadoCivil === 'S' ? 'Soltero' : data.estadoCivil),
+      ocupacion: new FormControl(data.ocupacion),
+      domicilio: new FormControl(data.domicilio),
+      poblacion: new FormControl(data.poblacion),
+      telefono: new FormControl(data.telefono),
+      email: new FormControl(data.email),
+      nombreDelEsposo: new FormControl(data.nombreDelEsposo),
+      edadDelEsposo: new FormControl(data.edadDelEsposo),
+      ocupacionEsposo: new FormControl(data.ocupacionEsposo),
+      referencia: new FormControl(data.referencia),
+      diabetes: new FormControl(data.diabetes),
+      hipertension: new FormControl(data.hipertension),
+      trombosis: new FormControl(data.trombosis),
+      cardiopatias: new FormControl(data.cardiopatias),
+      cancer: new FormControl(data.cancer),
+      enfermedadesGeneticas: new FormControl(data.enfermedadesGeneticas),
+      otraEnfermedad: new FormControl(data.otraEnfermedad),
+      inmunizaciones: new FormControl(data.inmunizaciones),
+      alcoholismo: new FormControl(data.alcoholismo),
+      tabaquismo: new FormControl(data.tabaquismo),
+      tabaquismoPasivo: new FormControl(data.tabaquismoPasivo),
+      drogasOmedicamentos: new FormControl(data.drogasOmedicamentos),
+      grupoSanguineo: new FormControl(data.grupoSanguineo),
+      propiasDeLaInfancia: new FormControl(data.propiasDeLaInfancia),
+      rubeola: new FormControl(data.rubeola),
+      amigdalitis: new FormControl(data.amigdalitis),
+      bronquitis: new FormControl(data.bronquitis),
+      bronconeumonia: new FormControl(data.bronconeumonia),
+      hepatitisViralTipo: new FormControl(data.hepatitisViralTipo),
+      parasitosis: new FormControl(data.parasitosis),
+      toxoplasmosis: new FormControl(data.toxoplasmosis),
+      citomegalovirus: new FormControl(data.citomegalovirus),
+      herpes: new FormControl(data.herpes),
+      clamydiasis: new FormControl(data.clamydiasis),
+      hiv: new FormControl(data.hiv),
+      sifilis: new FormControl(data.sifilis),
+      micosis: new FormControl(data.micosis),
+      eip: new FormControl(data.eip),
+      diabetesMellitus: new FormControl(data.diabetesMellitus),
+      otrasEndocrinas: new FormControl(data.otrasEndocrinas),
+      nefropatias: new FormControl(data.nefropatias),
+      digestivas: new FormControl(data.digestivas),
+      neurologicas: new FormControl(data.neurologicas),
+      hematologicas: new FormControl(data.hematologicas),
+      tumores: new FormControl(data.tumores),
+      condilomatosis: new FormControl(data.condilomatosis),
+      displasias: new FormControl(data.displasias),
+      alergia: new FormControl(data.alergia),
+      fechaConsulta: new FormControl(data.fechaConsulta),
+      fechaUltimaConsulta: new FormControl(data.fechaUltimaConsulta),
+    });
+  }
+
+  formatDate(dateString: string): string {
+    const fecha = new Date(dateString);
+    return fecha.toISOString().split('T')[0];
+  }
+
+  openDialog(imageUrl: string): void {
+    this.dialog.open(StandaloneGalleryComponent, {
+      data: {
+        img: imageUrl
+      },
+      panelClass: 'custom-dialog-container' // Opcional: para estilos personalizados3
+    });
+  }
+
+  // CargarImagenPaciente() {
+  //   return this.images = [
+  //      { src: 'assets/user4-128x128.jpg', alt: 'Descripción de la imagen 1' },
+  //     { src: 'assets/user4-128x128.jpg', alt: 'Descripción de la imagen 2' }
+  //     // Agrega más URLs de imagen según sea necesario
+  //   ];
+  // }
+
+  cargarImagenPaciente(parametrourl:any) {
+    this.Service.getListParams('GetImagenesPaciente', parametrourl).subscribe(
+      (data: ImagenPaciente[]) => {
+        this.images = data.map((img) => ({
+          src: `data:image/jpeg;base64,${img.blobData}`,
+          alt: img.letra
+        }));
+      }
+    );
+  }
+
+
+}
