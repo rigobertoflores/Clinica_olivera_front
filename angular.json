@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "Clinica_olivera": {
+    "clinicaolivera": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -65,10 +65,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "Clinica_olivera:build:production"
+              "buildTarget": "clinicaolivera:build:production"
             },
             "development": {
-              "buildTarget": "Clinica_olivera:build:development"
+              "buildTarget": "clinicaolivera:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -76,7 +76,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "buildTarget": "Clinica_olivera:build"
+            "buildTarget": "clinicaolivera:build"
           }
         },
         "test": {

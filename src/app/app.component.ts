@@ -9,7 +9,7 @@ import { RouterOutlet } from '@angular/router';
   styleUrl: './app.component.css'
 })
 export class AppComponent {
-  title = 'Clinica_olivera';
+  title = 'clinicaolivera';
   isSidebarCollapsed = false;
 
  

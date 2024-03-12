@@ -1,0 +1,8 @@
+<ckeditor [config]="{ toolbar: [  'heading', '|',
+'bold', 'italic', '|',
+'bulletedList', 'numberedList', '|',
+'outdent', 'indent', '|',
+'blockQuote', '|',
+'undo', 'redo', '|',
+'alignment'] }" tagName="textarea" [editor]="Editor" [data]="data"></ckeditor>
+<button (click)="saveText()">Guardar</button>

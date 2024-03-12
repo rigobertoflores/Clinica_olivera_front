@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { ImagenPaciente } from '../interface/ImagenPaciente';
+import { FotoPaciente } from '../interface/FotoPaciente';
 
 @Injectable({
   providedIn: 'root',
@@ -25,5 +26,28 @@ export class Service {
 
   getListParams(nombre_api: string,id:string | number): Observable<ImagenPaciente[]> {
     return this.http.get<ImagenPaciente[]>(`${this.api}${nombre_api}/${id}`);
+  }
+
+  getListFotoPacienteParams(nombre_api: string,id:string | number): Observable<FotoPaciente[]> {
+    return this.http.get<FotoPaciente[]>(`${this.api}${nombre_api}/${id}`);
+  }
+
+  postenviarDatosPaciente(data:any,nombre_api:string ) {
+    // Asumiendo que `data` es el objeto con los datos del formulario
+    const url = `${this.api}${nombre_api}`; // Reemplaza con la URL de tu API
+    fetch(url, {
+      method: 'POST', // o 'PUT' si estás actualizando un registro existente
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data), // Convierte los datos del formulario a una cadena JSON
+    })
+    .then(response => response.json())
+    .then(data => {
+      console.log('Success:', data);
+    })
+    .catch((error) => {
+      console.error('Error:', error);
+    });
   }
 }

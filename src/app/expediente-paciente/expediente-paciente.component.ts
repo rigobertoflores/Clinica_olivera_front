@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MenuComponent } from '../components/menu/menu.component';
 import { SidebarComponent } from '../components/sidebar/sidebar.component';
 import { ActivatedRoute } from '@angular/router';
@@ -10,12 +10,15 @@ import { CommonModule } from '@angular/common';
 import { StandaloneGalleryComponent } from '../standalone-gallery/standalone-gallery.component';
 import { MatDialog } from '@angular/material/dialog';
 import { ImagenPaciente } from '../interface/ImagenPaciente';
+import { TesteditorComponent } from "../testeditor/testeditor.component";
+import { Expediente } from '../interface/Expediente';
+
 @Component({
-  selector: 'app-expediente-paciente',
-  standalone: true,
-  imports: [MenuComponent, SidebarComponent, ReactiveFormsModule,CommonModule,StandaloneGalleryComponent ],
-  templateUrl: './expediente-paciente.component.html',
-  styleUrl: './expediente-paciente.component.css',
+    selector: 'app-expediente-paciente',
+    standalone: true,
+    templateUrl: './expediente-paciente.component.html',
+    styleUrl: './expediente-paciente.component.css',
+    imports: [MenuComponent, SidebarComponent, ReactiveFormsModule, CommonModule, StandaloneGalleryComponent, TesteditorComponent]
 })
 export class ExpedientePacienteComponent implements OnInit {
   parametro: string | null = null;
@@ -23,6 +26,8 @@ export class ExpedientePacienteComponent implements OnInit {
   PacienteFormulario: any;
   images: { src: string; alt: string; }[];
   imagenesPaciente:ImagenPaciente[];
+  expediente: Expediente;
+  historia: string;
 
 
   constructor(private route: ActivatedRoute, private Service: Service,public dialog: MatDialog) {
@@ -32,10 +37,11 @@ export class ExpedientePacienteComponent implements OnInit {
 
   ngOnInit(): void {
     this.parametro= this.route.snapshot.paramMap.get('id');
-    if(this.parametro)
+    if(this.parametro){
     this.cargarContenidoPaciente(this.parametro);
     this.cargarImagenPaciente(this.parametro);
-
+    this.cargarHistoriaPaciente(this.parametro);
+  }
   }
   
 
@@ -121,15 +127,7 @@ export class ExpedientePacienteComponent implements OnInit {
       },
       panelClass: 'custom-dialog-container' // Opcional: para estilos personalizados3
     });
-  }
-
-  // CargarImagenPaciente() {
-  //   return this.images = [
-  //      { src: 'assets/user4-128x128.jpg', alt: 'Descripción de la imagen 1' },
-  //     { src: 'assets/user4-128x128.jpg', alt: 'Descripción de la imagen 2' }
-  //     // Agrega más URLs de imagen según sea necesario
-  //   ];
-  // }
+  }  
 
   cargarImagenPaciente(parametrourl:any) {
     this.Service.getListParams('GetImagenesPaciente', parametrourl).subscribe(
@@ -141,6 +139,27 @@ export class ExpedientePacienteComponent implements OnInit {
       }
     );
   }
+   
+  cargarHistoriaPaciente(parametrourl:any){
+    this.Service.getUnicoParams('GetHistoriaPaciente', parametrourl).subscribe(
+      (data: Expediente) => {
+        this.expediente={
+          clave:data.clave,
+          expediente1: this.formatTextForHtml(data.expediente1 || ""),
+        }
+      }
+    );
+  }
 
+  
 
+  formatTextForHtml(inputText: string): string {
+    let escapedHtml = inputText
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;');
+    // Envuelve el texto formateado en una etiqueta <pre>
+    let formattedText = escapedHtml.replace(/\n/g, '<br>');
+    return `<pre>${formattedText}</pre>`;
+  }
 }

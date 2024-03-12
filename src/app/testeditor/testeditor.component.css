@@ -1,0 +1,13 @@
+@media print {
+    body {
+      margin: 0;
+      padding: 0;
+    }
+    #text-editor {
+      border: none;
+    }
+}
+
+:host ::ng-deep .ck-editor__editable_inline {
+    min-height: 500px;
+}

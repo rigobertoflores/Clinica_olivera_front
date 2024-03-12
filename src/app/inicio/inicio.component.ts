@@ -18,6 +18,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { Router } from '@angular/router';
+import { FotoPaciente } from '../interface/FotoPaciente';
+import { ImagenPaciente } from '../interface/ImagenPaciente';
 
 @Component({
   selector: 'app-inicio',
@@ -56,6 +58,7 @@ export class InicioComponent implements OnInit, AfterViewInit {
   displayedColumns: string[] = ['fecha_proximaconsulta', 'nombre', 'sexo','editar'];
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
+  images: { src: string; alt: string; }[]=[{src:"",alt:"no hay imagen"}];
 
   constructor(
     private Service: Service,
@@ -66,6 +69,7 @@ export class InicioComponent implements OnInit, AfterViewInit {
   ngOnInit() {
     this.formatearfecha();
     this.cargarContenidoPacientePrincipal();
+    
   }
 
   ngAfterViewInit() {
@@ -81,12 +85,13 @@ export class InicioComponent implements OnInit, AfterViewInit {
   cargarContenidoPacientePrincipal() {
     this.Service.getUnico('UsuarioMasactual').subscribe((data: Paciente) => {
       this.nombre = data.nombre;
-
       let anoNacimiento: Date = new Date(data.fechaDeNacimiento);
       this.edad = this.año - anoNacimiento.getFullYear();
       this.fecha_ultimaconsulta = data.fechaUltimaConsulta;
       this.telefono = data.telefono;
       this.email = data.email;
+      this.cargarFotoPaciente(data.clave);
+    
     });
   }
 
@@ -124,5 +129,15 @@ export class InicioComponent implements OnInit, AfterViewInit {
     // Por ejemplo, abrir un diálogo de edición o navegar a una ruta de edición con el ID del elemento
   }
 
+  cargarFotoPaciente(id:number) {
+    this.Service.getListFotoPacienteParams('GetFotoPaciente', id).subscribe(
+      (data: FotoPaciente[]) => {
+        this.images = data.map((img) => ({
+          src: `data:image/jpeg;base64,${img.blobData}`,
+          alt: img.id
+        }));
+      }
+    );
+  } 
   
 }
