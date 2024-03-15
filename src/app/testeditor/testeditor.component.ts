@@ -1,18 +1,23 @@
-import { Component, ElementRef, Input, OnInit } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output,NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 
 @Component({
   selector: 'app-testeditor',
   standalone: true,
-  imports: [CKEditorModule],
+  imports: [CKEditorModule,FormsModule ],
   templateUrl: './testeditor.component.html',
   styleUrl: './testeditor.component.css'
 })
 export class TesteditorComponent implements OnInit {
   public Editor = ClassicEditor;
   fullScreenMode = false;
-  @Input() data: string= '<p>Escribe algo aquí...</p>';; 
+  @Input() data: string= '<p>Escribe algo aquí...</p>';
+  @Output() datosDisponibles = new EventEmitter<any>();
+  public model = {
+    editorData: '<p>Hello, world!</p>'
+};
 
   constructor(private el: ElementRef) { }
   
@@ -20,12 +25,9 @@ export class TesteditorComponent implements OnInit {
     
   }
 
-
-  saveText() {
-    const textEditorContent = document.getElementById('text-editor')?.innerHTML;
-    if (textEditorContent) {
-     
-      };
+  saveText() {    
+    const datos =this.data;
+     this.datosDisponibles.emit(datos);      
     }
   
 

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild  } from '@angular/core';
 import { MenuComponent } from '../components/menu/menu.component';
 import { SidebarComponent } from '../components/sidebar/sidebar.component';
 import { ActivatedRoute } from '@angular/router';
@@ -12,6 +12,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ImagenPaciente } from '../interface/ImagenPaciente';
 import { TesteditorComponent } from "../testeditor/testeditor.component";
 import { Expediente } from '../interface/Expediente';
+import { RecetaxPaciente } from '../interface/RecetaxPaciente';
 
 @Component({
     selector: 'app-expediente-paciente',
@@ -21,6 +22,7 @@ import { Expediente } from '../interface/Expediente';
     imports: [MenuComponent, SidebarComponent, ReactiveFormsModule, CommonModule, StandaloneGalleryComponent, TesteditorComponent]
 })
 export class ExpedientePacienteComponent implements OnInit {
+
   parametro: string | null = null;
   pacientedatos: Paciente ;
   PacienteFormulario: FormGroup;
@@ -33,6 +35,9 @@ export class ExpedientePacienteComponent implements OnInit {
   mes: any = this.fechaActual.getMonth() + 1; // Los meses empiezan en 0
   año: number = this.fechaActual.getFullYear();
   fechaFormateada: string;
+  @ViewChild(TesteditorComponent, { static: true }) hijoComponent: TesteditorComponent;
+
+  datareceta: void;
 
   constructor(private route: ActivatedRoute, private Service: Service,public dialog: MatDialog) {
    
@@ -40,15 +45,19 @@ export class ExpedientePacienteComponent implements OnInit {
    
 
   ngOnInit(): void {
-    this.formatearfecha();
+    this.formatearfecha();    
     this.parametro= this.route.snapshot.paramMap.get('id');
     if(this.parametro){
     this.cargarContenidoPaciente(this.parametro);
     this.cargarImagenPaciente(this.parametro);
     this.cargarHistoriaPaciente(this.parametro);
   }
+ 
+  } 
+
+  ngAfterViewInit(): void {
+    this.obtenerDatosDesdeHijo();
   }
-  
 
   cargarContenidoPaciente(parametrourl:any) {
     this.Service.getUnicoParams('GetPacienteId', parametrourl).subscribe(
@@ -184,5 +193,23 @@ export class ExpedientePacienteComponent implements OnInit {
       )
     }
     
+  }
+
+  obtenerDatosDesdeHijo() {
+    this.hijoComponent.datosDisponibles.subscribe(datos => {
+      console.log('Datos recibidos del componente hijo:', datos);
+      if(datos){
+        const receta : RecetaxPaciente={Id:1,receta:datos,fecha: null}
+        this.Service.postData('PostReceta',receta).subscribe(
+          (result)=>{
+           console.log(result);
+          }
+        )
+      }
+    });
+  }
+
+  GuardarReceta() {
+    this.hijoComponent.saveText();    
   }
 }
