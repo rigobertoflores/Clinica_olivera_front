@@ -23,12 +23,16 @@ import { Expediente } from '../interface/Expediente';
 export class ExpedientePacienteComponent implements OnInit {
   parametro: string | null = null;
   pacientedatos: Paciente ;
-  PacienteFormulario: any;
+  PacienteFormulario: FormGroup;
   images: { src: string; alt: string; }[];
   imagenesPaciente:ImagenPaciente[];
   expediente: Expediente;
   historia: string;
-
+  fechaActual: Date = new Date();
+  dia: any = this.fechaActual.getDate();
+  mes: any = this.fechaActual.getMonth() + 1; // Los meses empiezan en 0
+  año: number = this.fechaActual.getFullYear();
+  fechaFormateada: string;
 
   constructor(private route: ActivatedRoute, private Service: Service,public dialog: MatDialog) {
    
@@ -36,6 +40,7 @@ export class ExpedientePacienteComponent implements OnInit {
    
 
   ngOnInit(): void {
+    this.formatearfecha();
     this.parametro= this.route.snapshot.paramMap.get('id');
     if(this.parametro){
     this.cargarContenidoPaciente(this.parametro);
@@ -55,8 +60,15 @@ export class ExpedientePacienteComponent implements OnInit {
     );
   }
 
+  formatearfecha() {
+    this.fechaFormateada = `${this.dia < 10 ? '0' + this.dia : this.dia}/${
+      this.mes < 10 ? '0' + this.mes : this.mes
+    }/${this.año}`;
+  }
+  
   cargarFormulario(data: Paciente) {
     this.PacienteFormulario = new FormGroup({
+      clave:new FormControl(data.clave),
       sexo: new FormControl(
         data.sexo === 'F' ? 'Femenino' : data.sexo === 'M' ? 'Masculino' : data.sexo
       ),
@@ -161,5 +173,16 @@ export class ExpedientePacienteComponent implements OnInit {
     // Envuelve el texto formateado en una etiqueta <pre>
     let formattedText = escapedHtml.replace(/\n/g, '<br>');
     return `<pre>${formattedText}</pre>`;
+  }
+
+  saveData(){
+    if(!this.PacienteFormulario.invalid){
+      this.Service.postData('PostPaciente',this.PacienteFormulario.value).subscribe(
+        (result)=>{
+         console.log(result);
+        }
+      )
+    }
+    
   }
 }

@@ -20,6 +20,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { Router } from '@angular/router';
 import { FotoPaciente } from '../interface/FotoPaciente';
 import { ImagenPaciente } from '../interface/ImagenPaciente';
+import { UserService } from '../Services/user.service';
 
 @Component({
   selector: 'app-inicio',
@@ -62,9 +63,14 @@ export class InicioComponent implements OnInit, AfterViewInit {
 
   constructor(
     private Service: Service,
+    private authService: UserService,
     private _liveAnnouncer: LiveAnnouncer,
     private router: Router
-  ) {}
+  ) {
+    if (!this.authService.isAuthenticated()) {
+      this.router.navigate(['/login']);
+    }
+  }
 
   ngOnInit() {
     this.formatearfecha();

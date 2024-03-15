@@ -26,16 +26,16 @@
   </div>
   </div>
   <div class="row">
-  <div class="col-8">
+  <!-- <div class="col-8">
   <div class="icheck-primary">
   <input type="checkbox" id="remember"  class="pt-3">
   <label for="remember">
   Recordar contraseña
   </label>
   </div>
-  </div>
+  </div> -->
   
-  <div class="col-4">
+  <div class="col-md-12">
   <button type="button" (click)="login()" class="btn btn-primary btn-block">Inicia sesión</button>
   </div>
   
@@ -48,10 +48,12 @@
   </div>
   
   <p class="mb-1">
-  <a href="forgot-password.html">Olvidé mi contraseña</a>
+    <span class="link-like" (click)="resetPassword()">Olvidé mi contraseña</span>
+  <!-- <a  (click)="resetPassword()" >Olvidé mi contraseña</a> -->
   </p>
+  
   <p class="mb-0">
-  <a href="register.html" class="text-center">Registrarme</a>
+  <a (click)="register()"   href="#" class="text-center">Registrarme</a>
   </p>
   </div>
   

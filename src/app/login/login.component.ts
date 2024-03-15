@@ -12,28 +12,13 @@ import { login } from '../interface/login';
   styleUrl: './login.component.css',
 })
 export class LoginComponent {
-  
+  public rememberMe: boolean = false;
   userService: any;
   loginform: any;
-
-  // formLog: FormGroup;
   
 
   constructor(private authService: UserService,private router: Router) {}
-
-  // login() {
-  //   console.log('Login', this.email, this.password);
-  //   // Aquí implementarías la lógica de autenticación
-  // }
-
-  // constructor(private userService: UserService, private router: Router) {
-  //   this.formLog = new FormGroup({
-  //     email: new FormControl(),
-  //     password: new FormControl(),
-
-  //   });
-  // }
-
+ 
   ngOnInit(): void {
   this.cargarFormulario();
   }
@@ -45,30 +30,17 @@ export class LoginComponent {
     });
   }
 
-  // login() {
-  //   this.authService.login().subscribe({
-  //     next: (result) => {
-  //       console.log('Login successful', result);
-  //       // Handle successful login
-  //     },
-  //     error: (error) => {
-  //       console.error('Login failed', error);
-  //       // Handle login error
-  //     },
-  //   });
-  // }
+  login() {
+    this.authService.login(this.loginform.get('email')?.value,this.loginform.get('pass')?.value)
+    .then((response :any) => {
+      console.log('Login successful', response);
+      this.router.navigate(['/inicio']);
+    })
+    .catch((error: any) => console.log("Error en login con firebase",error));
+     
+  }
 
-  // onSubmit() {
-  //   console.log(this.formLog.value);
-  //   this.userService
-  //     .login(this.formLog.value)
-  //     .then((response) => {
-  //       console.log(response);
-  //       this.router.navigate(['/inicio'])
-  //     })
-  //     .catch((error) => console.log(error));
-  // }
-
+  
   onClickGoogle() {
     this.authService.loginWithGoogle()
       .then((response: any) => {
@@ -77,4 +49,13 @@ export class LoginComponent {
       })
       .catch((error: any) => console.log("Error en login con google",error));
   }
+
+  register() {    
+        this.router.navigate(['/register']);
+  }
+
+  resetPassword() {
+    this.router.navigate(['/resetPass']);
+}
+
 }

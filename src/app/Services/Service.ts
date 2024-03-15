@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, map } from 'rxjs';
 import { ImagenPaciente } from '../interface/ImagenPaciente';
 import { FotoPaciente } from '../interface/FotoPaciente';
 
@@ -32,22 +32,42 @@ export class Service {
     return this.http.get<FotoPaciente[]>(`${this.api}${nombre_api}/${id}`);
   }
 
-  postenviarDatosPaciente(data:any,nombre_api:string ) {
-    // Asumiendo que `data` es el objeto con los datos del formulario
-    const url = `${this.api}${nombre_api}`; // Reemplaza con la URL de tu API
-    fetch(url, {
-      method: 'POST', // o 'PUT' si estás actualizando un registro existente
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(data), // Convierte los datos del formulario a una cadena JSON
-    })
-    .then(response => response.json())
-    .then(data => {
-      console.log('Success:', data);
-    })
-    .catch((error) => {
-      console.error('Error:', error);
-    });
-  }
+  // postenviarDatosPaciente(data:any,nombre_api:string ): Observable<any> {
+  //   // Asumiendo que `data` es el objeto con los datos del formulario
+  //   const url = `${this.api}${nombre_api}`; // Reemplaza con la URL de tu API
+  //   fetch(url, {
+  //     method: 'POST', // o 'PUT' si estás actualizando un registro existente
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //     },
+  //     body: JSON.stringify(data), // Convierte los datos del formulario a una cadena JSON
+  //   })
+  //   .then(response => response.json())
+  //   .then(data => {
+  //     return data;
+  //   })
+  //   .catch((error) => {
+  //     return error;
+  //   });
+  // }
+
+  postData(
+    nombre_api:string,
+    data: any
+): Observable<any> {
+  const url1 = `${this.api}${nombre_api}`;
+    return this.http.post(url1, data).pipe(
+        map((response: any) => {
+            if (response) {
+                if (response.hasError && response.errorCode == 401) {
+
+                    return;
+                }
+                return response;
+            } else {
+                return [];
+            }
+        })
+    );
+}
 }

@@ -1,9 +1,102 @@
-<div class="register-box">
+
+<body class="register-page" style="min-height: 540px;">
+  <div class="register-box">
+  <div class="card card-outline card-primary">
+  <div class="card-header text-center">
+    <a class="h1"> Olivera</a>
+  </div>
+  <div class="card-body">
+  <p class="login-box-msg">Registre a un nuevo miembro</p>
+  <form [formGroup]="registerform"  method="post">
+  
+  <div class="input-group mb-3">
+  <input type="email" class="form-control" placeholder="Email" formControlName="email" required="">
+  <div class="input-group-append">
+  <div class="input-group-text">
+  <span class="fas fa-envelope"></span>
+  </div>
+  </div>
+  </div>
+  <div class="input-group mb-3">
+  <input type="password" class="form-control" placeholder="Contraseña" formControlName="password" required="">
+  <div class="input-group-append">
+  <div class="input-group-text">
+  <span class="fas fa-lock"></span>
+  </div>
+  </div>
+  </div>
+  <div class="input-group mb-3">
+  <input type="password" class="form-control" placeholder="Repita contraseña" formControlName="repeatPassword" required="">
+  <div class="input-group-append">
+  <div class="input-group-text">
+  <span class="fas fa-lock"></span>
+  </div>
+  </div>
+  </div>
+  <!-- <div *ngIf="registerform.errors?.passwordMismatch && registerform.get('repeatPassword')?.touched" class="error">
+    Las contraseñas deben coincidir.
+  </div> -->
+  <div class="row">
+  
+  <div class="col-md-12">
+  <button type="submit"  (click)="registerUser()"class="btn btn-primary btn-block">Registarse</button>
+  </div>
+  
+  </div>
+  </form>
+  <div class="social-auth-links text-center"> 
+  <a href="#" class="btn btn-block btn-danger">
+  <i class="fab fa-google-plus mr-2"></i>
+  Sign up using Google+
+  </a>
+  </div>
+  <a (click)="regresaAlogin()" class="text-center">Ya soy miembro</a>
+  </div>
+  
+  </div>
+  </div> 
+  
+  
+  </body>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- <div class="register-box">
     <div class="login-logo">
       <a href="#"><b>Mi</b>Aplicación</a>
     </div>
     <!-- /.login-logo -->
-    <div class="card">
+    <!-- <div class="card">
       <div class="card-body login-card-body">
         <p class="login-box-msg">Regístrese</p>
   
@@ -18,12 +111,12 @@
             </div>
             <button type="submit">Registrarse</button>
           </div>
-          
+           -->
   
         <!-- Agrega aquí más contenido si es necesario -->
   
-      </div>
+      <!-- </div> -->
       <!-- /.login-card-body -->
-    </div>
-  </div>
-  
+    <!-- </div>
+  </div> -->
+   -->
