@@ -1,5 +1,6 @@
 export interface RecetaxPaciente {
-    Id:number,
+    clave:string,
     receta: string;
-    fecha: string | null;
+    fecha: string;
+    id:number | null;
   }
