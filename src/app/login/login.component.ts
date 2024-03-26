@@ -23,7 +23,7 @@ export class LoginComponent {
   this.cargarFormulario();
   }
 
-  cargarFormulario() {
+  cargarFormulario() { 
     this.loginform = new FormGroup({
       email: new FormControl(''),
       pass:new FormControl('')

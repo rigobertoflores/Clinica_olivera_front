@@ -1,6 +1,6 @@
 
 import { Injectable } from '@angular/core';
-import { Auth, GoogleAuthProvider, authState, createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup, signOut, sendPasswordResetEmail  } from '@angular/fire/auth';
+import { Auth, GoogleAuthProvider, authState, createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup, signOut, sendPasswordResetEmail, updatePassword  } from '@angular/fire/auth';
 import { from, Observable } from 'rxjs';
 
 @Injectable({
@@ -63,9 +63,36 @@ isAuthenticated(): boolean {
     console.error('Error enviando el correo de recuperación', error);
   }
 }
+async changePassword(newPassword: string): Promise<void> {
+  const user = this.auth.currentUser;
+  if (user) {
+    try {
+      await updatePassword(user, newPassword);
+      console.log('Contraseña actualizada con éxito.');
+    } catch (error) {
+      console.error('Error al actualizar la contraseña', error);
+      throw error;
+    }
+  } else {
+    console.error('No hay usuario logueado para cambiar la contraseña');
+    throw new Error('No user logged in');
+  }
+}
+
  
 logout() {
   return from(signOut(this.auth).then(()=>{localStorage.removeItem('user');}));
+}
+
+async obtenerImagenPerfil() {
+  const user = this.auth.currentUser;
+  if (user) {
+    console.log('Imagen del perfil:', user.photoURL);
+    return user.photoURL; // URL de la imagen del perfil del usuario
+  } else {
+    console.log('No hay usuario logueado.');
+    return null;
+  }
 }
 
 }
