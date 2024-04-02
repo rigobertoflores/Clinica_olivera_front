@@ -29,7 +29,7 @@ imagenPerfilUrl: string  | null;
 
   async ngOnInit() {
     this.imagenPerfilUrl = await this.authService.obtenerImagenPerfil();
-    console.log("this.imagenPerfilUrl", this.imagenPerfilUrl);
+    console.log("this.imagenPerfilUrl", this.imagenPerfilUrl,localStorage.getItem("photoURL"));
   }
  
 
