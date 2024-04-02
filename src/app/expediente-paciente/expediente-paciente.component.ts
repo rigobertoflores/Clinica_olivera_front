@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { MenuComponent } from '../components/menu/menu.component';
 import { SidebarComponent } from '../components/sidebar/sidebar.component';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Service } from './../Services/Service';
 import { Paciente } from '../interface/Paciente';
 import { FormControl, FormGroup } from '@angular/forms';
@@ -12,20 +12,28 @@ import { MatDialog } from '@angular/material/dialog';
 import { ImagenPaciente } from '../interface/ImagenPaciente';
 import { TesteditorComponent } from "../testeditor/testeditor.component";
 import { Expediente } from '../interface/Expediente';
+import { RecetaxPaciente } from '../interface/RecetaxPaciente';
+import { event } from 'jquery';
+import { TesteditorHistoriaComponent } from "../testeditor-historia/testeditor-historia.component";
+import { NotasComponent } from '../notas/notas.component';
+import { nota } from '../interface/nota';
+import { FotoPaciente } from '../interface/FotoPaciente';
 
 @Component({
-    selector: 'app-expediente-paciente',
-    standalone: true,
-    templateUrl: './expediente-paciente.component.html',
-    styleUrl: './expediente-paciente.component.css',
-    imports: [MenuComponent, SidebarComponent, ReactiveFormsModule, CommonModule, StandaloneGalleryComponent, TesteditorComponent]
+  selector: 'app-expediente-paciente',
+  standalone: true,
+  templateUrl: './expediente-paciente.component.html',
+  styleUrl: './expediente-paciente.component.css',
+  imports: [MenuComponent, SidebarComponent, ReactiveFormsModule, CommonModule, StandaloneGalleryComponent, TesteditorComponent, TesteditorHistoriaComponent,NotasComponent]
 })
 export class ExpedientePacienteComponent implements OnInit {
+ 
   parametro: string | null = null;
-  pacientedatos: Paciente ;
+  pacientedatos: Paciente;
   PacienteFormulario: FormGroup;
   images: { src: string; alt: string; }[];
-  imagenesPaciente:ImagenPaciente[];
+  imagenperfil: { src: string };
+  imagenesPaciente: ImagenPaciente[];
   expediente: Expediente;
   historia: string;
   fechaActual: Date = new Date();
@@ -33,48 +41,117 @@ export class ExpedientePacienteComponent implements OnInit {
   mes: any = this.fechaActual.getMonth() + 1; // Los meses empiezan en 0
   año: number = this.fechaActual.getFullYear();
   fechaFormateada: string;
+  @ViewChild(TesteditorComponent, { static: true }) hijoComponent: TesteditorComponent;
+  @ViewChild(NotasComponent, { static: true }) hijonotaComponent: NotasComponent;
+  datareceta: void;
+  recetas: RecetaxPaciente[];
+  editreceta: number | null;
+  selectedFile: any;
+  notas: nota[];
 
-  constructor(private route: ActivatedRoute, private Service: Service,public dialog: MatDialog) {
-   
+  constructor(private route: ActivatedRoute, private Service: Service, public dialog: MatDialog,private router: Router) {
+
   }
-   
+
 
   ngOnInit(): void {
     this.formatearfecha();
-    this.parametro= this.route.snapshot.paramMap.get('id');
-    if(this.parametro){
-    this.cargarContenidoPaciente(this.parametro);
-    this.cargarImagenPaciente(this.parametro);
-    this.cargarHistoriaPaciente(this.parametro);
-  }
-  }
-  
+    this.parametro = this.route.snapshot.paramMap.get('id');
+    if (Number(this.parametro)>0) {
+      this.cargarContenidoPaciente(this.parametro);
+      this.cargarImagenPaciente(this.parametro);
+      this.cargarRecetasPaciente(this.parametro);
+      this.cargarNotasPaciente(this.parametro);
+      this.cargarImagenPerfilPaciente(this.parametro);
+    }else{
+      const pacienteVacio: Paciente = {
+        id:0,
+        clave: 0,
+        sexo: '',
+        fechaDeNacimiento: '', // Considera una fecha predeterminada si es necesario
+        nombre: '',
+        estadoCivil: '',
+        ocupacion: '',
+        domicilio: '',
+        poblacion: '',
+        telefono: '',
+        email: '',
+        nombreDelEsposo: '',
+        edadDelEsposo: null,
+        ocupacionEsposo: '',
+        referencia: '',
+        diabetes: '',
+        hipertension: '',
+        trombosis: '',
+        cardiopatias: '',
+        cancer: '',
+        enfermedadesGeneticas: '',
+        otraEnfermedad: '',
+        inmunizaciones: '',
+        alcoholismo: '',
+        tabaquismo: '',
+        tabaquismoPasivo: '',
+        drogasOmedicamentos: '',
+        grupoSanguineo: '',
+        propiasDeLaInfancia: '',
+        rubeola: '',
+        amigdalitis: '',
+        bronquitis: '',
+        bronconeumonia: '',
+        hepatitisViralTipo: '',
+        parasitosis: '',
+        toxoplasmosis: '',
+        citomegalovirus: '',
+        herpes: '',
+        clamydiasis: '',
+        hiv: '',
+        sifilis: '',
+        micosis: '',
+        eip: '',
+        diabetesMellitus: '',
+        otrasEndocrinas: '',
+        nefropatias: '',
+        digestivas: '',
+        neurologicas: '',
+        hematologicas: '',
+        tumores: '',
+        condilomatosis: '',
+        displasias: '',
+        alergia: '',
+        fechaConsulta: '',
+        fechaUltimaConsulta: '',
+      };
+      
+      this.cargarFormulario(pacienteVacio);
+    }
 
-  cargarContenidoPaciente(parametrourl:any) {
+  }
+
+
+  cargarContenidoPaciente(parametrourl: any) {
     this.Service.getUnicoParams('GetPacienteId', parametrourl).subscribe(
       (data: Paciente) => {
         this.cargarFormulario(data);
         this.pacientedatos = data;
-        
+
       }
     );
   }
 
   formatearfecha() {
-    this.fechaFormateada = `${this.dia < 10 ? '0' + this.dia : this.dia}/${
-      this.mes < 10 ? '0' + this.mes : this.mes
-    }/${this.año}`;
+    this.fechaFormateada = `${this.dia < 10 ? '0' + this.dia : this.dia}/${this.mes < 10 ? '0' + this.mes : this.mes
+      }/${this.año}`;
   }
-  
+
   cargarFormulario(data: Paciente) {
     this.PacienteFormulario = new FormGroup({
-      clave:new FormControl(data.clave),
+      clave: new FormControl(data.clave),
       sexo: new FormControl(
         data.sexo === 'F' ? 'Femenino' : data.sexo === 'M' ? 'Masculino' : data.sexo
       ),
-      fechaDeNacimiento: new FormControl(this.formatDate(data.fechaDeNacimiento)),
+      fechaDeNacimiento: new FormControl(data.fechaDeNacimiento!='' ? this.formatDate(data.fechaDeNacimiento): null),
       nombre: new FormControl(data.nombre),
-      estadoCivil: new FormControl(data.estadoCivil === 'C.' || data.estadoCivil === 'C'  ? 'Casado' : data.estadoCivil === 'S' ? 'Soltero' : data.estadoCivil),
+      estadoCivil: new FormControl(data.estadoCivil === 'C.' || data.estadoCivil === 'C' ? 'Casado' : data.estadoCivil === 'S' ? 'Soltero' : data.estadoCivil),
       ocupacion: new FormControl(data.ocupacion),
       domicilio: new FormControl(data.domicilio),
       poblacion: new FormControl(data.poblacion),
@@ -139,11 +216,12 @@ export class ExpedientePacienteComponent implements OnInit {
       },
       panelClass: 'custom-dialog-container' // Opcional: para estilos personalizados3
     });
-  }  
+  }
 
-  cargarImagenPaciente(parametrourl:any) {
+  cargarImagenPaciente(parametrourl: any) {
     this.Service.getListParams('GetImagenesPaciente', parametrourl).subscribe(
       (data: ImagenPaciente[]) => {
+        if(data!=null)
         this.images = data.map((img) => ({
           src: `data:image/jpeg;base64,${img.blobData}`,
           alt: img.letra
@@ -151,38 +229,185 @@ export class ExpedientePacienteComponent implements OnInit {
       }
     );
   }
-   
-  cargarHistoriaPaciente(parametrourl:any){
-    this.Service.getUnicoParams('GetHistoriaPaciente', parametrourl).subscribe(
-      (data: Expediente) => {
-        this.expediente={
-          clave:data.clave,
-          expediente1: this.formatTextForHtml(data.expediente1 || ""),
-        }
-      }
-    );
-  }
 
+  cargarImagenPerfilPaciente(parametrourl: any) {
+    this.Service.getUnicoParams('GetFotoPaciente', parametrourl).subscribe(
+      (data: FotoPaciente) => {
+        if(data!=null)
+        this.imagenperfil ={src:`data:image/jpeg;base64,${data.blobData}`,} ;
+          
+        });
+  }
+    
   
+
+
 
   formatTextForHtml(inputText: string): string {
     let escapedHtml = inputText
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;');
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;');
     // Envuelve el texto formateado en una etiqueta <pre>
     let formattedText = escapedHtml.replace(/\n/g, '<br>');
     return `<pre>${formattedText}</pre>`;
   }
 
-  saveData(){
-    if(!this.PacienteFormulario.invalid){
-      this.Service.postData('PostPaciente',this.PacienteFormulario.value).subscribe(
-        (result)=>{
-         console.log(result);
+  saveData() {
+    if (!this.PacienteFormulario.invalid) {
+      this.Service.postData('PostPaciente', this.PacienteFormulario.value).subscribe(
+        (result) => {
+          this.pacientedatos.nombre = result.nombre;
+          if(this.PacienteFormulario.value.id)
+          this.cargarContenidoPaciente(result.clave)
         }
       )
     }
-    
+
   }
+
+  obtenerDatosDesdeHijo() {
+    // this.hijoComponent.datosDisponibles.subscribe(datos => {
+    //   console.log('Datos recibidos del componente hijo:', datos);
+    //   if(datos){
+    //     const receta : RecetaxPaciente={clave:this.parametro || "0",receta:datos,fecha: this.fechaActual,id:this.editreceta}
+    //     this.Service.postData('PostReceta',receta).subscribe(
+    //       (result:RecetaxPaciente[])=>{
+    //        this.recetas=result;
+    //        console.log(result);
+    //       }
+    //     )
+    //   }
+    // });
+  }
+
+  obtenerDatosDesdeHijoActualizados() {
+    // this.hijoComponent.testeditordata.subscribe(datos => {
+    //   console.log('Datos recibidos del componente hijo:', datos);
+
+    // });
+  }
+
+  GuardarReceta(receta: any) {
+    const r = receta;
+    this.hijoComponent.saveText();
+  }
+
+  EditarReceta(receta: any) {
+    const r = receta;
+    this.hijoComponent.saveText();
+  }
+
+  GuardarNota(receta: any) {
+    const r = receta;
+    this.hijonotaComponent.saveText();
+  }
+
+  EditarNota(receta: any) {
+    const r = receta;
+    this.hijonotaComponent.saveText();
+  }
+
+  cargarRecetasPaciente(parametrourl: any) {
+    this.Service.getListParams('GetReceta', parametrourl).subscribe(
+      (data: RecetaxPaciente[]) => {
+        this.recetas = data;
+      }
+    );
+  }
+
+  cargarNotasPaciente(parametrourl: any) {
+    this.Service.getListParams('GetNotas', parametrourl).subscribe(
+      (data: nota[]) => {
+        this.notas = data;
+      }
+    );
+  }
+
+  ngAfterViewInit(): void {
+    this.ajustarAltura(document.getElementById('nombreinputtexthistoria') as HTMLTextAreaElement);
+
+  }
+
+  ajustarAltura(elemento: HTMLTextAreaElement): void {
+    elemento.style.height = 'auto'; // Resetea la altura para calcular correctamente
+    elemento.style.height = elemento.scrollHeight + 'px'; // Ajusta la altura al contenido
+  }
+
+  onFileSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+
+    if (input.files && input.files[0]) {
+      this.selectedFile = input.files[0] as File; // Afirmación de tipo aquí
+    }
+  }
+
+  onFileSelectedPerfil(event: any): void {
+    const input = event.target as HTMLInputElement;
+    const file: File =  event.target.files[0];
+    if (file) {
+      this.resizeImage(file, 128, 128, (resizedImage) => {
+        // Haz algo con la imagen redimensionada
+        console.log(resizedImage);
+        // Por ejemplo, convertirlo a un archivo y prepararlo para ser enviado a un servidor
+        this.selectedFile = new File([resizedImage], "resized-image.jpg", { type: "image/jpeg" });
+      });
+    }
+   
+  }
+
+  resizeImage(file: File, width: number, height: number, callback: (resizedImage: Blob) => void) {
+    const reader = new FileReader();
+    reader.onload = (event: any) => {
+      const img = new Image();
+      img.onload = () => {
+        const canvas = document.getElementById('canvas') as HTMLCanvasElement;
+        const ctx = canvas.getContext('2d');
+        ctx!.clearRect(0, 0, canvas.width, canvas.height);
+        ctx!.drawImage(img, 0, 0, width, height);
+        canvas.toBlob((blob) => {
+          callback(blob!);
+        }, 'image/jpeg');
+      };
+      img.src = event.target.result;
+    };
+    reader.readAsDataURL(file);
+  }
+
+  upload(): void {
+    if (!this.selectedFile) {
+      alert('Por favor, selecciona un archivo primero.');
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append('image', this.selectedFile, this.selectedFile.name);
+    formData.append('id', this.parametro || '');
+    this.Service.postData('PostImagen', formData).subscribe(
+      (data: ImagenPaciente[]) => {
+        this.images = data.map((img) => ({
+          src: `data:image/jpeg;base64,${img.blobData}`,
+          alt: img.letra
+        }));
+      }
+          )
+
+  }
+
+  uploadImagenPerfil():void {
+    if (!this.selectedFile) {
+      alert('Por favor, selecciona un archivo primero.');
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append('image', this.selectedFile, this.selectedFile.name);
+    formData.append('id', this.parametro || '');
+    this.Service.postData('PostImagenPerfil', formData).subscribe(
+      (data: FotoPaciente) => {
+        if(data!=null)
+        this.imagenperfil ={src:`data:image/jpeg;base64,${data.blobData}`,} ;
+          
+        });
+    }
 }

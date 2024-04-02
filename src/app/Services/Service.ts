@@ -26,8 +26,8 @@ export class Service {
     return this.http.get<any[]>(this.api + nombre_api);
   }
 
-  getListParams(nombre_api: string,id:string | number): Observable<ImagenPaciente[]> {
-    return this.http.get<ImagenPaciente[]>(`${this.api}${nombre_api}/${id}`);
+  getListParams(nombre_api: string,id:string | number): Observable<any[]> {
+    return this.http.get<any[]>(`${this.api}${nombre_api}/${id}`);
   }
 
   getListFotoPacienteParams(nombre_api: string,id:string | number): Observable<FotoPaciente[]> {

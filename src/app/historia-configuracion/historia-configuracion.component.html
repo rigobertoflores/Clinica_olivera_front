@@ -1,0 +1,77 @@
+<app-menu></app-menu>
+<app-sidebar></app-sidebar>
+
+<div class="content-wrapper" style="min-height: 1604.8px">
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>Configuraciones de Historias</h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="#">fechade actual</a></li>
+                        <li class="breadcrumb-item active">ex</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card card-primary card-outline" [formGroup]="historiaform">
+
+                        <div class="row">
+                            <div class="col-md-12 colsm-12">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-6 colsm-12">
+                                            <div class="form-group">
+                                                <label for="nombreinput">Nombre de la historia</label>
+                                                <input type="text" id="nombreinput" formControlName="nombre"
+                                                    class="form-control" />
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 colsm-12">
+                                            <div class="col-sm-6">
+
+                                                <div class="form-group">
+                                                    <label for="historiaSelect">Selecciona una Historia</label>
+                                                    <select id="historiaSelect" class="form-control"
+                                                            [(ngModel)]="historiaSeleccionada" [ngModelOptions]="{standalone: true}" (change)="onHistoriaChange($event)">
+                                                      <option value="0">-- Seleccione una historia --</option>
+                                                      <option *ngFor="let historia of historias" [value]="historia.id">{{ historia.nombre }}</option>
+                                                    </select>
+                                                  </div>
+                                                  
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 col-sm-12">
+                                <div class="card-body">
+                                    <div class="form-group">
+                                        <label for="nombreinput">Historia</label>
+                                        <textarea class="texthistoria" id="nombreinputtexthistoria" formControlName="hc"
+                                            class="form-control" (input)="ajustarAltura($event.target)"></textarea>
+                                        <br>
+                                        <button type="button" class="btn btn-primary btn-block"
+                                            (click)="guardarEditarHistoria()">Guardar</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
