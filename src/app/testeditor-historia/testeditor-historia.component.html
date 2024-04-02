@@ -1,7 +1,34 @@
-<ckeditor [config]="{ toolbar: [  'heading', '|',
-'bold', 'italic', '|',
-'bulletedList', 'numberedList', '|',
-'outdent', 'indent', '|',
-'blockQuote', '|',
-'undo', 'redo', '|',
-'alignment'] }" tagName="textarea" [editor]="Editor" [(ngModel)]="data" ></ckeditor>
+<div class="row">
+    <div class="col-md-12 colsm-12">
+        <div class="card-body">
+            <div class="form-group">
+                <label for="historiaSelect">Selecciona una Historia</label>
+                <select id="historiaSelect" class="form-control" [(ngModel)]="historiaSeleccionada"
+                    [ngModelOptions]="{standalone: true}">
+                    <option value="0">-- Seleccione una historia --</option>
+                    <option *ngFor="let historia of historias" [value]="historia.id">{{ historia.nombre }}</option>
+                </select>
+            </div>
+            <button type="button" class="btn btn-primary btn-block" (click)="guardarHistoriaExpediente()">Agregar
+                Historia</button>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12 colsm-12">
+
+        <div class="card-body">
+            <div class="form-group">
+                <label for="nombreinput">Expediente</label>
+                <textarea class="texthistoria" id="nombreinputtexthistoria"
+                    [(ngModel)]="expediente.expediente1" class="form-control"
+                    (input)="ajustarAltura($event.target)"></textarea>
+                <br>
+                <button type="button" class="btn btn-primary btn-block"
+                    (click)="guardarHistoriadentroExpediente()">Guardar Historia</button>
+            </div>
+        </div>
+
+    </div>
+</div>

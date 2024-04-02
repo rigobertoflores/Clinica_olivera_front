@@ -1,4 +1,5 @@
 export interface Paciente {
+  id:number;
   clave: number;
   fechaDeNacimiento: string;
   sexo: string;
@@ -9,7 +10,7 @@ export interface Paciente {
   telefono: string;
   email: string | null;
   nombreDelEsposo: string | null;
-  edadDelEsposo: number | null;
+  edadDelEsposo: string | null;
   ocupacionEsposo: string | null;
   referencia: string;
   diabetes: string;

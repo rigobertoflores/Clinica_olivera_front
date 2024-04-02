@@ -1,17 +1,3 @@
-/* @media print {
-    body {
-      margin: 0;
-      padding: 0;
-    }
-    #text-editor {
-      border: none;
-    }
-}
-
-:host ::ng-deep .ck-editor__editable_inline {
-    min-height: 250px;
-} */
-
 #nombreinputtexthistoria {
   resize: none; /* Deshabilita la capacidad de redimensionar */
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Sombreado sutil */
@@ -22,10 +8,16 @@
   color: #333; /* Color del texto */
   background-color: #f8f8f8; /* Color de fondo suave */
   line-height: 1.5; /* Espaciado de línea para mejorar la legibilidad */
-  min-height: 600px !important;
+  overflow: hidden; /* Oculta la barra de desplazamiento hasta que sea necesario */
+  min-height: 250px;
 }
 
 .form-control:focus {
   border-color: #007bff; /* Cambia el color del borde al enfocar */
   outline: none; /* Remueve el outline predeterminado */
+}
+
+/* Estilo para el botón */
+.btn-primary.btn-block {
+  margin-top: 10px; /* Espaciado superior para separarlo del textarea */
 }

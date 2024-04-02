@@ -24,7 +24,7 @@
                     <div class="card card-primary card-outline">
                         <div class="card-body box-profile">
                             <div class="text-center">
-                                <img class="profile-user-img img-fluid img-circle" [src]="images[images.length-1]!=undefined  ? images[images.length-1].src: 'assets/user4-128x128.jpg'"  [alt]="images[images.length-1] !=undefined ? images[images.length-1].alt: ''" />
+                                <img class="profile-user-img img-fluid img-circle" [src]="images!=undefined  ? images.src: 'assets/user4-128x128.jpg'"  [alt]="images !=undefined ? images.alt: ''" />
                             </div>
                             <h3 class="profile-username text-center">{{ nombre }}</h3>
                             <p class="text-muted text-center">Edad:{{ edad }}</p>
@@ -40,26 +40,13 @@
                                     <b>Email</b> <a class="float-right">{{ email }}</a>
                                 </li>
                             </ul>
-                            <a href="#" class="btn btn-primary btn-block"><b>Expediente</b></a>
+                            <button (click)="editarElemento(clave)" class="btn btn-primary btn-block"><b>Expediente</b></button>
                         </div>
                     </div>
                 </div>
 
                 <div class="col-md-9">
-                    <div class="card card-primary card-outline">
-                        <!-- <div class="card-header p-2">
-                            <ul class="nav nav-pills">
-                                <li class="nav-item">
-                                    <a class="nav-link active" href="#activity" data-toggle="tab">Activity</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="#timeline" data-toggle="tab">Timeline</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="#settings" data-toggle="tab">Settings</a>
-                                </li>
-                            </ul>
-                        </div> -->
+                    <div class="card card-primary card-outline">                      
                         <div class="card-body">
                             <div id="example1_wrapper" class="dataTables_wrapper dt-bootstrap4">
                                 <div class="row justify-content-end">
@@ -122,6 +109,8 @@
                                             aria-label="Select page of periodic elements">
                                         </mat-paginator>
                                     </div>
+                                    <br/>
+                                    <button (click)="agregarPaciente()" class="btn btn-primary btn-block"><b>Agregar Nuevo Paciente</b></button>
                                 </div>
                                 </div>
                             </div>

@@ -9,8 +9,7 @@
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="#">fechade actual</a></li>
-                        <li class="breadcrumb-item active">ex</li>
+                        <li class="breadcrumb-item">fechade actual: {{fechaFormateada}}</li>                       
                     </ol>
                 </div>
             </div>
@@ -29,13 +28,19 @@
                                         General</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="#imagenes" data-toggle="tab">Imagenes</a>
+                                    <a class="nav-link" href="#historia" data-toggle="tab">Historia</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#imagenes" data-toggle="tab">Imágenes</a>
+                                </li>                             
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#notas" data-toggle="tab">Notas</a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" href="#recetas" data-toggle="tab">Recetas</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="#historia" data-toggle="tab">Historia</a>
+                                    <a class="nav-link" href="#imagendeperfil" data-toggle="tab">Imagen de Perfil</a>
                                 </li>
                             </ul>
                         </div>
@@ -256,7 +261,7 @@
                                                                                     <label for="inputEdadDelEsposo">Edad
                                                                                         del
                                                                                         Esposo/a</label>
-                                                                                    <input type="number"
+                                                                                    <input type="text"
                                                                                         id="inputEdadDelEsposo"
                                                                                         formControlName="edadDelEsposo"
                                                                                         class="form-control" />
@@ -832,21 +837,77 @@
                                                         </div>
                                                     </div>
 
+                                                    <div class="form-group">
+                                                        <label for="exampleInputFile">Subir imagen</label>
+                                                        <div class="input-group">
+                                                            <div class="custom-file">
+                                                                <input type="file" class="custom-file-input"
+                                                                    id="exampleInputFile"
+                                                                    (change)="onFileSelected($event)">
+                                                                <label class="custom-file-label"
+                                                                    for="exampleInputFile">Choose file</label>
+                                                            </div>
+                                                            <div class="input-group-append">
+                                                                <button type="button" class="btn btn-primary"
+                                                                    (click)="upload()">Guardar Imagen</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="tab-pane" id="recetas">
-                                    <app-testeditor [recetas]="recetas" [clave]="parametro" [fechaActual]="fechaFormateada"></app-testeditor>                                   
+                                    <app-testeditor [recetas]="recetas" [clave]="parametro"
+                                        [fechaActual]="fechaFormateada"></app-testeditor>
 
                                 </div>
                                 <div class="tab-pane" id="historia">
-                                    <div class="timeline timeline-inverse">
-                                        <app-testeditor-historia [data]="expediente?.expediente1"></app-testeditor-historia>
-                                    </div>
+                                    <app-testeditor-historia [parametro]="parametro"></app-testeditor-historia>
                                 </div>
+                                <div class="tab-pane" id="notas">
+                                    <app-notas [notas]="notas" [clave]="parametro"
+                                        [fechaActual]="fechaFormateada"></app-notas>
 
+                                </div>
+                                <div class="tab-pane" id="imagendeperfil">
+                                    <div class="col-12">
+                                        <div class="card card-primary">
+                                            <div class="card-header">
+                                                <h4 class="card-title">Imagenes de la paciente</h4>
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="row justify-content-center">
+                                                    <div class="image-grid">
+                                                            <img [src]="imagenperfil?.src" 
+                                                                (click)="openDialog(imagenperfil?.src)">
+                                                       
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label for="exampleInputFile">Subir imagen</label>
+                                                        <div class="input-group">
+                                                            <div class="custom-file">
+                                                                <input type="file" class="custom-file-input"
+                                                                    id="exampleInputFile"
+                                                                    (change)="onFileSelectedPerfil($event)">
+                                                                    <canvas id="canvas" width="128" height="128" style="display:none;"></canvas>
+                                                                <label class="custom-file-label"
+                                                                    for="exampleInputFile">Choose file</label>
+                                                            </div>
+                                                            <div class="input-group-append">
+                                                                <button type="button" class="btn btn-primary"
+                                                                    (click)="uploadImagenPerfil()">Guardar Imagen</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
                             </div>
                         </div>
                     </div>

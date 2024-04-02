@@ -7,6 +7,7 @@ import { RegisterComponent } from './register/register.component';
 import { CanActivate } from '@angular/router';
 import { AuthGuard } from './Services/AuthGuard';
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
+import { HistoriaConfiguracionComponent } from './historia-configuracion/historia-configuracion.component';
 
 export const routes: Routes = [
     { 'path': 'login', component: LoginComponent },
@@ -15,4 +16,5 @@ export const routes: Routes = [
     { 'path': 'resetPass', component: ResetPasswordComponent },
     { 'path': 'menu', component: MenuComponent },
     { 'path': 'inicio', component: InicioComponent, canActivate: [AuthGuard] },
-    { 'path': 'expediente_paciente/:id', component: ExpedientePacienteComponent,canActivate: [AuthGuard] }];
+    { 'path': 'expediente_paciente/:id', component: ExpedientePacienteComponent,canActivate: [AuthGuard] },
+    { 'path': 'configuracion_historias', component: HistoriaConfiguracionComponent, canActivate: [AuthGuard] }];

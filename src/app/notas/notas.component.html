@@ -10,7 +10,7 @@
     <div>
     <i class="fas fa-envelope bg-primary"></i>
     <div class="timeline-item">
-    <h3 class="timeline-header"><a href="#">Agregar </a>Receta</h3>
+    <h3 class="timeline-header"><a href="#">Agregar </a>Nota</h3>
     <div class="timeline-body">
         <ckeditor [config]="{ toolbar: [  'heading', '|',
         'bold', 'italic', '|',
@@ -28,9 +28,9 @@
     </div>
     
     
-    <div *ngFor="let receta of recetas">
+    <div *ngFor="let nota of notas">
     <span class="bg-danger fecha_label">
-        {{receta.fecha}}
+        {{nota.fecha}}
     </span>
     <br/>
     <div class="timeline-item">
@@ -41,12 +41,12 @@
         'outdent', 'indent', '|',
         'blockQuote', '|',
         'undo', 'redo', '|',
-        'alignment'] }" tagName="textarea" [editor]="Editor"  [(ngModel)]="receta.receta" [id]="receta.id"></ckeditor>
+        'alignment'] }" tagName="textarea" [editor]="Editor"  [(ngModel)]="nota.notas" [id]="nota.id"></ckeditor>
     </div>
     <div class="timeline-footer">
-    <button type="button" class="btn btn-success btn-sm" (click)="printContent(data)">Imprimir</button>
-    <button type="button" class="btn btn-warning btn-flat btn-sm" (click)="guardarEditarreceta([receta.id,receta.receta])">Editar</button>
-    <button type="button" class="btn btn-danger btn-sm"(click)="borrarreceta([receta.id,receta.receta])">Borrar</button>
+    <button type="button" class="btn btn-success btn-sm" (click)="printContent(nota.notas)">Imprimir</button>
+    <button type="button" class="btn btn-warning btn-flat btn-sm" (click)="guardarEditarreceta([nota.id,nota.notas])">Editar</button>
+    <button type="button" class="btn btn-danger btn-sm"(click)="borrarreceta([nota.id,nota.notas])">Borrar</button>
     </div>
     </div>
     </div>   

@@ -3,20 +3,20 @@ import { FormsModule } from '@angular/forms';
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { ChangeEvent } from '@ckeditor/ckeditor5-angular/ckeditor.component';
-import { RecetaxPaciente } from '../interface/RecetaxPaciente';
 import { CommonModule } from '@angular/common';
 import { Service } from './../Services/Service';
+import { nota } from '../interface/nota';
 @Component({
-  selector: 'app-testeditor',
+  selector: 'app-notas',
   standalone: true,
   imports: [CKEditorModule,FormsModule,CommonModule],
-  templateUrl: './testeditor.component.html',
-  styleUrl: './testeditor.component.css'
+  templateUrl: './notas.component.html',
+  styleUrl: './notas.component.css'
 })
-export class TesteditorComponent implements OnInit {
+export class NotasComponent implements OnInit {
   public Editor = ClassicEditor;
   fullScreenMode = false;
-  @Input() recetas: RecetaxPaciente[];
+  @Input() notas: nota[];
   @Input() clave: string;
   @Input() fechaActual: string ;
 
@@ -54,11 +54,11 @@ export class TesteditorComponent implements OnInit {
 
   guardarEditarreceta(data:[id:number,data:string]) {
       if(data[1]!=null){
-        const receta : RecetaxPaciente={clave:this.clave || "0",receta:data[1],fecha: this.fechaActual,id:data[0]}
-        this.Service.postData('PostReceta',receta).subscribe(
-          (result:RecetaxPaciente[])=>{
+        const receta : nota={clave:Number(this.clave),notas:data[1],fecha: this.fechaActual,id:data[0]}
+        this.Service.postData('PostNotas',receta).subscribe(
+          (result:nota[])=>{
             this.data="";
-           this.recetas=result;
+           this.notas=result;
            console.log(result);
           }
         )
@@ -67,11 +67,11 @@ export class TesteditorComponent implements OnInit {
   
     borrarreceta(data:[id:number,data:string]) {
       if(data[1]!=null){
-        const receta : RecetaxPaciente={clave:this.clave || "0",receta:data[1],fecha: this.fechaActual,id:data[0]}
-        this.Service.postData('PostDeleteReceta',receta).subscribe(
-          (result:RecetaxPaciente[])=>{
+        const receta : nota={clave:Number(this.clave) || 0,notas:data[1],fecha: this.fechaActual,id:data[0]}
+        this.Service.postData('PostDeleteNotas',receta).subscribe(
+          (result:nota[])=>{
             this.data="";
-           this.recetas=result;
+           this.notas=result;
            console.log(result);
           }
         )
@@ -89,3 +89,6 @@ export class TesteditorComponent implements OnInit {
     }
     }
 }
+
+
+

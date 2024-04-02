@@ -41,6 +41,7 @@ import { UserService } from '../Services/user.service';
   styleUrl: './inicio.component.css',
 })
 export class InicioComponent implements OnInit, AfterViewInit {
+
   fechaActual: Date = new Date();
   dia: any = this.fechaActual.getDate();
   mes: any = this.fechaActual.getMonth() + 1; // Los meses empiezan en 0
@@ -59,7 +60,8 @@ export class InicioComponent implements OnInit, AfterViewInit {
   displayedColumns: string[] = ['fecha_proximaconsulta', 'nombre', 'sexo','editar'];
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
-  images: { src: string; alt: string; }[]=[{src:"",alt:"no hay imagen"}];
+  images: { src: string; alt: string; }={src:"",alt:"no hay imagen"};
+  clave: number;
 
   constructor(
     private Service: Service,
@@ -96,6 +98,7 @@ export class InicioComponent implements OnInit, AfterViewInit {
       this.fecha_ultimaconsulta = data.fechaUltimaConsulta;
       this.telefono = data.telefono;
       this.email = data.email;
+      this.clave=data.clave;
       this.cargarFotoPaciente(data.clave);
     
     });
@@ -136,14 +139,16 @@ export class InicioComponent implements OnInit, AfterViewInit {
   }
 
   cargarFotoPaciente(id:number) {
-    this.Service.getListFotoPacienteParams('GetFotoPaciente', id).subscribe(
-      (data: FotoPaciente[]) => {
-        this.images = data.map((img) => ({
-          src: `data:image/jpeg;base64,${img.blobData}`,
-          alt: img.id
-        }));
-      }
-    );
+    this.Service.getUnicoParams('GetFotoPaciente', id).subscribe(
+      (data: FotoPaciente) => {
+        if(data!=null)
+        this.images ={src:`data:image/jpeg;base64,${data.blobData}`,alt:"no hay imagen"} ;
+          
+        });
   } 
+
+  agregarPaciente() {
+    this.router.navigate(['/expediente_paciente', 0]);
+    }
   
 }
