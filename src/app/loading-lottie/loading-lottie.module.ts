@@ -17,8 +17,7 @@ export const appConfig: ApplicationConfig = {
 @NgModule({
   declarations: [],
   imports: [
-    CommonModule,
-        .forRoot({ player: playerFactory })
+    CommonModule
   ]
 })
 export class LoadingLottieModule { }

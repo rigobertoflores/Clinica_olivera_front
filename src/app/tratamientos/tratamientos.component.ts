@@ -50,7 +50,7 @@ export class TratamientosComponent {
     this.isLoading = true;
     this.cargarFormulario();
     this.getTreatments();
-    this.setupSearch();
+    this.setupSearch(); 
     console.log(this.getTreatments());
     this.isLoading = false;
   }

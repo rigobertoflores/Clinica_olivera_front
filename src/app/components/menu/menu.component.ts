@@ -52,7 +52,7 @@ export class MenuComponent {
       [OpcionesSidebar.Home]: '/inicio',
       [OpcionesSidebar.Profile]: '/profile',
       [OpcionesSidebar.Tratamientos]: '/tratamientos',
-     
+      [OpcionesSidebar.AgregarPaciente]: ''
     };
 
     return routesMap[option] || null;

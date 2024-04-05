@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { ApplicationConfig, Component, OnInit, ViewChild } from '@angular/core';
 import { MenuComponent } from '../components/menu/menu.component';
 import { SidebarComponent } from '../components/sidebar/sidebar.component';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -18,13 +18,25 @@ import { TesteditorHistoriaComponent } from "../testeditor-historia/testeditor-h
 import { NotasComponent } from '../notas/notas.component';
 import { nota } from '../interface/nota';
 import { FotoPaciente } from '../interface/FotoPaciente';
+import { AnimationItem } from 'lottie-web';
+import { LottieComponent, AnimationOptions } from 'ngx-lottie';
+import { provideLottieOptions } from 'ngx-lottie';
+
+export const appConfig: ApplicationConfig = {
+  providers: [
+    provideLottieOptions({
+      player: () => import('lottie-web'),
+    }),
+  ],
+};
+
 
 @Component({
   selector: 'app-expediente-paciente',
   standalone: true,
   templateUrl: './expediente-paciente.component.html',
   styleUrl: './expediente-paciente.component.css',
-  imports: [MenuComponent, SidebarComponent, ReactiveFormsModule, CommonModule, StandaloneGalleryComponent, TesteditorComponent, TesteditorHistoriaComponent,NotasComponent]
+  imports: [MenuComponent, SidebarComponent, ReactiveFormsModule, CommonModule, StandaloneGalleryComponent, TesteditorComponent, TesteditorHistoriaComponent,NotasComponent, LottieComponent]
 })
 export class ExpedientePacienteComponent implements OnInit {
  
@@ -48,6 +60,12 @@ export class ExpedientePacienteComponent implements OnInit {
   editreceta: number | null;
   selectedFile: any;
   notas: nota[];
+  options: AnimationOptions = {
+    path: '/assets/Loading.json',
+  };
+
+  isLoading = false;
+
 
   constructor(private route: ActivatedRoute, private Service: Service, public dialog: MatDialog,private router: Router) {
 
@@ -55,6 +73,7 @@ export class ExpedientePacienteComponent implements OnInit {
 
 
   ngOnInit(): void {
+    this.isLoading = false;
     this.formatearfecha();
     this.parametro = this.route.snapshot.paramMap.get('id');
     if (Number(this.parametro)>0) {
@@ -129,11 +148,12 @@ export class ExpedientePacienteComponent implements OnInit {
 
 
   cargarContenidoPaciente(parametrourl: any) {
+    this.isLoading =true;
     this.Service.getUnicoParams('GetPacienteId', parametrourl).subscribe(
       (data: Paciente) => {
         this.cargarFormulario(data);
         this.pacientedatos = data;
-
+        this.isLoading =false;
       }
     );
   }
@@ -219,6 +239,7 @@ export class ExpedientePacienteComponent implements OnInit {
   }
 
   cargarImagenPaciente(parametrourl: any) {
+    this.isLoading =true;
     this.Service.getListParams('GetImagenesPaciente', parametrourl).subscribe(
       (data: ImagenPaciente[]) => {
         if(data!=null)
@@ -226,16 +247,18 @@ export class ExpedientePacienteComponent implements OnInit {
           src: `data:image/jpeg;base64,${img.blobData}`,
           alt: img.letra
         }));
+        this.isLoading =false;
       }
     );
   }
 
   cargarImagenPerfilPaciente(parametrourl: any) {
+    this.isLoading =true;
     this.Service.getUnicoParams('GetFotoPaciente', parametrourl).subscribe(
       (data: FotoPaciente) => {
         if(data!=null)
         this.imagenperfil ={src:`data:image/jpeg;base64,${data.blobData}`,} ;
-          
+        this.isLoading =false;
         });
   }
     
@@ -255,11 +278,13 @@ export class ExpedientePacienteComponent implements OnInit {
 
   saveData() {
     if (!this.PacienteFormulario.invalid) {
+      this.isLoading =true;
       this.Service.postData('PostPaciente', this.PacienteFormulario.value).subscribe(
         (result) => {
+          this.cargarFormulario(result);
+          this.pacientedatos = result;          
           this.pacientedatos.nombre = result.nombre;
-          if(this.PacienteFormulario.value.id)
-          this.cargarContenidoPaciente(result.clave)
+          this.isLoading =false;
         }
       )
     }
@@ -309,17 +334,21 @@ export class ExpedientePacienteComponent implements OnInit {
   }
 
   cargarRecetasPaciente(parametrourl: any) {
+    this.isLoading =true;
     this.Service.getListParams('GetReceta', parametrourl).subscribe(
       (data: RecetaxPaciente[]) => {
         this.recetas = data;
+        this.isLoading =false;
       }
     );
   }
 
   cargarNotasPaciente(parametrourl: any) {
+    this.isLoading =true;
     this.Service.getListParams('GetNotas', parametrourl).subscribe(
       (data: nota[]) => {
         this.notas = data;
+        this.isLoading =false;
       }
     );
   }
@@ -375,6 +404,7 @@ export class ExpedientePacienteComponent implements OnInit {
   }
 
   upload(): void {
+    this.isLoading =true;
     if (!this.selectedFile) {
       alert('Por favor, selecciona un archivo primero.');
       return;
@@ -391,10 +421,11 @@ export class ExpedientePacienteComponent implements OnInit {
         }));
       }
           )
-
+          this.isLoading =false;
   }
 
   uploadImagenPerfil():void {
+    this.isLoading =true;
     if (!this.selectedFile) {
       alert('Por favor, selecciona un archivo primero.');
       return;
@@ -409,5 +440,10 @@ export class ExpedientePacienteComponent implements OnInit {
         this.imagenperfil ={src:`data:image/jpeg;base64,${data.blobData}`,} ;
           
         });
+        this.isLoading =false;
+    }
+
+    animationCreated(animationItem: AnimationItem): void {
+      console.log(animationItem);
     }
 }

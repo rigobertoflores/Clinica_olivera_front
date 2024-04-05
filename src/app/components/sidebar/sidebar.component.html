@@ -28,15 +28,15 @@
         style="overflow: scroll;">
         <div class="os-content" style="padding: 0px 8px; height: 100%; width: 100%;">
           <div class="form-inline mt-2">
-            <div class="input-group" data-widget="sidebar-search">
+            <!-- <div class="input-group" data-widget="sidebar-search">
               <input class="form-control form-control-sidebar" type="search" placeholder="Search" aria-label="Search">
               <div class="input-group-append">
                 <button class="btn btn-sidebar">
                   <i class="fas fa-search fa-fw"></i>
                 </button>
               </div>
-            </div>
-            <div class="sidebar-search-results">
+            </div> -->
+            <!-- <div class="sidebar-search-results">
               <div class="list-group"><a href="#" class="list-group-item">
                   <div class="search-title"><strong class="text-light"></strong>N<strong
                       class="text-light"></strong>o<strong class="text-light"></strong> <strong
@@ -50,7 +50,7 @@
                       class="text-light"></strong></div>
                   <div class="search-path"></div>
                 </a></div>
-            </div>
+            </div> -->
           </div>
           <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar nav-child-indent flex-column" data-widget="treeview" role="menu">
@@ -63,10 +63,10 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a href="/docs/3.1//dependencies.html" class="nav-link">
+                <a  (click)="navigateTo(opcionesSB.AgregarPaciente)" class="nav-link">
                   <i class="nav-icon fas fa-handshake"></i>
                   <p>
-                    Dependencies &amp; Plugins
+                   Agregar Paciente
                   </p>
                 </a>
               </li>

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { UserService } from '../../Services/user.service';
 import { Router } from '@angular/router';
 import  {OpcionesSidebar} from '../../enums/sidebar'
@@ -10,10 +10,11 @@ import  {OpcionesSidebar} from '../../enums/sidebar'
   templateUrl: './sidebar.component.html',
   styleUrl: './sidebar.component.css'
 })
-export class SidebarComponent {
+export class SidebarComponent implements OnInit {
 user : string;
-opcionesSB = OpcionesSidebar;
+
 imagenPerfilUrl: string  | null;
+  opcionesSB: typeof OpcionesSidebar;
 
   constructor(private authService: UserService,private router: Router) {
     if (this.authService.isAuthenticated()){     
@@ -30,6 +31,7 @@ imagenPerfilUrl: string  | null;
   async ngOnInit() {
     this.imagenPerfilUrl = await this.authService.obtenerImagenPerfil();
     console.log("this.imagenPerfilUrl", this.imagenPerfilUrl,localStorage.getItem("photoURL"));
+    this.opcionesSB = OpcionesSidebar;
   }
  
 
@@ -37,6 +39,9 @@ imagenPerfilUrl: string  | null;
   navigateTo(option: OpcionesSidebar): void {
     const route = this.getRouteForOption(option);
     if (route) {
+      if(route=='/expediente_paciente')
+      this.router.navigate([route,0]);
+    else
       this.router.navigate([route]);
     } else {
       console.error('Ruta no definida para la opción:', option);
@@ -48,7 +53,7 @@ imagenPerfilUrl: string  | null;
       [OpcionesSidebar.Home]: '/inicio',
       [OpcionesSidebar.Profile]: '/profile',
       [OpcionesSidebar.Tratamientos]: '/tratamientos',
-     
+      [OpcionesSidebar.AgregarPaciente]:'/expediente_paciente'
     };
 
     return routesMap[option] || null;
