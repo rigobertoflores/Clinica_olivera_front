@@ -73,7 +73,6 @@ export class ExpedientePacienteComponent implements OnInit {
 
 
   ngOnInit(): void {
-    this.isLoading = false;
     this.formatearfecha();
     this.parametro = this.route.snapshot.paramMap.get('id');
     if (Number(this.parametro)>0) {
@@ -153,7 +152,7 @@ export class ExpedientePacienteComponent implements OnInit {
       (data: Paciente) => {
         this.cargarFormulario(data);
         this.pacientedatos = data;
-        this.isLoading =false;
+        
       }
     );
   }
@@ -247,21 +246,30 @@ export class ExpedientePacienteComponent implements OnInit {
           src: `data:image/jpeg;base64,${img.blobData}`,
           alt: img.letra
         }));
-        this.isLoading =false;
       }
     );
   }
 
   cargarImagenPerfilPaciente(parametrourl: any) {
-    this.isLoading =true;
-    this.Service.getUnicoParams('GetFotoPaciente', parametrourl).subscribe(
-      (data: FotoPaciente) => {
-        if(data!=null)
-        this.imagenperfil ={src:`data:image/jpeg;base64,${data.blobData}`,} ;
-        this.isLoading =false;
-        });
+    this.isLoading = true; // Inicia la carga
+    this.Service.getUnicoParams('GetFotoPaciente', parametrourl).subscribe({
+      next: (data: FotoPaciente) => {
+        // Comprueba si la data no es nula y actualiza la imagen de perfil
+        if(data != null) {
+          this.imagenperfil = {src: `data:image/jpeg;base64,${data.blobData}`};
+        }
+      },
+      error: (error) => {
+        // Aquí puedes manejar el error, por ejemplo, mostrando un mensaje al usuario
+        console.error('Error al cargar la imagen del perfil del paciente:', error);
+      },
+      complete: () => {
+        // Esto se ejecutará después de completar la suscripción, ya sea que haya sido exitosa o no
+        this.isLoading = false; // Termina la carga
+      }
+    });
   }
-    
+  
   
 
 
@@ -278,18 +286,27 @@ export class ExpedientePacienteComponent implements OnInit {
 
   saveData() {
     if (!this.PacienteFormulario.invalid) {
-      this.isLoading =true;
-      this.Service.postData('PostPaciente', this.PacienteFormulario.value).subscribe(
-        (result) => {
+      this.isLoading = true; // Inicia la carga
+      this.Service.postData('PostPaciente', this.PacienteFormulario.value).subscribe({
+        next: (result) => {
+          // Se llama si la operación es exitosa
           this.cargarFormulario(result);
           this.pacientedatos = result;          
           this.pacientedatos.nombre = result.nombre;
-          this.isLoading =false;
+        },
+        error: (error) => {
+          // Se llama en caso de error en la operación
+          console.error('Error al guardar los datos del paciente:', error);
+          // Aquí podrías manejar el error, por ejemplo, mostrando un mensaje al usuario
+        },
+        complete: () => {
+          // Esto se ejecutará después de completar la suscripción, exitosa o no
+          this.isLoading = false; // Termina la carga
         }
-      )
+      });
     }
-
   }
+
 
   obtenerDatosDesdeHijo() {
     // this.hijoComponent.datosDisponibles.subscribe(datos => {
@@ -338,7 +355,6 @@ export class ExpedientePacienteComponent implements OnInit {
     this.Service.getListParams('GetReceta', parametrourl).subscribe(
       (data: RecetaxPaciente[]) => {
         this.recetas = data;
-        this.isLoading =false;
       }
     );
   }
@@ -348,7 +364,6 @@ export class ExpedientePacienteComponent implements OnInit {
     this.Service.getListParams('GetNotas', parametrourl).subscribe(
       (data: nota[]) => {
         this.notas = data;
-        this.isLoading =false;
       }
     );
   }
@@ -421,7 +436,6 @@ export class ExpedientePacienteComponent implements OnInit {
         }));
       }
           )
-          this.isLoading =false;
   }
 
   uploadImagenPerfil():void {
@@ -440,7 +454,6 @@ export class ExpedientePacienteComponent implements OnInit {
         this.imagenperfil ={src:`data:image/jpeg;base64,${data.blobData}`,} ;
           
         });
-        this.isLoading =false;
     }
 
     animationCreated(animationItem: AnimationItem): void {

@@ -52,7 +52,8 @@ export class MenuComponent {
       [OpcionesSidebar.Home]: '/inicio',
       [OpcionesSidebar.Profile]: '/profile',
       [OpcionesSidebar.Tratamientos]: '/tratamientos',
-      [OpcionesSidebar.AgregarPaciente]: ''
+      [OpcionesSidebar.AgregarPaciente]:'/expediente_paciente',
+      [OpcionesSidebar.ConfigHistorias]:'/configuracion_historias'
     };
 
     return routesMap[option] || null;

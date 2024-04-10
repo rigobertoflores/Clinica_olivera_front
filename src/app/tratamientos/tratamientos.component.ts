@@ -1,4 +1,4 @@
-import { ApplicationConfig, Component } from '@angular/core';
+import { AfterViewInit, ApplicationConfig, Component, OnInit } from '@angular/core';
 import { MenuComponent } from '../components/menu/menu.component';
 import { SidebarComponent } from '../components/sidebar/sidebar.component';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
@@ -31,7 +31,8 @@ export const appConfig: ApplicationConfig = {
   templateUrl: './tratamientos.component.html',
   styleUrl: './tratamientos.component.css',
 })
-export class TratamientosComponent {
+
+export class TratamientosComponent implements OnInit, AfterViewInit {
   tratamientosForm: any;
   mostrarTratamientosForm: any;
   buscarTratamientosForm: any;
@@ -42,17 +43,20 @@ export class TratamientosComponent {
   options: AnimationOptions = {
     path: '/assets/Loading.json',
   };
-  isLoading = false;
-
+  Loading = true;
   constructor(private Service: Service) {}
+  
 
   ngOnInit(): void {
-    this.isLoading = true;
+    this.Loading=true;
     this.cargarFormulario();
     this.getTreatments();
     this.setupSearch(); 
     console.log(this.getTreatments());
-    this.isLoading = false;
+   
+  }
+  ngAfterViewInit(): void {
+  //  this.Loading=false;
   }
 
   cargarFormulario() {
@@ -81,7 +85,7 @@ export class TratamientosComponent {
   }
 
   addNew() {
-    this.isLoading = true;
+    this.Loading = true;
     const treatments: Tratamiento = {
       id: 0,
       nombre: this.tratamientosForm.get('name')?.value,
@@ -112,20 +116,23 @@ export class TratamientosComponent {
         this.getTreatments();
         console.log(result);
       });
-    }
-    this.isLoading = false;
+    }  
   }
 
   getTreatments() {
-    this.isLoading = true;
-      this.Service.GetTratamiento().subscribe((result: Tratamiento[]) => {
-        this.allTreatments = result.sort((a, b) =>
-          a.nombre.localeCompare(b.nombre)
-        );
+    this.Loading = true; // Iniciar carga
+    this.Service.GetTratamiento().subscribe({
+      next: (result: Tratamiento[]) => {
+        this.allTreatments = result.sort((a, b) => a.nombre.localeCompare(b.nombre));
         this.treatments = this.allTreatments;
-        console.log('Todos los tratamientos', result);
-      });
-      this.isLoading = false;      
+      },
+      error: (error) => {
+        // Manejar error aquí
+      },
+      complete: () => {
+        this.Loading = false; // Finalizar carga
+      }
+    });
   }
 
   viewDetails(tratamientoSelected: any) {
@@ -143,7 +150,7 @@ export class TratamientosComponent {
   }
 
   update() {
-    this.isLoading = true;
+    this.Loading = true;
     const treatmentsEdit: Tratamiento = {
       id: this.mostrarTratamientosForm.get('idV')?.value,
       nombre: this.mostrarTratamientosForm.get('nameV')?.value,
@@ -168,13 +175,14 @@ export class TratamientosComponent {
       error: (error) => {
         this.cleanFormmMostrarTratamientos();
         this.tratamientoSeleccionado = false;
+        this.Loading = false;
       },
           });
-          this.isLoading = false;
+          // this.Loading = false;
   }
 
   delete() {
-    this.isLoading = true;
+    this.Loading = true;
     const id = this.mostrarTratamientosForm.get('idV')?.value;
     Swal.fire({
       title: 'Seguro desea eliminar este tratamiento?',
@@ -193,8 +201,7 @@ export class TratamientosComponent {
             this.cleanFormmMostrarTratamientos();
             this.getTreatments();
             this.tratamientoSeleccionado = false;
-            this.isLoading = false;
-          },
+                      },
           error: (error) => {
             this.cleanFormmMostrarTratamientos();
             Swal.fire({

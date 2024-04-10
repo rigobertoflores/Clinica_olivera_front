@@ -3,4 +3,5 @@ export enum OpcionesSidebar {
     Profile = 'profile',
     Tratamientos = 'tratamientos',
     AgregarPaciente = 'expediente_paciente',  
+    ConfigHistorias = 'ConfigHistorias',  
   }
