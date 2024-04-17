@@ -251,6 +251,7 @@ export class TratamientosComponent implements OnInit, AfterViewInit {
       );
     }
   }
+  
   animationCreated(animationItem: AnimationItem): void {
     console.log(animationItem);
   }

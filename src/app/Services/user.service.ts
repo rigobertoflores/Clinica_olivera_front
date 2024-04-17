@@ -1,7 +1,7 @@
 
 import { Injectable } from '@angular/core';
 import { Auth, GoogleAuthProvider, authState, createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup, signOut, sendPasswordResetEmail, updatePassword  } from '@angular/fire/auth';
-import { from, Observable } from 'rxjs';
+import { catchError, from, map, Observable, tap, throwError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -63,19 +63,35 @@ isAuthenticated(): boolean {
     console.error('Error enviando el correo de recuperación', error);
   }
 }
-async changePassword(newPassword: string): Promise<void> {
+// async changePassword(newPassword: string): Promise<void> {
+//   const user = this.auth.currentUser;
+//   if (user) {
+//     try {
+//       await updatePassword(user, newPassword);
+//       console.log('Contraseña actualizada con éxito.');
+//     } catch (error) {
+//       console.error('Error al actualizar la contraseña', error);
+//       throw error;
+//     }
+//   } else {
+//     console.error('No hay usuario logueado para cambiar la contraseña');
+//     throw new Error('No user logged in');
+//   }
+// }
+
+changePassword(newPassword: string): Observable<void> {
   const user = this.auth.currentUser;
   if (user) {
-    try {
-      await updatePassword(user, newPassword);
-      console.log('Contraseña actualizada con éxito.');
-    } catch (error) {
-      console.error('Error al actualizar la contraseña', error);
-      throw error;
-    }
+    return from(updatePassword(user, newPassword)).pipe(
+      tap(() => console.log('Contraseña actualizada con éxito.')),
+      catchError((error) => {
+        console.error('Error al actualizar la contraseña', error);
+        return throwError(() => new Error(error)); // Re-throw the error as an observable
+      })
+    );
   } else {
     console.error('No hay usuario logueado para cambiar la contraseña');
-    throw new Error('No user logged in');
+    return throwError(() => new Error('No user logged in'));
   }
 }
 
@@ -95,6 +111,16 @@ async obtenerImagenPerfil() {
   }
 }
 
+
+isGoogleUser(): Observable<boolean> {
+  return authState(this.auth).pipe(
+    map(user => {
+      if (!user) return false; // No user logged in
+      const providerId = user.providerData[0]?.providerId; // Get provider ID
+      return providerId === 'google.com'; // Check if the provider is Google
+    })
+  );
+}
 }
 
 

@@ -19,15 +19,15 @@
     <div class="os-resize-observer-host observed">
       <div class="os-resize-observer" style="left: 0px; right: auto;"></div>
     </div>
-    <div class="os-size-auto-observer observed" style="height: calc(100% + 1px); float: left;">
+    <!-- <div class="os-size-auto-observer observed" style="height: calc(100% + 1px); float: left;">
       <div class="os-resize-observer"></div>
-    </div>
-    <div class="os-content-glue" style="margin: 0px -8px; width: 73px; height: 103px;"></div>
+    </div> -->
+    <!-- <div class="os-content-glue" style="margin: 0px -8px; width: 73px; height: 103px;"></div> -->
     <div class="os-padding">
       <div class="os-viewport os-viewport-native-scrollbars-invisible os-viewport-native-scrollbars-overlaid"
         style="overflow: scroll;">
         <div class="os-content" style="padding: 0px 8px; height: 100%; width: 100%;">
-          <div class="form-inline mt-2">
+          <!-- <div class="form-inline mt-2"> -->
             <!-- <div class="input-group" data-widget="sidebar-search">
               <input class="form-control form-control-sidebar" type="search" placeholder="Search" aria-label="Search">
               <div class="input-group-append">
@@ -51,7 +51,7 @@
                   <div class="search-path"></div>
                 </a></div>
             </div> -->
-          </div>
+          <!-- </div> -->
           <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar nav-child-indent flex-column" data-widget="treeview" role="menu">
               <li class="nav-item">
@@ -59,6 +59,14 @@
                   <i class="nav-icon fa fa-user"></i>
                   <p>
                     Mi perfil
+                  </p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a (click)="navigateTo(opcionesSB.Profile)" class="nav-link">
+                  <i class="nav-icon fa fa-user"></i>
+                  <p>
+                    Registrar usuario nuevo
                   </p>
                 </a>
               </li>
@@ -79,7 +87,7 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a (click)="navigateTo(opcionesSB.ConfigHistorias)" class="nav-link">
+                <a (click)="navigateTo(opcionesSB.ConfigHistorias)" class="nav-link d-flex align-items-center">
                   <i class="nav-icon  fa-solid fa-file-medical"></i>
                                     <p>
                     Configuración de Historias

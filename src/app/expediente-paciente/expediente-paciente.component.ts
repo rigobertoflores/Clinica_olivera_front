@@ -1,4 +1,4 @@
-import { ApplicationConfig, Component, OnInit, ViewChild } from '@angular/core';
+import { ApplicationConfig, ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { MenuComponent } from '../components/menu/menu.component';
 import { SidebarComponent } from '../components/sidebar/sidebar.component';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -21,6 +21,9 @@ import { FotoPaciente } from '../interface/FotoPaciente';
 import { AnimationItem } from 'lottie-web';
 import { LottieComponent, AnimationOptions } from 'ngx-lottie';
 import { provideLottieOptions } from 'ngx-lottie';
+import { LoadingComponent } from '../loading/loading.component';
+import { catchError, finalize, of } from 'rxjs';
+import Swal from 'sweetalert2';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -36,7 +39,7 @@ export const appConfig: ApplicationConfig = {
   standalone: true,
   templateUrl: './expediente-paciente.component.html',
   styleUrl: './expediente-paciente.component.css',
-  imports: [MenuComponent, SidebarComponent, ReactiveFormsModule, CommonModule, StandaloneGalleryComponent, TesteditorComponent, TesteditorHistoriaComponent,NotasComponent, LottieComponent]
+  imports: [MenuComponent, SidebarComponent, ReactiveFormsModule, CommonModule, StandaloneGalleryComponent, TesteditorComponent, TesteditorHistoriaComponent,NotasComponent, LoadingComponent]
 })
 export class ExpedientePacienteComponent implements OnInit {
  
@@ -60,14 +63,11 @@ export class ExpedientePacienteComponent implements OnInit {
   editreceta: number | null;
   selectedFile: any;
   notas: nota[];
-  options: AnimationOptions = {
-    path: '/assets/Loading.json',
-  };
+  showLoading: boolean = false;
 
-  isLoading = false;
+ 
 
-
-  constructor(private route: ActivatedRoute, private Service: Service, public dialog: MatDialog,private router: Router) {
+  constructor(private route: ActivatedRoute, private Service: Service, public dialog: MatDialog,private router: Router, private cd: ChangeDetectorRef) {
 
   }
 
@@ -147,7 +147,7 @@ export class ExpedientePacienteComponent implements OnInit {
 
 
   cargarContenidoPaciente(parametrourl: any) {
-    this.isLoading =true;
+    this.showLoading =true;
     this.Service.getUnicoParams('GetPacienteId', parametrourl).subscribe(
       (data: Paciente) => {
         this.cargarFormulario(data);
@@ -238,7 +238,7 @@ export class ExpedientePacienteComponent implements OnInit {
   }
 
   cargarImagenPaciente(parametrourl: any) {
-    this.isLoading =true;
+    this.showLoading =true;
     this.Service.getListParams('GetImagenesPaciente', parametrourl).subscribe(
       (data: ImagenPaciente[]) => {
         if(data!=null)
@@ -251,7 +251,7 @@ export class ExpedientePacienteComponent implements OnInit {
   }
 
   cargarImagenPerfilPaciente(parametrourl: any) {
-    this.isLoading = true; // Inicia la carga
+    this.showLoading = true; // Inicia la carga
     this.Service.getUnicoParams('GetFotoPaciente', parametrourl).subscribe({
       next: (data: FotoPaciente) => {
         // Comprueba si la data no es nula y actualiza la imagen de perfil
@@ -260,12 +260,13 @@ export class ExpedientePacienteComponent implements OnInit {
         }
       },
       error: (error) => {
+        this.showLoading = false; 
         // Aquí puedes manejar el error, por ejemplo, mostrando un mensaje al usuario
         console.error('Error al cargar la imagen del perfil del paciente:', error);
       },
       complete: () => {
         // Esto se ejecutará después de completar la suscripción, ya sea que haya sido exitosa o no
-        this.isLoading = false; // Termina la carga
+        this.showLoading = false; // Termina la carga
       }
     });
   }
@@ -286,7 +287,7 @@ export class ExpedientePacienteComponent implements OnInit {
 
   saveData() {
     if (!this.PacienteFormulario.invalid) {
-      this.isLoading = true; // Inicia la carga
+      this.showLoading = true; // Inicia la carga
       this.Service.postData('PostPaciente', this.PacienteFormulario.value).subscribe({
         next: (result) => {
           // Se llama si la operación es exitosa
@@ -297,11 +298,12 @@ export class ExpedientePacienteComponent implements OnInit {
         error: (error) => {
           // Se llama en caso de error en la operación
           console.error('Error al guardar los datos del paciente:', error);
+          this.showLoading = false; 
           // Aquí podrías manejar el error, por ejemplo, mostrando un mensaje al usuario
         },
         complete: () => {
           // Esto se ejecutará después de completar la suscripción, exitosa o no
-          this.isLoading = false; // Termina la carga
+          this.showLoading = false; // Termina la carga
         }
       });
     }
@@ -351,7 +353,7 @@ export class ExpedientePacienteComponent implements OnInit {
   }
 
   cargarRecetasPaciente(parametrourl: any) {
-    this.isLoading =true;
+    this.showLoading =true;
     this.Service.getListParams('GetReceta', parametrourl).subscribe(
       (data: RecetaxPaciente[]) => {
         this.recetas = data;
@@ -360,7 +362,7 @@ export class ExpedientePacienteComponent implements OnInit {
   }
 
   cargarNotasPaciente(parametrourl: any) {
-    this.isLoading =true;
+    this.showLoading =true;
     this.Service.getListParams('GetNotas', parametrourl).subscribe(
       (data: nota[]) => {
         this.notas = data;
@@ -418,45 +420,140 @@ export class ExpedientePacienteComponent implements OnInit {
     reader.readAsDataURL(file);
   }
 
+  // upload(): void {
+  //   this.showLoading =true;
+  //   if (!this.selectedFile) {
+  //     alert('Por favor, selecciona un archivo primero.');
+  //     return;
+  //   }
+
+  //   const formData = new FormData();
+  //   formData.append('image', this.selectedFile, this.selectedFile.name);
+  //   formData.append('id', this.parametro || '');
+  //   this.Service.postData('PostImagen', formData).subscribe(
+  //     (data: ImagenPaciente[]) => {
+  //       this.images = data.map((img) => ({
+  //         src: `data:image/jpeg;base64,${img.blobData}`,
+  //         alt: img.letra
+  //       }));
+  //     }
+  //         )
+  // }
+
+ 
+
   upload(): void {
-    this.isLoading =true;
+    this.showLoading = true;
+    this.cd.detectChanges();  // Forzar la detección de cambios aquí
+
     if (!this.selectedFile) {
-      alert('Por favor, selecciona un archivo primero.');
+      // Use SweetAlert2 to display the alert
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Por favor, selecciona un archivo primero.'
+      }).then(() => {
+        this.showLoading = false;
+        this.cd.detectChanges();  // Forzar la detección de cambios después de actualizar showLoading
+      });
       return;
     }
 
     const formData = new FormData();
     formData.append('image', this.selectedFile, this.selectedFile.name);
     formData.append('id', this.parametro || '');
-    this.Service.postData('PostImagen', formData).subscribe(
-      (data: ImagenPaciente[]) => {
-        this.images = data.map((img) => ({
-          src: `data:image/jpeg;base64,${img.blobData}`,
-          alt: img.letra
-        }));
-      }
-          )
+
+    this.Service.postData('PostImagen', formData)
+      .pipe(
+        finalize(() => {
+          this.showLoading = false;
+          this.cd.detectChanges();  // Forzar la detección de cambios en finalize
+        }),
+        catchError((error) => {
+          console.error('Error uploading image:', error);
+          return of([]);  // Maneja el error y continúa el flujo
+        })
+      )
+      .subscribe(
+        (data: ImagenPaciente[]) => {
+          this.images = data.map((img) => ({
+            src: `data:image/jpeg;base64,${img.blobData}`,
+            alt: img.letra
+          }));
+          this.cd.detectChanges();  // Opcional, si es necesario después de cambiar 'images'
+        }
+      );
   }
 
-  uploadImagenPerfil():void {
-    this.isLoading =true;
+
+
+
+  // uploadImagenPerfil():void {
+  //   this.showLoading =true;
+  //   if (!this.selectedFile) {
+  //     alert('Por favor, selecciona un archivo primero.');
+  //     return;
+  //   }
+
+  //   const formData = new FormData();
+  //   formData.append('image', this.selectedFile, this.selectedFile.name);
+  //   formData.append('id', this.parametro || '');
+  //   this.Service.postData('PostImagenPerfil', formData).subscribe(
+  //     (data: FotoPaciente) => {
+  //       if(data!=null)
+  //       this.imagenperfil ={src:`data:image/jpeg;base64,${data.blobData}`,} ;
+          
+  //       });
+  //   }
+
+  
+  uploadImagenPerfil(): void {
+    this.showLoading = true;
+    this.cd.detectChanges();  // Forzar detección de cambios aquí para mostrar el loading
+
     if (!this.selectedFile) {
-      alert('Por favor, selecciona un archivo primero.');
+      // Uso de SweetAlert2 para mostrar alerta
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Por favor, selecciona un archivo primero.'
+      }).then(() => {
+        this.showLoading = false;
+        this.cd.detectChanges();  // Forzar detección de cambios después de actualizar showLoading
+      });
       return;
     }
 
     const formData = new FormData();
     formData.append('image', this.selectedFile, this.selectedFile.name);
     formData.append('id', this.parametro || '');
-    this.Service.postData('PostImagenPerfil', formData).subscribe(
-      (data: FotoPaciente) => {
-        if(data!=null)
-        this.imagenperfil ={src:`data:image/jpeg;base64,${data.blobData}`,} ;
-          
-        });
-    }
 
-    animationCreated(animationItem: AnimationItem): void {
-      console.log(animationItem);
-    }
+    this.Service.postData('PostImagenPerfil', formData)
+      .pipe(
+        catchError((error) => {
+          console.error('Error uploading profile image:', error);
+          return of(null);  // Continúa el flujo incluso con error
+        }),
+        finalize(() => {
+          this.showLoading = false;
+          this.cd.detectChanges();  // Forzar detección de cambios en finalize
+        })
+      )
+      .subscribe(
+        (data: FotoPaciente) => {
+          if (data != null) {
+            this.imagenperfil = {src: `data:image/jpeg;base64,${data.blobData}`};
+          } else {
+            // Opcional: manejo de caso cuando no hay datos
+            Swal.fire({
+              icon: 'warning',
+              title: 'Advertencia',
+              text: 'No se recibió ninguna imagen.'
+            });
+          }
+          this.cd.detectChanges();  // Forzar detección de cambios si es necesario
+        }
+      );
+  }
+   
 }

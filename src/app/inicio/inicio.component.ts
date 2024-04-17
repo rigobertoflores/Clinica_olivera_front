@@ -21,6 +21,7 @@ import { Router } from '@angular/router';
 import { FotoPaciente } from '../interface/FotoPaciente';
 import { ImagenPaciente } from '../interface/ImagenPaciente';
 import { UserService } from '../Services/user.service';
+import { LoadingComponent } from '../loading/loading.component';  
 
 @Component({
   selector: 'app-inicio',
@@ -36,6 +37,7 @@ import { UserService } from '../Services/user.service';
     MatFormFieldModule,
     MatInputModule,
     MatIconModule,
+    LoadingComponent
   ],
   templateUrl: './inicio.component.html',
   styleUrl: './inicio.component.css',
@@ -62,6 +64,7 @@ export class InicioComponent implements OnInit, AfterViewInit {
   @ViewChild(MatSort) sort: MatSort;
   images: { src: string; alt: string; }={src:"",alt:"no hay imagen"};
   clave: number;
+  showLoading: boolean = false;
 
   constructor(
     private Service: Service,
@@ -75,13 +78,16 @@ export class InicioComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
+    this.showLoading = true;
     this.formatearfecha();
     this.cargarContenidoPacientePrincipal();
     
   }
 
   ngAfterViewInit() {
-    this.cargarListadodePacientes();
+   
+    this.cargarListadodePacientes(); 
+   
   }
 
   formatearfecha() {
@@ -99,8 +105,7 @@ export class InicioComponent implements OnInit, AfterViewInit {
       this.telefono = data.telefono;
       this.email = data.email;
       this.clave=data.clave;
-      this.cargarFotoPaciente(data.clave);
-    
+      this.cargarFotoPaciente(data.clave);      
     });
   }
 
@@ -109,6 +114,7 @@ export class InicioComponent implements OnInit, AfterViewInit {
       this.dataSource = new MatTableDataSource<Paciente>(data);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
+      this.showLoading = false;
     });
   }
 
@@ -139,7 +145,7 @@ export class InicioComponent implements OnInit, AfterViewInit {
   }
 
   cargarFotoPaciente(id:number) {
-    this.Service.getUnicoParams('GetFotoPaciente', id).subscribe(
+       this.Service.getUnicoParams('GetFotoPaciente', id).subscribe(
       (data: FotoPaciente) => {
         if(data!=null)
         this.images ={src:`data:image/jpeg;base64,${data.blobData}`,alt:"no hay imagen"} ;

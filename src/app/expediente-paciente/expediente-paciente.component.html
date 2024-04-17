@@ -918,8 +918,8 @@
 
 
 </div>
-<div class="lottie-container" *ngIf="isLoading">
+<div class="lottie-container" *ngIf="showLoading">
     <ng-container>
-        <ng-lottie [options]="options" (animationCreated)="animationCreated($event)"></ng-lottie>
+      <app-loading></app-loading>
     </ng-container>
-</div>
+  </div>

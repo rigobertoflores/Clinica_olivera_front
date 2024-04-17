@@ -126,4 +126,6 @@ export class TesteditorHistoriaComponent implements OnInit,AfterViewInit {
       
    
     }
+
+    
 }
