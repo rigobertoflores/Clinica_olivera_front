@@ -1,4 +1,4 @@
-import { ApplicationConfig, Component, OnInit, ViewChild } from '@angular/core';
+import { ApplicationConfig, Component, ElementRef, HostListener, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { MenuComponent } from '../components/menu/menu.component';
 import { SidebarComponent } from '../components/sidebar/sidebar.component';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -21,6 +21,7 @@ import { FotoPaciente } from '../interface/FotoPaciente';
 import { AnimationItem } from 'lottie-web';
 import { LottieComponent, AnimationOptions } from 'ngx-lottie';
 import { provideLottieOptions } from 'ngx-lottie';
+import { TesteditorinformesoComponent } from '../testeditorinformeso/testeditorinformeso.component';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -36,7 +37,7 @@ export const appConfig: ApplicationConfig = {
   standalone: true,
   templateUrl: './expediente-paciente.component.html',
   styleUrl: './expediente-paciente.component.css',
-  imports: [MenuComponent, SidebarComponent, ReactiveFormsModule, CommonModule, StandaloneGalleryComponent, TesteditorComponent, TesteditorHistoriaComponent,NotasComponent, LottieComponent]
+  imports: [MenuComponent, SidebarComponent, ReactiveFormsModule, CommonModule, StandaloneGalleryComponent, TesteditorComponent, TesteditorHistoriaComponent,NotasComponent, LottieComponent,TesteditorinformesoComponent]
 })
 export class ExpedientePacienteComponent implements OnInit {
  
@@ -65,6 +66,7 @@ export class ExpedientePacienteComponent implements OnInit {
   };
 
   isLoading = false;
+  @ViewChildren('input') inputs!: QueryList<ElementRef>; // Asume que todos los campos de entrada tienen la referencia #input
 
 
   constructor(private route: ActivatedRoute, private Service: Service, public dialog: MatDialog,private router: Router) {
@@ -459,4 +461,37 @@ export class ExpedientePacienteComponent implements OnInit {
     animationCreated(animationItem: AnimationItem): void {
       console.log(animationItem);
     }
+
+    @HostListener('window:keydown', ['$event'])
+    handleKeyboardEvent(event: KeyboardEvent) {
+      const key = event.key;
+      if (['ArrowRight', 'ArrowLeft', 'ArrowUp', 'ArrowDown'].includes(key)) {
+        event.preventDefault(); // Previene el desplazamiento de la página
+        this.navigateFields(key);
+      }
+    }
+    
+    navigateFields(key: string) {
+      const currentElement = document.activeElement;
+      const inputs = this.inputs.toArray();
+      const currentIndex = inputs.findIndex(input => input.nativeElement === currentElement);
+      if (currentIndex === -1) return; // Si no encuentra el índice, sale
+    
+      let targetIndex = currentIndex; // Inicializa con el índice actual
+      switch(key) {
+        case 'ArrowRight':
+        case 'ArrowDown': // Trata las flechas derecha y abajo de la misma manera
+          targetIndex = currentIndex < inputs.length - 1 ? currentIndex + 1 : currentIndex;
+          break;
+        case 'ArrowLeft':
+        case 'ArrowUp': // Trata las flechas izquierda y arriba de la misma manera
+          targetIndex = currentIndex > 0 ? currentIndex - 1 : currentIndex;
+          break;
+      }
+      
+      inputs[targetIndex].nativeElement.focus();
+    }
+    
+  
 }
+
