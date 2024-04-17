@@ -1,5 +1,4 @@
-import { ApplicationConfig, Component, ElementRef, HostListener, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
-import { ApplicationConfig, ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
+import { ApplicationConfig, Component, ElementRef, HostListener, OnInit, QueryList, ViewChild, ViewChildren,ChangeDetectorRef } from '@angular/core';
 import { MenuComponent } from '../components/menu/menu.component';
 import { SidebarComponent } from '../components/sidebar/sidebar.component';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -44,6 +43,7 @@ export const appConfig: ApplicationConfig = {
   imports: [MenuComponent, SidebarComponent, ReactiveFormsModule, CommonModule, StandaloneGalleryComponent, TesteditorComponent, TesteditorHistoriaComponent,NotasComponent,LoadingComponent, LottieComponent,TesteditorinformesoComponent]
 
 })
+
 export class ExpedientePacienteComponent implements OnInit {
  
   parametro: string | null = null;
@@ -576,35 +576,10 @@ export class ExpedientePacienteComponent implements OnInit {
     }
     
   
+
+  
+    
+  
 }
-
-
-    this.Service.postData('PostImagenPerfil', formData)
-      .pipe(
-        catchError((error) => {
-          console.error('Error uploading profile image:', error);
-          return of(null);  // Continúa el flujo incluso con error
-        }),
-        finalize(() => {
-          this.showLoading = false;
-          this.cd.detectChanges();  // Forzar detección de cambios en finalize
-        })
-      )
-      .subscribe(
-        (data: FotoPaciente) => {
-          if (data != null) {
-            this.imagenperfil = {src: `data:image/jpeg;base64,${data.blobData}`};
-          } else {
-            // Opcional: manejo de caso cuando no hay datos
-            Swal.fire({
-              icon: 'warning',
-              title: 'Advertencia',
-              text: 'No se recibió ninguna imagen.'
-            });
-          }
-          this.cd.detectChanges();  // Forzar detección de cambios si es necesario
-        }
-      );
-  }
    
-}
+
