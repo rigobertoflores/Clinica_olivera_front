@@ -1,3 +1,4 @@
+import { ApplicationConfig, Component, ElementRef, HostListener, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { ApplicationConfig, ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { MenuComponent } from '../components/menu/menu.component';
 import { SidebarComponent } from '../components/sidebar/sidebar.component';
@@ -21,6 +22,7 @@ import { FotoPaciente } from '../interface/FotoPaciente';
 import { AnimationItem } from 'lottie-web';
 import { LottieComponent, AnimationOptions } from 'ngx-lottie';
 import { provideLottieOptions } from 'ngx-lottie';
+import { TesteditorinformesoComponent } from '../testeditorinformeso/testeditorinformeso.component';
 import { LoadingComponent } from '../loading/loading.component';
 import { catchError, finalize, of } from 'rxjs';
 import Swal from 'sweetalert2';
@@ -39,7 +41,8 @@ export const appConfig: ApplicationConfig = {
   standalone: true,
   templateUrl: './expediente-paciente.component.html',
   styleUrl: './expediente-paciente.component.css',
-  imports: [MenuComponent, SidebarComponent, ReactiveFormsModule, CommonModule, StandaloneGalleryComponent, TesteditorComponent, TesteditorHistoriaComponent,NotasComponent, LoadingComponent]
+  imports: [MenuComponent, SidebarComponent, ReactiveFormsModule, CommonModule, StandaloneGalleryComponent, TesteditorComponent, TesteditorHistoriaComponent,NotasComponent,LoadingComponent, LottieComponent,TesteditorinformesoComponent]
+
 })
 export class ExpedientePacienteComponent implements OnInit {
  
@@ -64,6 +67,9 @@ export class ExpedientePacienteComponent implements OnInit {
   selectedFile: any;
   notas: nota[];
   showLoading: boolean = false;
+
+  isLoading = false;
+  @ViewChildren('input') inputs!: QueryList<ElementRef>; // Asume que todos los campos de entrada tienen la referencia #input
 
  
 
@@ -527,6 +533,51 @@ export class ExpedientePacienteComponent implements OnInit {
     const formData = new FormData();
     formData.append('image', this.selectedFile, this.selectedFile.name);
     formData.append('id', this.parametro || '');
+    this.Service.postData('PostImagenPerfil', formData).subscribe(
+      (data: FotoPaciente) => {
+        if(data!=null)
+        this.imagenperfil ={src:`data:image/jpeg;base64,${data.blobData}`,} ;
+          
+        });
+    }
+
+    animationCreated(animationItem: AnimationItem): void {
+      console.log(animationItem);
+    }
+
+    @HostListener('window:keydown', ['$event'])
+    handleKeyboardEvent(event: KeyboardEvent) {
+      const key = event.key;
+      if (['ArrowRight', 'ArrowLeft', 'ArrowUp', 'ArrowDown'].includes(key)) {
+        event.preventDefault(); // Previene el desplazamiento de la página
+        this.navigateFields(key);
+      }
+    }
+    
+    navigateFields(key: string) {
+      const currentElement = document.activeElement;
+      const inputs = this.inputs.toArray();
+      const currentIndex = inputs.findIndex(input => input.nativeElement === currentElement);
+      if (currentIndex === -1) return; // Si no encuentra el índice, sale
+    
+      let targetIndex = currentIndex; // Inicializa con el índice actual
+      switch(key) {
+        case 'ArrowRight':
+        case 'ArrowDown': // Trata las flechas derecha y abajo de la misma manera
+          targetIndex = currentIndex < inputs.length - 1 ? currentIndex + 1 : currentIndex;
+          break;
+        case 'ArrowLeft':
+        case 'ArrowUp': // Trata las flechas izquierda y arriba de la misma manera
+          targetIndex = currentIndex > 0 ? currentIndex - 1 : currentIndex;
+          break;
+      }
+      
+      inputs[targetIndex].nativeElement.focus();
+    }
+    
+  
+}
+
 
     this.Service.postData('PostImagenPerfil', formData)
       .pipe(
