@@ -1,6 +1,7 @@
 
 import { Injectable } from '@angular/core';
 import { Auth, GoogleAuthProvider, authState, createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup, signOut, sendPasswordResetEmail, updatePassword  } from '@angular/fire/auth';
+import { error } from 'jquery';
 import { catchError, from, map, Observable, tap, throwError } from 'rxjs';
 
 @Injectable({
@@ -13,10 +14,24 @@ export class UserService {
     this.user$ = authState(this.auth);
   }
 
-  register(email :string , password : string){
-    return createUserWithEmailAndPassword(this.auth, email,password);
-   }
+  // register(email :string , password : string){
+  //   return createUserWithEmailAndPassword(this.auth, email,password);
+  //  }
 
+  register(email: string, password: string) {
+    return from(createUserWithEmailAndPassword(this.auth,email, password))
+      .pipe(
+        catchError(error => throwError(() => new Error(this.handleError(error))))
+      );
+  }
+
+  private handleError(error: any): string {
+    if (error.code === 'auth/email-already-in-use') {
+      return 'Este correo electrónico ya está registrado. Por favor, intenta iniciar sesión.';
+    } else {
+      return 'Ha ocurrido un error al registrarte. Por favor, intenta de nuevo más tarde.';
+    }
+  }
 
    async login(email: string, password: string): Promise<boolean> {
     try {

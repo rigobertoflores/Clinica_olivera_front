@@ -24,3 +24,12 @@ color: white !important;
     background-size: cover;
   }
 
+   
+  .fijar {
+        height: 100vh !important;  
+    position: fixed !important;
+    }
+  
+ 
+  
+
