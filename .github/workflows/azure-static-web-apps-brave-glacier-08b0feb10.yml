@@ -15,28 +15,19 @@ jobs:
     runs-on: ubuntu-latest
     name: Build and Deploy Job
     steps:
-       
       - uses: actions/checkout@v3
-        with:
-          submodules: true
-          lfs: false
-          
-      - name: Cache node modules
-        uses: actions/cache@v3
-        with:
-         path: ~/.npm
-         key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-         restore-keys: |
-           ${{ runner.os }}-node-
-           
-      - name: Use Node.js
+      
+      - name: Setup Node.js environment
         uses: actions/setup-node@v3
         with:
-         node-version: '18.13'
-         cache: 'npm'
+          node-version: '18.13' # Especifica aquí la versión de Node.js requerida por tu proyecto
       
-      - name: Install Angular CLI
-        run: npm install -g @angular/cli@17.1.2 
+      - name: Install npm dependencies
+        run: npm install
+
+      - name: Build the Angular project
+        run: npm run build # Asegúrate de que este comando corresponda al script de construcción definido en tu package.json
+        
         
       - name: Build And Deploy
         id: builddeploy
