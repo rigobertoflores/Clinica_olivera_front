@@ -19,7 +19,9 @@ export class LoginComponent implements OnInit {
   
   
 
-  constructor(private authService: UserService,private router: Router) {}
+  constructor(private authService: UserService,private router: Router) {
+    console.log('LoginComponent instantiated');
+  }
  
   ngOnInit(): void {
          this.cargarFormulario();  
