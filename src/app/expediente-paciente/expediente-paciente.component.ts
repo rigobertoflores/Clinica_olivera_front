@@ -1,4 +1,4 @@
-import { ApplicationConfig, ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
+import { ApplicationConfig, Component, ElementRef, HostListener, OnInit, QueryList, ViewChild, ViewChildren,ChangeDetectorRef } from '@angular/core';
 import { MenuComponent } from '../components/menu/menu.component';
 import { SidebarComponent } from '../components/sidebar/sidebar.component';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -21,6 +21,7 @@ import { FotoPaciente } from '../interface/FotoPaciente';
 import { AnimationItem } from 'lottie-web';
 import { LottieComponent, AnimationOptions } from 'ngx-lottie';
 import { provideLottieOptions } from 'ngx-lottie';
+import { TesteditorinformesoComponent } from '../testeditorinformeso/testeditorinformeso.component';
 import { LoadingComponent } from '../loading/loading.component';
 import { catchError, finalize, of } from 'rxjs';
 import Swal from 'sweetalert2';
@@ -39,8 +40,10 @@ export const appConfig: ApplicationConfig = {
   standalone: true,
   templateUrl: './expediente-paciente.component.html',
   styleUrl: './expediente-paciente.component.css',
-  imports: [MenuComponent, SidebarComponent, ReactiveFormsModule, CommonModule, StandaloneGalleryComponent, TesteditorComponent, TesteditorHistoriaComponent,NotasComponent, LoadingComponent]
+  imports: [MenuComponent, SidebarComponent, ReactiveFormsModule, CommonModule, StandaloneGalleryComponent, TesteditorComponent, TesteditorHistoriaComponent,NotasComponent,LoadingComponent, LottieComponent,TesteditorinformesoComponent]
+
 })
+
 export class ExpedientePacienteComponent implements OnInit {
  
   parametro: string | null = null;
@@ -64,6 +67,9 @@ export class ExpedientePacienteComponent implements OnInit {
   selectedFile: any;
   notas: nota[];
   showLoading: boolean = false;
+
+  isLoading = false;
+  @ViewChildren('input') inputs!: QueryList<ElementRef>; // Asume que todos los campos de entrada tienen la referencia #input
 
  
 
@@ -487,73 +493,92 @@ export class ExpedientePacienteComponent implements OnInit {
 
 
 
-
-  // uploadImagenPerfil():void {
-  //   this.showLoading =true;
-  //   if (!this.selectedFile) {
-  //     alert('Por favor, selecciona un archivo primero.');
-  //     return;
-  //   }
-
-  //   const formData = new FormData();
-  //   formData.append('image', this.selectedFile, this.selectedFile.name);
-  //   formData.append('id', this.parametro || '');
-  //   this.Service.postData('PostImagenPerfil', formData).subscribe(
-  //     (data: FotoPaciente) => {
-  //       if(data!=null)
-  //       this.imagenperfil ={src:`data:image/jpeg;base64,${data.blobData}`,} ;
-          
-  //       });
-  //   }
-
-  
-  uploadImagenPerfil(): void {
-    this.showLoading = true;
-    this.cd.detectChanges();  // Forzar detección de cambios aquí para mostrar el loading
-
-    if (!this.selectedFile) {
-      // Uso de SweetAlert2 para mostrar alerta
-      Swal.fire({
-        icon: 'error',
-        title: 'Oops...',
-        text: 'Por favor, selecciona un archivo primero.'
-      }).then(() => {
-        this.showLoading = false;
-        this.cd.detectChanges();  // Forzar detección de cambios después de actualizar showLoading
-      });
-      return;
+    animationCreated(animationItem: AnimationItem): void {
+      console.log(animationItem);
     }
 
-    const formData = new FormData();
-    formData.append('image', this.selectedFile, this.selectedFile.name);
-    formData.append('id', this.parametro || '');
-
-    this.Service.postData('PostImagenPerfil', formData)
-      .pipe(
-        catchError((error) => {
-          console.error('Error uploading profile image:', error);
-          return of(null);  // Continúa el flujo incluso con error
-        }),
-        finalize(() => {
+    @HostListener('window:keydown', ['$event'])
+    handleKeyboardEvent(event: KeyboardEvent) {
+      const key = event.key;
+      if (['ArrowRight', 'ArrowLeft', 'ArrowUp', 'ArrowDown'].includes(key)) {
+        event.preventDefault(); // Previene el desplazamiento de la página
+        this.navigateFields(key);
+      }
+    }
+    
+    navigateFields(key: string) {
+      const currentElement = document.activeElement;
+      const inputs = this.inputs.toArray();
+      const currentIndex = inputs.findIndex(input => input.nativeElement === currentElement);
+      if (currentIndex === -1) return; // Si no encuentra el índice, sale
+    
+      let targetIndex = currentIndex; // Inicializa con el índice actual
+      switch(key) {
+        case 'ArrowRight':
+        case 'ArrowDown': // Trata las flechas derecha y abajo de la misma manera
+          targetIndex = currentIndex < inputs.length - 1 ? currentIndex + 1 : currentIndex;
+          break;
+        case 'ArrowLeft':
+        case 'ArrowUp': // Trata las flechas izquierda y arriba de la misma manera
+          targetIndex = currentIndex > 0 ? currentIndex - 1 : currentIndex;
+          break;
+      }
+      
+      inputs[targetIndex].nativeElement.focus();
+    }
+    
+    uploadImagenPerfil(): void {
+      this.showLoading = true;
+      this.cd.detectChanges();  // Forzar detección de cambios aquí para mostrar el loading
+  
+      if (!this.selectedFile) {
+        // Uso de SweetAlert2 para mostrar alerta
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Por favor, selecciona un archivo primero.'
+        }).then(() => {
           this.showLoading = false;
-          this.cd.detectChanges();  // Forzar detección de cambios en finalize
-        })
-      )
-      .subscribe(
-        (data: FotoPaciente) => {
-          if (data != null) {
-            this.imagenperfil = {src: `data:image/jpeg;base64,${data.blobData}`};
-          } else {
-            // Opcional: manejo de caso cuando no hay datos
-            Swal.fire({
-              icon: 'warning',
-              title: 'Advertencia',
-              text: 'No se recibió ninguna imagen.'
-            });
+          this.cd.detectChanges();  // Forzar detección de cambios después de actualizar showLoading
+        });
+        return;
+      }
+  
+      const formData = new FormData();
+      formData.append('image', this.selectedFile, this.selectedFile.name);
+      formData.append('id', this.parametro || '');
+  
+      this.Service.postData('PostImagenPerfil', formData)
+        .pipe(
+          catchError((error) => {
+            console.error('Error uploading profile image:', error);
+            return of(null);  // Continúa el flujo incluso con error
+          }),
+          finalize(() => {
+            this.showLoading = false;
+            this.cd.detectChanges();  // Forzar detección de cambios en finalize
+          })
+        )
+        .subscribe(
+          (data: FotoPaciente) => {
+            if (data != null) {
+              this.imagenperfil = {src: `data:image/jpeg;base64,${data.blobData}`};
+            } else {
+              // Opcional: manejo de caso cuando no hay datos
+              Swal.fire({
+                icon: 'warning',
+                title: 'Advertencia',
+                text: 'No se recibió ninguna imagen.'
+              });
+            }
+            this.cd.detectChanges();  // Forzar detección de cambios si es necesario
           }
-          this.cd.detectChanges();  // Forzar detección de cambios si es necesario
-        }
-      );
-  }
-   
+        );
+    }
+
+  
+    
+  
 }
+   
+
