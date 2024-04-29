@@ -1,0 +1,19 @@
+{
+    "navigationFallback": {
+      "rewrite": "/index.html",
+      "exclude": ["/images/*.{png,jpg,gif}", "/css/*"]
+    },
+    "globalHeaders": {
+        "content-security-policy": "default-src 'self'; font-src 'self' https://fonts.gstatic.com;"
+      },
+    "mimeTypes": {
+      ".json": "application/json",
+      ".webmanifest": "application/manifest+json"
+    },
+    "responseOverrides": {
+      "404": {
+        "rewrite": "/404.html"
+      }
+    }    
+  }
+  
