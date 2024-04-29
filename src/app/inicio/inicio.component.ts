@@ -21,6 +21,7 @@ import { Router } from '@angular/router';
 import { FotoPaciente } from '../interface/FotoPaciente';
 import { ImagenPaciente } from '../interface/ImagenPaciente';
 import { UserService } from '../Services/user.service';
+import { LoadingComponent } from '../loading/loading.component';  
 
 @Component({
   selector: 'app-inicio',
@@ -36,11 +37,13 @@ import { UserService } from '../Services/user.service';
     MatFormFieldModule,
     MatInputModule,
     MatIconModule,
+    LoadingComponent
   ],
   templateUrl: './inicio.component.html',
   styleUrl: './inicio.component.css',
 })
 export class InicioComponent implements OnInit, AfterViewInit {
+
   fechaActual: Date = new Date();
   dia: any = this.fechaActual.getDate();
   mes: any = this.fechaActual.getMonth() + 1; // Los meses empiezan en 0
@@ -59,7 +62,9 @@ export class InicioComponent implements OnInit, AfterViewInit {
   displayedColumns: string[] = ['fecha_proximaconsulta', 'nombre', 'sexo','editar'];
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
-  images: { src: string; alt: string; }[]=[{src:"",alt:"no hay imagen"}];
+  images: { src: string; alt: string; }={src:"",alt:"no hay imagen"};
+  clave: number;
+  showLoading: boolean = false;
 
   constructor(
     private Service: Service,
@@ -73,13 +78,16 @@ export class InicioComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
+    this.showLoading = true;
     this.formatearfecha();
     this.cargarContenidoPacientePrincipal();
     
   }
 
   ngAfterViewInit() {
-    this.cargarListadodePacientes();
+   
+    this.cargarListadodePacientes(); 
+   
   }
 
   formatearfecha() {
@@ -96,8 +104,8 @@ export class InicioComponent implements OnInit, AfterViewInit {
       this.fecha_ultimaconsulta = data.fechaUltimaConsulta;
       this.telefono = data.telefono;
       this.email = data.email;
-      this.cargarFotoPaciente(data.clave);
-    
+      this.clave=data.clave;
+      this.cargarFotoPaciente(data.clave);      
     });
   }
 
@@ -106,6 +114,7 @@ export class InicioComponent implements OnInit, AfterViewInit {
       this.dataSource = new MatTableDataSource<Paciente>(data);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
+      this.showLoading = false;
     });
   }
 
@@ -136,14 +145,16 @@ export class InicioComponent implements OnInit, AfterViewInit {
   }
 
   cargarFotoPaciente(id:number) {
-    this.Service.getListFotoPacienteParams('GetFotoPaciente', id).subscribe(
-      (data: FotoPaciente[]) => {
-        this.images = data.map((img) => ({
-          src: `data:image/jpeg;base64,${img.blobData}`,
-          alt: img.id
-        }));
-      }
-    );
+       this.Service.getUnicoParams('GetFotoPaciente', id).subscribe(
+      (data: FotoPaciente) => {
+        if(data!=null)
+        this.images ={src:`data:image/jpeg;base64,${data.blobData}`,alt:"no hay imagen"} ;
+          
+        });
   } 
+
+  agregarPaciente() {
+    this.router.navigate(['/expediente_paciente', 0]);
+    }
   
 }

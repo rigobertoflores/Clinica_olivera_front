@@ -7,9 +7,12 @@ import { RegisterComponent } from './register/register.component';
 import { CanActivate } from '@angular/router';
 import { AuthGuard } from './Services/AuthGuard';
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
+import { HistoriaConfiguracionComponent } from './historia-configuracion/historia-configuracion.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { ChangePassComponent } from './components/change-pass/change-pass.component';
 import { TratamientosComponent } from './tratamientos/tratamientos.component';
+import { InformesoConfiguracionComponent } from './informeso-configuracion/informeso-configuracion.component';
+import { CalculadoraIMCComponent } from './calculadora-imc/calculadora-imc.component';
 
 export const routes: Routes = [
     { 'path': 'login', component: LoginComponent },
@@ -19,8 +22,10 @@ export const routes: Routes = [
     { 'path': 'menu', component: MenuComponent },
     { 'path': 'inicio', component: InicioComponent, canActivate: [AuthGuard] },
     { 'path': 'expediente_paciente/:id', component: ExpedientePacienteComponent,canActivate: [AuthGuard] },
+    { 'path': 'configuracion_historias', component: HistoriaConfiguracionComponent, canActivate: [AuthGuard] },
     { 'path': 'profile', component: ProfileComponent, canActivate: [AuthGuard] },
     { 'path': 'changePass', component: ChangePassComponent, canActivate: [AuthGuard] },
     { 'path': 'tratamientos', component: TratamientosComponent, canActivate: [AuthGuard] },
-    
+    { 'path': 'configuracion_informesoperatorios', component: InformesoConfiguracionComponent, canActivate: [AuthGuard] },
+    { 'path': 'imc', component: CalculadoraIMCComponent, canActivate: [AuthGuard] },
 ];

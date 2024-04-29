@@ -9,8 +9,7 @@
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="#">fechade actual</a></li>
-                        <li class="breadcrumb-item active">ex</li>
+                        <li class="breadcrumb-item">fechade actual: {{fechaFormateada}}</li>                       
                     </ol>
                 </div>
             </div>
@@ -25,17 +24,28 @@
                         <div class="card-header p-2">
                             <ul class="nav nav-pills">
                                 <li class="nav-item">
-                                    <a class="nav-link active" href="#informacionp" data-toggle="tab">Información General</a>
+                                    <a class="nav-link active" href="#informacionp" data-toggle="tab">Información
+                                        General</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="#imagenes" data-toggle="tab">Imagenes</a>
+                                    <a class="nav-link" href="#historia" data-toggle="tab">Historia</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#imagenes" data-toggle="tab">Imágenes</a>
+                                </li>                             
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#notas" data-toggle="tab">Notas</a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" href="#recetas" data-toggle="tab">Recetas</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="#historia" data-toggle="tab">Historia</a>
+                                    <a class="nav-link" href="#informe" data-toggle="tab">Justificaciones e Informes</a>
                                 </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#imagendeperfil" data-toggle="tab">Imagen de Perfil</a>
+                                </li>
+                                
                             </ul>
                         </div>
                         <div class="card-body">
@@ -62,7 +72,7 @@
                                                                 <div class="form-group">
                                                                     <label for="inputFechaConsulta">Fecha de
                                                                         Consulta</label>
-                                                                    <input type="date" id="inputFechaConsulta"
+                                                                   <input #input type="date" id="inputFechaConsulta"
                                                                         formControlName="fechaConsulta"
                                                                         class="form-control" />
                                                                 </div>
@@ -71,7 +81,7 @@
                                                                 <div class="form-group">
                                                                     <label for="inputFechaUltimaConsulta">Fecha de
                                                                         Última Consulta</label>
-                                                                    <input type="date" id="inputFechaUltimaConsulta"
+                                                                   <input #input type="date" id="inputFechaUltimaConsulta"
                                                                         formControlName="fechaUltimaConsulta"
                                                                         class="form-control" />
                                                                 </div>
@@ -98,7 +108,7 @@
                                                                                 <div class="form-group">
                                                                                     <label for="inputName">Nombre del
                                                                                         paciente</label>
-                                                                                    <input type="text" id="inputName"
+                                                                                   <input #input type="text" id="inputName"
                                                                                         formControlName="nombre"
                                                                                         class="form-control" />
                                                                                 </div>
@@ -108,7 +118,7 @@
                                                                                     <label
                                                                                         for="inputFechaDeNacimiento">Fecha
                                                                                         de Nacimiento</label>
-                                                                                    <input type="date"
+                                                                                   <input #input type="date"
                                                                                         formControlName="fechaDeNacimiento"
                                                                                         id="inputFechaDeNacimiento"
                                                                                         class="form-control" />
@@ -117,7 +127,7 @@
                                                                             <div class="col-md-4 colsm-12">
                                                                                 <div class="form-group">
                                                                                     <label for="inputSexo">Sexo</label>
-                                                                                    <select id="inputSexo"
+                                                                                    <select #input id="inputSexo"
                                                                                         class="form-control"
                                                                                         formControlName="sexo">
                                                                                         <option value="">Seleccione...
@@ -135,7 +145,7 @@
                                                                                 <div class="form-group">
                                                                                     <label for="inputEstadoCivil">Estado
                                                                                         Civil</label>
-                                                                                    <select id="inputEstadoCivil"
+                                                                                    <select #input id="inputEstadoCivil"
                                                                                         class="form-control"
                                                                                         formControlName="estadoCivil">
                                                                                         <option value="No especificado">
@@ -156,7 +166,7 @@
                                                                                 <div class="form-group">
                                                                                     <label
                                                                                         for="inputOcupacion">Ocupación</label>
-                                                                                    <input type="text"
+                                                                                   <input #input type="text"
                                                                                         id="inputOcupacion"
                                                                                         formControlName="ocupacion"
                                                                                         class="form-control" />
@@ -167,7 +177,7 @@
                                                                                 <div class="form-group">
                                                                                     <label
                                                                                         for="inputDomicilio">Domicilio</label>
-                                                                                    <input type="text"
+                                                                                   <input #input type="text"
                                                                                         id="inputDomicilio"
                                                                                         formControlName="domicilio"
                                                                                         class="form-control" />
@@ -179,7 +189,7 @@
                                                                                 <div class="form-group">
                                                                                     <label
                                                                                         for="inputPoblacion">Población</label>
-                                                                                    <input type="text"
+                                                                                   <input #input type="text"
                                                                                         id="inputPoblacion"
                                                                                         formControlName="poblacion"
                                                                                         class="form-control" />
@@ -189,7 +199,7 @@
                                                                                 <div class="form-group">
                                                                                     <label
                                                                                         for="inputTelefono">Teléfono</label>
-                                                                                    <input type="tel" id="inputTelefono"
+                                                                                   <input #input type="tel" id="inputTelefono"
                                                                                         formControlName="telefono"
                                                                                         class="form-control" />
                                                                                 </div>
@@ -198,7 +208,7 @@
                                                                                 <div class="form-group">
                                                                                     <label
                                                                                         for="inputEmail">Email</label>
-                                                                                    <input type="email" id="inputEmail"
+                                                                                   <input #input type="email" id="inputEmail"
                                                                                         formControlName="email"
                                                                                         class="form-control" />
                                                                                 </div>
@@ -209,7 +219,7 @@
                                                                                 <div class="form-group">
                                                                                     <label
                                                                                         for="inputReferencia">Referencia</label>
-                                                                                    <input type="text"
+                                                                                   <input #input type="text"
                                                                                         id="inputReferencia"
                                                                                         formControlName="referencia"
                                                                                         class="form-control" />
@@ -244,7 +254,7 @@
                                                                                         for="inputNombreDelEsposo">Nombre
                                                                                         del
                                                                                         Esposo/a</label>
-                                                                                    <input type="text"
+                                                                                   <input #input type="text"
                                                                                         id="inputNombreDelEsposo"
                                                                                         formControlName="nombreDelEsposo"
                                                                                         class="form-control" />
@@ -255,7 +265,7 @@
                                                                                     <label for="inputEdadDelEsposo">Edad
                                                                                         del
                                                                                         Esposo/a</label>
-                                                                                    <input type="number"
+                                                                                   <input #input type="text"
                                                                                         id="inputEdadDelEsposo"
                                                                                         formControlName="edadDelEsposo"
                                                                                         class="form-control" />
@@ -267,7 +277,7 @@
                                                                                         for="inputOcupacionEsposo">Ocupación
                                                                                         del
                                                                                         Esposo/a</label>
-                                                                                    <input type="text"
+                                                                                   <input #input type="text"
                                                                                         id="inputOcupacionEsposo"
                                                                                         formControlName="ocupacionEsposo"
                                                                                         class="form-control" />
@@ -299,7 +309,7 @@
                                                                                 <div class="form-group">
                                                                                     <label
                                                                                         for="inputDiabetes">Diabetes</label>
-                                                                                    <input type="text"
+                                                                                   <input #input type="text"
                                                                                         id="inputDiabetes"
                                                                                         formControlName="diabetes"
                                                                                         class="form-control" />
@@ -309,7 +319,7 @@
                                                                                 <div class="form-group">
                                                                                     <label
                                                                                         for="inputHipertension">Hipertensión</label>
-                                                                                    <input type="text"
+                                                                                   <input #input type="text"
                                                                                         id="inputHipertension"
                                                                                         formControlName="hipertension"
                                                                                         class="form-control" />
@@ -319,7 +329,7 @@
                                                                                 <div class="form-group">
                                                                                     <label
                                                                                         for="inputTrombosis">Trombosis</label>
-                                                                                    <input type="text"
+                                                                                   <input #input type="text"
                                                                                         id="inputTrombosis"
                                                                                         formControlName="trombosis"
                                                                                         class="form-control" />
@@ -331,7 +341,7 @@
                                                                                 <div class="form-group">
                                                                                     <label
                                                                                         for="inputCardiopatias">Cardiopatías</label>
-                                                                                    <input type="text"
+                                                                                   <input #input type="text"
                                                                                         id="inputCardiopatias"
                                                                                         formControlName="cardiopatias"
                                                                                         class="form-control" />
@@ -341,7 +351,7 @@
                                                                                 <div class="form-group">
                                                                                     <label
                                                                                         for="inputCancer">Cáncer</label>
-                                                                                    <input type="text" id="inputCancer"
+                                                                                   <input #input type="text" id="inputCancer"
                                                                                         formControlName="cancer"
                                                                                         class="form-control" />
                                                                                 </div>
@@ -350,7 +360,7 @@
                                                                                 <div class="form-group">
                                                                                     <label for="inputEg">Enfermedades
                                                                                         genéticas</label>
-                                                                                    <input type="text" id="inputEg"
+                                                                                   <input #input type="text" id="inputEg"
                                                                                         formControlName="enfermedadesGeneticas"
                                                                                         class="form-control" />
                                                                                 </div>
@@ -394,7 +404,7 @@
                                                                                 <div class="form-group">
                                                                                     <label
                                                                                         for="inputInmunizaciones">Inmunizaciones</label>
-                                                                                    <input type="text"
+                                                                                   <input #input type="text"
                                                                                         id="inputInmunizaciones"
                                                                                         formControlName="inmunizaciones"
                                                                                         class="form-control" />
@@ -404,7 +414,7 @@
                                                                                 <div class="form-group">
                                                                                     <label
                                                                                         for="inputAlcoholismo">Alcoholismo</label>
-                                                                                    <select id="inputAlcoholismo"
+                                                                                    <select #input id="inputAlcoholismo"
                                                                                         class="form-control"
                                                                                         formControlName="alcoholismo">
                                                                                         <option value="">Seleccione...
@@ -418,7 +428,7 @@
                                                                                 <div class="form-group">
                                                                                     <label
                                                                                         for="inputTabaquismo">Tabaquismo</label>
-                                                                                    <select id="inputTabaquismo"
+                                                                                    <select #input id="inputTabaquismo"
                                                                                         class="form-control"
                                                                                         formControlName="tabaquismo">
                                                                                         <option value="">Seleccione...
@@ -435,7 +445,7 @@
                                                                                     <label
                                                                                         for="inputTabaquismoPasivo">Tabaquismo
                                                                                         Pasivo</label>
-                                                                                    <select id="inputTabaquismoPasivo"
+                                                                                    <select #input id="inputTabaquismoPasivo"
                                                                                         class="form-control"
                                                                                         formControlName="tabaquismoPasivo">
                                                                                         <option value="">Seleccione...
@@ -450,7 +460,7 @@
                                                                                     <label
                                                                                         for="inputDrogasOMedicamentos">Drogas
                                                                                         o Medicamentos</label>
-                                                                                    <input type="text"
+                                                                                   <input #input type="text"
                                                                                         id="inputDrogasOMedicamentos"
                                                                                         formControlName="drogasOmedicamentos"
                                                                                         class="form-control" />
@@ -483,7 +493,7 @@
                                                                                     <label
                                                                                         for="inputGrupoSanguineo">Grupo
                                                                                         Sanguíneo</label>
-                                                                                    <select id="inputGrupoSanguineo"
+                                                                                    <select #input id="inputGrupoSanguineo"
                                                                                         class="form-control"
                                                                                         formControlName="grupoSanguineo">
                                                                                         <option value="No especificado">
@@ -506,7 +516,7 @@
                                                                                     <label
                                                                                         for="inputPropiasDeLaInfancia">Enfermedades
                                                                                         Propias de la Infancia</label>
-                                                                                    <input type="text"
+                                                                                   <input #input type="text"
                                                                                         id="inputPropiasDeLaInfancia"
                                                                                         formControlName="propiasDeLaInfancia"
                                                                                         class="form-control" />
@@ -520,7 +530,7 @@
                                                                                         for="inputHepatitisViralTipo">Tipo
                                                                                         de
                                                                                         Hepatitis Viral</label>
-                                                                                    <input type="text"
+                                                                                   <input #input type="text"
                                                                                         id="inputHepatitisViralTipo"
                                                                                         formControlName="hepatitisViralTipo"
                                                                                         class="form-control" />
@@ -532,7 +542,7 @@
                                                                                 <div class="form-group">
                                                                                     <label
                                                                                         for="inputParasitosis">Parasitosis</label>
-                                                                                    <input type="text"
+                                                                                   <input #input type="text"
                                                                                         id="inputParasitosis"
                                                                                         formControlName="parasitosis"
                                                                                         class="form-control" />
@@ -542,7 +552,7 @@
                                                                                 <div class="form-group">
                                                                                     <label
                                                                                         for="inputToxoplasmosis">Toxoplasmosis</label>
-                                                                                    <input type="text"
+                                                                                   <input #input type="text"
                                                                                         id="inputToxoplasmosis"
                                                                                         formControlName="toxoplasmosis"
                                                                                         class="form-control" />
@@ -552,7 +562,7 @@
                                                                                 <div class="form-group">
                                                                                     <label
                                                                                         for="inputCitomegalovirus">Citomegalovirus</label>
-                                                                                    <input type="text"
+                                                                                   <input #input type="text"
                                                                                         id="inputCitomegalovirus"
                                                                                         formControlName="citomegalovirus"
                                                                                         class="form-control" />
@@ -564,7 +574,7 @@
                                                                                 <div class="form-group">
                                                                                     <label
                                                                                         for="inputHerpes">Herpes</label>
-                                                                                    <input type="text" id="inputHerpes"
+                                                                                   <input #input type="text" id="inputHerpes"
                                                                                         formControlName="herpes"
                                                                                         class="form-control" />
                                                                                 </div>
@@ -573,7 +583,7 @@
                                                                                 <div class="form-group">
                                                                                     <label
                                                                                         for="inputClamydiasis">Clamydiasis</label>
-                                                                                    <input type="text"
+                                                                                   <input #input type="text"
                                                                                         id="inputClamydiasis"
                                                                                         formControlName="clamydiasis"
                                                                                         class="form-control" />
@@ -582,7 +592,7 @@
                                                                             <div class="col-md-4 col-sm-12">
                                                                                 <div class="form-group">
                                                                                     <label for="inputHIV">HIV</label>
-                                                                                    <select id="inputHIV"
+                                                                                    <select #input id="inputHIV"
                                                                                         class="form-control"
                                                                                         formControlName="hiv">
                                                                                         <option value="No especificado">
@@ -599,7 +609,7 @@
                                                                                 <div class="form-group">
                                                                                     <label
                                                                                         for="inputSifilis">Sífilis</label>
-                                                                                    <select id="inputSifilis"
+                                                                                    <select #input id="inputSifilis"
                                                                                         class="form-control"
                                                                                         formControlName="sifilis">
                                                                                         <option value="No especificado">
@@ -614,7 +624,7 @@
                                                                                 <div class="form-group">
                                                                                     <label
                                                                                         for="inputMicosis">Micosis</label>
-                                                                                    <select id="inputMicosis"
+                                                                                    <select #input id="inputMicosis"
                                                                                         class="form-control"
                                                                                         formControlName="micosis">
                                                                                         <option value="No especificado">
@@ -631,7 +641,7 @@
                                                                                         (Enfermedad
                                                                                         Inflamatoria
                                                                                         Pélvica)</label>
-                                                                                    <select id="inputEIP"
+                                                                                    <select #input id="inputEIP"
                                                                                         class="form-control"
                                                                                         formControlName="eip">
                                                                                         <option value="No especificado">
@@ -649,7 +659,7 @@
                                                                                     <label
                                                                                         for="inputDiabetesMellitus">Diabetes
                                                                                         Mellitus</label>
-                                                                                    <input type="text"
+                                                                                   <input #input type="text"
                                                                                         id="inputDiabetesMellitus"
                                                                                         formControlName="diabetesMellitus"
                                                                                         class="form-control" />
@@ -660,7 +670,7 @@
                                                                                     <label
                                                                                         for="inputOtrasEndocrinas">Otras
                                                                                         Endocrinas</label>
-                                                                                    <input type="text"
+                                                                                   <input #input type="text"
                                                                                         id="inputOtrasEndocrinas"
                                                                                         formControlName="otrasEndocrinas"
                                                                                         class="form-control" />
@@ -670,7 +680,7 @@
                                                                                 <div class="form-group">
                                                                                     <label
                                                                                         for="inputNefropatias">Nefropatías</label>
-                                                                                    <input type="text"
+                                                                                   <input #input type="text"
                                                                                         id="inputNefropatias"
                                                                                         formControlName="nefropatias"
                                                                                         class="form-control" />
@@ -682,7 +692,7 @@
                                                                                 <div class="form-group">
                                                                                     <label
                                                                                         for="inputDigestivas">Digestivas</label>
-                                                                                    <input type="text"
+                                                                                   <input #input type="text"
                                                                                         id="inputDigestivas"
                                                                                         formControlName="digestivas"
                                                                                         class="form-control" />
@@ -692,7 +702,7 @@
                                                                                 <div class="form-group">
                                                                                     <label
                                                                                         for="inputNeurologicas">Neurológicas</label>
-                                                                                    <input type="text"
+                                                                                   <input #input type="text"
                                                                                         id="inputNeurologicas"
                                                                                         formControlName="neurologicas"
                                                                                         class="form-control" />
@@ -702,7 +712,7 @@
                                                                                 <div class="form-group">
                                                                                     <label
                                                                                         for="inputHematologicas">Hematológicas</label>
-                                                                                    <input type="text"
+                                                                                   <input #input type="text"
                                                                                         id="inputHematologicas"
                                                                                         formControlName="hematologicas"
                                                                                         class="form-control" />
@@ -714,7 +724,7 @@
                                                                                 <div class="form-group">
                                                                                     <label
                                                                                         for="inputTumores">Tumores</label>
-                                                                                    <input type="text" id="inputTumores"
+                                                                                   <input #input type="text" id="inputTumores"
                                                                                         formControlName="tumores"
                                                                                         class="form-control" />
                                                                                 </div>
@@ -723,7 +733,7 @@
                                                                                 <div class="form-group">
                                                                                     <label
                                                                                         for="inputCondilomatosis">Condilomatosis</label>
-                                                                                    <input type="text"
+                                                                                   <input #input type="text"
                                                                                         id="inputCondilomatosis"
                                                                                         formControlName="condilomatosis"
                                                                                         class="form-control" />
@@ -733,7 +743,7 @@
                                                                                 <div class="form-group">
                                                                                     <label
                                                                                         for="inputDisplasias">Displasias</label>
-                                                                                    <input type="text"
+                                                                                   <input #input type="text"
                                                                                         id="inputDisplasias"
                                                                                         formControlName="displasias"
                                                                                         class="form-control" />
@@ -745,7 +755,7 @@
                                                                                 <div class="form-group">
                                                                                     <label
                                                                                         for="inputAlergia">Alergia</label>
-                                                                                    <input type="text" id="inputAlergia"
+                                                                                   <input #input type="text" id="inputAlergia"
                                                                                         formControlName="alergia"
                                                                                         class="form-control" />
                                                                                 </div>
@@ -754,7 +764,7 @@
                                                                                 <div class="form-group">
                                                                                     <label
                                                                                         for="inputRubeola">Rubéola</label>
-                                                                                    <input type="text" id="inputRubeola"
+                                                                                   <input #input type="text" id="inputRubeola"
                                                                                         formControlName="rubeola"
                                                                                         class="form-control" />
                                                                                 </div>
@@ -763,7 +773,7 @@
                                                                                 <div class="form-group">
                                                                                     <label
                                                                                         for="inputAmigdalitis">Amigdalitis</label>
-                                                                                    <input type="text"
+                                                                                   <input #input type="text"
                                                                                         id="inputAmigdalitis"
                                                                                         formControlName="amigdalitis"
                                                                                         class="form-control" />
@@ -775,7 +785,7 @@
                                                                                 <div class="form-group">
                                                                                     <label
                                                                                         for="inputDigestivas">Digestivas</label>
-                                                                                    <input type="text"
+                                                                                   <input #input type="text"
                                                                                         id="inputDigestivas"
                                                                                         formControlName="digestivas"
                                                                                         class="form-control" />
@@ -785,7 +795,7 @@
                                                                                 <div class="form-group">
                                                                                     <label
                                                                                         for="inputNeurologicas">Neurológicas</label>
-                                                                                    <input type="text"
+                                                                                   <input #input type="text"
                                                                                         id="inputNeurologicas"
                                                                                         formControlName="neurologicas"
                                                                                         class="form-control" />
@@ -795,7 +805,7 @@
                                                                                 <div class="form-group">
                                                                                     <label
                                                                                         for="inputHematologicas">Hematológicas</label>
-                                                                                    <input type="text"
+                                                                                   <input #input type="text"
                                                                                         id="inputHematologicas"
                                                                                         formControlName="hematologicas"
                                                                                         class="form-control" />
@@ -808,7 +818,8 @@
                                                             </div>
 
                                                         </div>
-                                                        <button type="button"  (click)="saveData()" class="btn btn-primary">Guardar</button>
+                                                        <button type="button" (click)="saveData()"
+                                                            class="btn btn-primary">Guardar</button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -825,101 +836,86 @@
                                                 <div class="row justify-content-center">
                                                     <div class="image-grid">
                                                         <div *ngFor="let image of images" class="image-container">
-                                                          <img [src]="image.src" [alt]="image.alt" (click)="openDialog(image.src)">
+                                                            <img [src]="image.src" [alt]="image.alt"
+                                                                (click)="openDialog(image.src)">
                                                         </div>
-                                                      </div>
-                                                                                               
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label for="exampleInputFile">Subir imagen</label>
+                                                        <div class="input-group">
+                                                            <div class="custom-file">
+                                                               <input #input type="file" class="custom-file-input"
+                                                                    id="exampleInputFile"
+                                                                    (change)="onFileSelected($event)">
+                                                                <label class="custom-file-label"
+                                                                    for="exampleInputFile">Choose file</label>
+                                                            </div>
+                                                            <div class="input-group-append">
+                                                                <button type="button" class="btn btn-primary"
+                                                                    (click)="upload()">Guardar Imagen</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="tab-pane" id="recetas">
-                                    <div class="timeline timeline-inverse">
+                                    <app-testeditor [recetas]="recetas" [clave]="parametro"
+                                        [fechaActual]="fechaFormateada"></app-testeditor>
 
-                                        <div class="time-label">
-                                        <span class="bg-danger">
-                                        {{fechaFormateada}}
-                                        </span>
-                                        </div>
-                                        
-                                        
-                                        <div>
-                                        <i class="fas fa-envelope bg-primary"></i>
-                                        <div class="timeline-item">
-                                        <h3 class="timeline-header"><a href="#">Agregar </a>Nueva Receta</h3>
-                                        <div class="timeline-body">
-                                        <app-testeditor></app-testeditor>
-                                        </div>
-                                        <div class="timeline-footer">
-                                            <button type="button" class="btn btn-primary btn-sm">Guardar</button>
-                                            <button type="button" class="btn btn-danger btn-sm">Borrar</button>                                       
-                                        </div>
-                                        </div>
-                                        </div>
-                                        
-                                        
-                                        <div>
-                                        <i class="fas fa-user bg-info"></i>
-                                        <div class="timeline-item">
-                                        <span class="time"><i class="far fa-clock"></i> 5 mins ago</span>
-                                        <h3 class="timeline-header border-0"><a href="#">Sarah Young</a> accepted your friend request
-                                        </h3>
-                                        </div>
-                                        </div>
-                                        
-                                        
-                                        <div>
-                                        <i class="fas fa-comments bg-warning"></i>
-                                        <div class="timeline-item">
-                                        <span class="time"><i class="far fa-clock"></i> 27 mins ago</span>
-                                        <h3 class="timeline-header"><a href="#">Jay White</a> commented on your post</h3>
-                                        <div class="timeline-body">
-                                        Take me to your leader!
-                                        Switzerland is small and neutral!
-                                        We are more like Germany, ambitious and misunderstood!
-                                        </div>
-                                        <div class="timeline-footer">
-                                        <a href="#" class="btn btn-warning btn-flat btn-sm">View comment</a>
-                                        </div>
-                                        </div>
-                                        </div>
-                                        
-                                        
-                                        <div class="time-label">
-                                        <span class="bg-success">
-                                        3 Jan. 2014
-                                        </span>
-                                        </div>
-                                        
-                                        
-                                        <div>
-                                        <i class="fas fa-camera bg-purple"></i>
-                                        <div class="timeline-item">
-                                        <span class="time"><i class="far fa-clock"></i> 2 days ago</span>
-                                        <h3 class="timeline-header"><a href="#">Mina Lee</a> uploaded new photos</h3>
-                                        <div class="timeline-body">
-                                        <img src="https://placehold.it/150x100" alt="...">
-                                        <img src="https://placehold.it/150x100" alt="...">
-                                        <img src="https://placehold.it/150x100" alt="...">
-                                        <img src="https://placehold.it/150x100" alt="...">
-                                        </div>
-                                        </div>
-                                        </div>
-                                        
-                                        <div>
-                                        <i class="far fa-clock bg-gray"></i>
-                                        </div>
-                                        </div>
-                                 
                                 </div>
                                 <div class="tab-pane" id="historia">
-                                    <div class="timeline timeline-inverse">
-                                        <app-testeditor [data]="expediente?.expediente1"></app-testeditor>
+                                    <app-testeditor-historia [parametro]="parametro"></app-testeditor-historia>
+                                </div>
+                                <div class="tab-pane" id="notas">
+                                    <app-notas [notas]="notas" [clave]="parametro"
+                                        [fechaActual]="fechaFormateada"></app-notas>
+
+                                </div>
+                                <div class="tab-pane" id="imagendeperfil">
+                                    <div class="col-12">
+                                        <div class="card card-primary">
+                                            <div class="card-header">
+                                                <h4 class="card-title">Imagenes de la paciente</h4>
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="row justify-content-center">
+                                                    <div class="image-grid">
+                                                            <img [src]="imagenperfil?.src" 
+                                                                (click)="openDialog(imagenperfil?.src)">
+                                                       
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label for="exampleInputFile">Subir imagen</label>
+                                                        <div class="input-group">
+                                                            <div class="custom-file">
+                                                               <input #input type="file" class="custom-file-input"
+                                                                    id="exampleInputFile"
+                                                                    (change)="onFileSelectedPerfil($event)">
+                                                                    <canvas id="canvas" width="128" height="128" style="display:none;"></canvas>
+                                                                <label class="custom-file-label"
+                                                                    for="exampleInputFile">Choose file</label>
+                                                            </div>
+                                                            <div class="input-group-append">
+                                                                <button type="button" class="btn btn-primary"
+                                                                    (click)="uploadImagenPerfil()">Guardar Imagen</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>  
-                            
-                        </div>  
+
+                                </div>
+                                <div class="tab-pane" id="informe">
+                                    <app-testeditorinformeso [parametro]="parametro"></app-testeditorinformeso>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -929,4 +925,8 @@
 
 
 </div>
-
+<div class="lottie-container" *ngIf="showLoading">
+    <ng-container>
+      <app-loading></app-loading>
+    </ng-container>
+  </div>

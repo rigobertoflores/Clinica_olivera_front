@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, } from '@angular/core';
 import {  FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
 import { Router } from '@angular/router';
 import { UserService } from './../Services/user.service';
 import { login } from '../interface/login';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-login',
@@ -11,16 +12,17 @@ import { login } from '../interface/login';
   templateUrl: './login.component.html',
   styleUrl: './login.component.css',
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
   public rememberMe: boolean = false;
   userService: any;
   loginform: any;
+  
   
 
   constructor(private authService: UserService,private router: Router) {}
  
   ngOnInit(): void {
-  this.cargarFormulario();
+         this.cargarFormulario();  
   }
 
   cargarFormulario() { 
@@ -30,11 +32,11 @@ export class LoginComponent {
     });
   }
 
-  login() {
+  login() {  
     this.authService.login(this.loginform.get('email')?.value,this.loginform.get('pass')?.value)
     .then((response :any) => {
       console.log('Login successful', response);
-      this.router.navigate(['/inicio']);
+      this.router.navigate(['/inicio']);     
     })
     .catch((error: any) => console.log("Error en login con firebase",error));
      
@@ -50,12 +52,14 @@ export class LoginComponent {
       .catch((error: any) => console.log("Error en login con google",error));
   }
 
-  register() {    
-        this.router.navigate(['/register']);
-  }
+  // register() {    
+  //       this.router.navigate(['/register']);
+  // }
 
   resetPassword() {
     this.router.navigate(['/resetPass']);
 }
+
+
 
 }

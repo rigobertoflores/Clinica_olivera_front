@@ -1,123 +1,56 @@
-
 <body class="login-page" style="min-height: 464px;">
   <div class="login-box">
-  
-  <div class="card card-outline card-primary">
-  <div class="card-header text-center">
-  <a class="h1"> Olivera</a>
-  </div>
-  <div class="card-body">
-  <p class="login-box-msg">Inicia sesión</p>
-  <form [formGroup]="loginform" method="post">
-  <div class="input-group mb-3">
-  <input type="email" class="form-control" placeholder="Email" formControlName="email" name="email" required>
-  <div class="input-group-append">
-  <div class="input-group-text">
-  <span class="fas fa-envelope"></span>
-  </div>
-  </div>
-  </div>
-  <div class="input-group mb-3">
-  <input type="password" class="form-control" placeholder="Password" formControlName="pass" name="password" required> 
-  <div class="input-group-append">
-  <div class="input-group-text">
-  <span class="fas fa-lock"></span>
-  </div>
-  </div>
-  </div>
-  <div class="row">
-  <!-- <div class="col-8">
-  <div class="icheck-primary">
-  <input type="checkbox" id="remember"  class="pt-3">
-  <label for="remember">
-  Recordar contraseña
-  </label>
-  </div>
-  </div> -->
-  
-  <div class="col-md-12">
-  <button type="button" (click)="login()" class="btn btn-primary btn-block">Inicia sesión</button>
-  </div>
-  
-  </div>
-  </form>
-  <div class="social-auth-links text-center mt-2 mb-3">  
-  <button type="button"  (click)="onClickGoogle()" class="btn btn-block btn-danger">
-  <i class="fab fa-google-plus mr-2"></i> Inicia sesión con Google
-  </button>
-  </div>
-  
-  <p class="mb-1">
-    <span class="link-like" (click)="resetPassword()">Olvidé mi contraseña</span>
-  <!-- <a  (click)="resetPassword()" >Olvidé mi contraseña</a> -->
-  </p>
-  
-  <p class="mb-0">
-  <a (click)="register()"  class="text-center link-like">Registrarme</a>
-  </p>
-  </div>
-  
-  </div>
-  
+
+    <div class="card card-outline card-primary">
+      <div class="card-header text-center"  style="padding: 0; overflow: hidden;">
+        <img src="../../assets/logo_extendido.jpg" alt="AMECAE Logo" style="width: 100%; height: auto; display: block;">
+      </div>
+      <div class="card-body">
+        <p class="login-box-msg">Inicia sesión</p>
+        <form [formGroup]="loginform" method="post">
+          <div class="input-group mb-3">
+            <input type="email" class="form-control" placeholder="Email" formControlName="email" name="email" required>
+            <div class="input-group-append">
+              <div class="input-group-text">
+                <span class="fas fa-envelope"></span>
+              </div>
+            </div>
+          </div>
+          <div class="input-group mb-3">
+            <input type="password" class="form-control" placeholder="Password" formControlName="pass" name="password"
+              required>
+            <div class="input-group-append">
+              <div class="input-group-text">
+                <span class="fas fa-lock"></span>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <button type="button" (click)="login()" class="btn btn-primary btn-block">Inicia sesión</button>
+            </div>
+
+          </div>
+        </form>
+        <div class="social-auth-links text-center mt-2 mb-3">
+          <button type="button" (click)="onClickGoogle()" class="btn btn-block btn-danger">
+            <i class="fab fa-google-plus mr-2"></i> Inicia sesión con Google
+          </button>
+        </div>
+
+        <p class="mb-1">
+          <span class="link-like" (click)="resetPassword()">Olvidé mi contraseña</span>
+        </p>
+
+        <!-- <p class="mb-0">
+          <a (click)="register()" class="text-center link-like">Registrarme</a>
+        </p> -->
+      </div>
+    </div>
   </div>  
-  
-  
-  </body>
+</body>
 
 
 
 
 
-
-
-<!-- <div class="login-box">
-  <div class="login-logo">
-    <a href="#"><b>Mi</b>Aplicación</a>
-  </div>
-  <!-- /.login-logo -->
-  <!-- <div class="card">
-    <div class="card-body login-card-body">
-      <p class="login-box-msg">Inicia sesión para empezar tu sesión</p>
-
-      <form>
-        <div class="input-group mb-3">
-          <input type="email" class="form-control" placeholder="Email" [formControl]="email" name="email" required>
-          <div class="input-group-append">
-            <div class="input-group-text">
-              <span class="fas fa-envelope"></span>
-            </div>
-          </div>
-        </div>
-        <div class="input-group mb-3">
-          <input type="password" class="form-control" placeholder="Contraseña" [formControl]="password" name="password" required>
-          <div class="input-group-append">
-            <div class="input-group-text">
-              <span class="fas fa-lock"></span>
-            </div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-8">
-            <div class="icheck-primary">
-              <input type="checkbox" id="remember">
-              <label for="remember">
-                Recuérdame
-              </label>
-            </div>
-          </div>
-          <!-- /.col -->
-          <!-- <div class="col-4">
-            <button type="button" class="btn btn-info btn-block" >Iniciar Sesión</button>
-          </div>
-          <!-- /.col -->
-        <!-- </div>
-      </form> --> -->
-
-      <!-- <button type="button" class="btn btn-primary btn-block" (click)="onClickGoogle()">Iniciar con Google</button> --> -->
-
-      <!-- Agrega aquí más contenido si es necesario -->
-
-    <!-- </div> -->
-    <!-- /.login-card-body -->
-  <!-- </div>
-</div> --> -->

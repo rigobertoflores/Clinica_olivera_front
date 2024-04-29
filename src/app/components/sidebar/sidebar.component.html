@@ -1,4 +1,6 @@
-<aside class="main-sidebar sidebar-dark-primary  elevation-4">
+<aside class="main-sidebar sidebar-dark-primary  elevation-4 fijar">
+  <div class="main-content ">
+  
   <a (click)="navigateTo(opcionesSB.Home)" class="brand-link bg-light logo-switch">
     <img src="assets/user4-128x128.jpg" alt="Logo" class="brand-image logo-xs ">
     <img src="assets/logo_extendido.jpg" alt="LOGO" class="logo_oliv-xl" style="left: 12px">
@@ -19,39 +21,15 @@
     <div class="os-resize-observer-host observed">
       <div class="os-resize-observer" style="left: 0px; right: auto;"></div>
     </div>
-    <div class="os-size-auto-observer observed" style="height: calc(100% + 1px); float: left;">
+    <!-- <div class="os-size-auto-observer observed" style="height: calc(100% + 1px); float: left;">
       <div class="os-resize-observer"></div>
-    </div>
-    <div class="os-content-glue" style="margin: 0px -8px; width: 73px; height: 103px;"></div>
+    </div> -->
+    <!-- <div class="os-content-glue" style="margin: 0px -8px; width: 73px; height: 103px;"></div> -->
     <div class="os-padding">
       <div class="os-viewport os-viewport-native-scrollbars-invisible os-viewport-native-scrollbars-overlaid"
         style="overflow: scroll;">
         <div class="os-content" style="padding: 0px 8px; height: 100%; width: 100%;">
-          <div class="form-inline mt-2">
-            <div class="input-group" data-widget="sidebar-search">
-              <input class="form-control form-control-sidebar" type="search" placeholder="Search" aria-label="Search">
-              <div class="input-group-append">
-                <button class="btn btn-sidebar">
-                  <i class="fas fa-search fa-fw"></i>
-                </button>
-              </div>
-            </div>
-            <div class="sidebar-search-results">
-              <div class="list-group"><a href="#" class="list-group-item">
-                  <div class="search-title"><strong class="text-light"></strong>N<strong
-                      class="text-light"></strong>o<strong class="text-light"></strong> <strong
-                      class="text-light"></strong>e<strong class="text-light"></strong>l<strong
-                      class="text-light"></strong>e<strong class="text-light"></strong>m<strong
-                      class="text-light"></strong>e<strong class="text-light"></strong>n<strong
-                      class="text-light"></strong>t<strong class="text-light"></strong> <strong
-                      class="text-light"></strong>f<strong class="text-light"></strong>o<strong
-                      class="text-light"></strong>u<strong class="text-light"></strong>n<strong
-                      class="text-light"></strong>d<strong class="text-light"></strong>!<strong
-                      class="text-light"></strong></div>
-                  <div class="search-path"></div>
-                </a></div>
-            </div>
-          </div>
+          
           <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar nav-child-indent flex-column" data-widget="treeview" role="menu">
               <li class="nav-item">
@@ -63,10 +41,20 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a href="/docs/3.1//dependencies.html" class="nav-link">
+                <div *ngIf="this.user == this.userAdmin">
+                <a (click)="navigateTo(opcionesSB.NuevoUsuario)" class="nav-link">
+                  <i class="nav-icon fa fa-user"></i>
+                  <p>
+                    Registrar usuario nuevo
+                  </p>
+                </a>
+              </div>
+              </li>
+              <li class="nav-item">
+                <a  (click)="navigateTo(opcionesSB.AgregarPaciente)" class="nav-link">
                   <i class="nav-icon fas fa-handshake"></i>
                   <p>
-                    Dependencies &amp; Plugins
+                   Agregar Paciente
                   </p>
                 </a>
               </li>
@@ -79,221 +67,22 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link active">
-                  <i class="fa-light fa-file-contract"></i>
-                  <p>
-                    vv
-                    <i class="right fas fa-angle-left"></i>
-                  </p>
-                </a>
-                <ul class="nav nav-treeview">
-                  <li class="nav-item">
-                    <a href="/docs/3.1//components/main-header.html" class="nav-link">
-                      <i class="far fa-circle nav-icon"></i>
-                      <p>Main Header</p>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="/docs/3.1//components/main-sidebar.html" class="nav-link">
-                      <i class="far fa-circle nav-icon"></i>
-                      <p>Main Sidebar</p>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="/docs/3.1//components/control-sidebar.html" class="nav-link active">
-                      <i class="far fa-circle nav-icon"></i>
-                      <p>Control Sidebar</p>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="/docs/3.1//components/cards.html" class="nav-link">
-                      <i class="far fa-circle nav-icon"></i>
-                      <p>Card</p>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="/docs/3.1//components/boxes.html" class="nav-link">
-                      <i class="far fa-circle nav-icon"></i>
-                      <p>Small-/ Info-Box</p>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="/docs/3.1//components/direct-chat.html" class="nav-link">
-                      <i class="far fa-circle nav-icon"></i>
-                      <p>Direct Chat</p>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="/docs/3.1//components/timeline.html" class="nav-link">
-                      <i class="far fa-circle nav-icon"></i>
-                      <p>Timeline</p>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="/docs/3.1//components/ribbons.html" class="nav-link">
-                      <i class="far fa-circle nav-icon"></i>
-                      <p>Ribbons</p>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="/docs/3.1//components/miscellaneous.html" class="nav-link">
-                      <i class="far fa-circle nav-icon"></i>
-                      <p>Miscellaneous</p>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="/docs/3.1//components/plugins.html" class="nav-link">
-                      <i class="far fa-circle nav-icon"></i>
-                      <p>Plugins</p>
-                    </a>
-                  </li>
-                </ul>
-              </li>
-              <li class="nav-item menu-is-opening menu-open">
-                <a href="/docs/3.1//javascript" class="nav-link">
-                  <i class="nav-icon fas fa-code"></i>
-                  <p>
-                    JavaScript
-                    <i class="right fas fa-angle-left"></i>
-                  </p>
-                </a>
-                <ul class="nav nav-treeview" style="display: block;">
-                  <li class="nav-item">
-                    <a href="/docs/3.1//javascript/layout.html" class="nav-link">
-                      <i class="far fa-circle nav-icon"></i>
-                      <p>Layout</p>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="/docs/3.1//javascript/push-menu.html" class="nav-link">
-                      <i class="far fa-circle nav-icon"></i>
-                      <p>Push Menu</p>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="/docs/3.1//javascript/treeview.html" class="nav-link">
-                      <i class="far fa-circle nav-icon"></i>
-                      <p>Treeview</p>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="/docs/3.1//javascript/card-widget.html" class="nav-link">
-                      <i class="far fa-circle nav-icon"></i>
-                      <p>Card Widget</p>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="/docs/3.1//javascript/card-refresh.html" class="nav-link">
-                      <i class="far fa-circle nav-icon"></i>
-                      <p>CardRefresh</p>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="/docs/3.1//javascript/control-sidebar.html" class="nav-link">
-                      <i class="far fa-circle nav-icon"></i>
-                      <p>Control Sidebar</p>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="/docs/3.1//javascript/direct-chat.html" class="nav-link">
-                      <i class="far fa-circle nav-icon"></i>
-                      <p>Direct Chat</p>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="/docs/3.1//javascript/todo-list.html" class="nav-link">
-                      <i class="far fa-circle nav-icon"></i>
-                      <p>Todo List</p>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="/docs/3.1//javascript/toasts.html" class="nav-link">
-                      <i class="far fa-circle nav-icon"></i>
-                      <p>Toasts</p>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="/docs/3.1//javascript/sidebar-search.html" class="nav-link">
-                      <i class="far fa-circle nav-icon"></i>
-                      <p>Sidebar Search</p>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="/docs/3.1//javascript/expandable-tables.html" class="nav-link">
-                      <i class="far fa-circle nav-icon"></i>
-                      <p>Expandable Tables</p>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="/docs/3.1//javascript/iframe.html" class="nav-link">
-                      <i class="far fa-circle nav-icon"></i>
-                      <p>IFrame</p>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="/docs/3.1//javascript/navbar-search.html" class="nav-link">
-                      <i class="far fa-circle nav-icon"></i>
-                      <p>Navbar Search</p>
-                    </a>
-                  </li>
-                </ul>
-              </li>
-              <li class="nav-item">
-                <a href="/docs/3.1//browser-support.html" class="nav-link">
-                  <i class="nav-icon fab fa-chrome"></i>
-                  <p>
-                    Browser Support
+                <a (click)="navigateTo(opcionesSB.ConfigHistorias)" class="nav-link d-flex align-items-center">
+                  <i class="nav-icon  fa-solid fa-file-medical"></i>
+                                    <p>
+                    Configuración de Historias
                   </p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="/docs/3.1//implementations.html" class="nav-link">
-                  <i class="nav-icon fas fa-bookmark"></i>
+                <a (click)="navigateTo(opcionesSB.Tratamientos)" class="nav-link">
+                  <i class="nav-icon  fa-solid fa-file-medical"></i>
                   <p>
-                    Implementations
+                    Recetas
                   </p>
                 </a>
               </li>
-              <li class="nav-item">
-                <a href="/docs/3.1//additional-styles.html" class="nav-link">
-                  <i class="nav-icon fas fa-mortar-pestle"></i>
-                  <p>
-                    Additional Styles
-                  </p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="/docs/3.1//upgrade-guide.html" class="nav-link">
-                  <i class="nav-icon fas fa-hand-point-up"></i>
-                  <p>
-                    Upgrade Guide
-                  </p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="/docs/3.1//how-to-contribute.html" class="nav-link">
-                  <i class="nav-icon fas fa-hands-helping"></i>
-                  <p>
-                    Contributing Guide
-                  </p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="/docs/3.1//faq.html" class="nav-link">
-                  <i class="nav-icon fas fa-question-circle"></i>
-                  <p>
-                    FAQ
-                  </p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="/docs/3.1//license.html" class="nav-link">
-                  <i class="nav-icon fas fa-file-contract"></i>
-                  <p>
-                    License
-                  </p>
-                </a>
-              </li>
+
             </ul>
           </nav>
         </div>
@@ -311,4 +100,5 @@
     </div>
     <div class="os-scrollbar-corner"></div>
   </div>
+</div>
 </aside>
