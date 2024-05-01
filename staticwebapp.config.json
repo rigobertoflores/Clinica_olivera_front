@@ -3,9 +3,6 @@
       "rewrite": "/index.html",
       "exclude": ["/images/*.{png,jpg,gif}", "/css/*"]
     },
-    "globalHeaders": {
-        "content-security-policy": "default-src 'self'; font-src 'self'"
-      },
     "mimeTypes": {
       ".json": "application/json",
       ".webmanifest": "application/manifest+json"
@@ -14,6 +11,9 @@
       "404": {
         "rewrite": "/404.html"
       }
-    }    
+    },
+    "globalHeaders": {
+    "content-security-policy": "default-src https: 'unsafe-eval' 'unsafe-inline'; object-src 'none'"
+  }  
   }
   
