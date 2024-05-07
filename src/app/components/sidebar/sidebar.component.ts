@@ -15,8 +15,8 @@ import { CommonModule } from '@angular/common';
 export class SidebarComponent implements OnInit {
   user: string;
   routing: any;
-  userAdmin: string = "admin";
-
+  userAdmin: string = 'admin';
+  imagendefault: string = 'assets/user.png';
   imagenPerfilUrl: string | null;
   opcionesSB: typeof OpcionesSidebar;
 
