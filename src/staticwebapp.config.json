@@ -4,7 +4,7 @@
     "exclude": ["/images/*.{png,jpg,gif}", "/css/*"]
   },
   "globalHeaders": {
-    "content-security-policy": "style-src-elem 'self'; img-src 'self'; style-src 'self'; default-src 'none'; connect-src 'self'; script-src 'self'; img-src * data:; style-src 'self' 'unsafe-inline'; frame-src * "
+    "content-security-policy": "style-src-elem 'self'; default-src 'self'; img-src 'self'; script-src 'self'; style-src 'self';"
   },
   "mimeTypes": {
     ".json": "application/json",
