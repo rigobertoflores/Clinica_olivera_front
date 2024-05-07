@@ -16,7 +16,7 @@ export class SidebarComponent implements OnInit {
   user: string;
   routing: any;
   userAdmin: string = 'admin';
-  imagendefault: string = 'assets/user.png';
+  imagendefault: string = 'assets/user4-128x128.jpg';
   imagenPerfilUrl: string | null;
   opcionesSB: typeof OpcionesSidebar;
 
