@@ -45,3 +45,5 @@ Thumbs.db
 .firebase
 *-debug.log
 .runtimeconfig.json
+dist/clinica-olivera/3rdpartylicenses.txt
+dist/clinica-olivera/browser/*
