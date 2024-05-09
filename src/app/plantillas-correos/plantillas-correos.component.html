@@ -1,0 +1,69 @@
+<app-menu></app-menu>
+<app-sidebar></app-sidebar>
+<div class="content-wrapper" style="min-height: 1604.8px">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header p-4">
+                <ul class="nav nav-pills">
+                    <li class="nav-item"><a class="nav-link active" href="#listaDePlantila"
+                            data-toggle="tab">Plantillas</a>
+                    </li>
+                    <li class="nav-item"><a class="nav-link active" href="#nuevaPlantila" data-toggle="tab">Agregar
+                            Plantilla</a>
+                    </li>
+                    <li class="nav-item"><a class="nav-link" href="#agregarPacientesAPlantillas"
+                            data-toggle="tab">Agregar usuarios a las plantillas</a></li>
+                </ul>
+            </div>
+            <div class="card-body">
+                <div class="tab-content">
+                    <div class="tab-pane active" id="listaDePlantila">
+                        <div class="container-fluid">
+
+                            <div class="row">
+                                <div class="col-md-8 offset-md-2">
+                                    <form [formGroup]="listadoPForm" method="post">
+                                        <div class="input-group">
+
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+
+                    <div class="tab-pane" id="nuevaPlantila">
+                        <div class="col-md-12">
+                            <div class="card card-primary">
+                                <div class="card-body">
+                                    <form [formGroup]="agregarPForm" method="post">
+
+                                    </form>
+                                </div>
+
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tab-pane" id="agregarPacientesAPlantillas">
+                        <div class="col-md-12">
+                            <div class="card card-primary">
+                                <div class="card-body">
+                                    <form [formGroup]="RelacionPlantillaPacienteForm" method="post">
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+</div>
