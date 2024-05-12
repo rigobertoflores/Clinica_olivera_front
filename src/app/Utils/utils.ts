@@ -7,9 +7,10 @@ static  getRouteForOption(option: OpcionesSidebar): string | null {
       [OpcionesSidebar.Home]: '/inicio',
       [OpcionesSidebar.Profile]: '/profile',
       [OpcionesSidebar.Tratamientos]: '/tratamientos',
-      [OpcionesSidebar.AgregarPaciente]:'/expediente_paciente',
-      [OpcionesSidebar.ConfigHistorias]:'/configuracion_historias',
-      [OpcionesSidebar.NuevoUsuario]:'/register'
+      [OpcionesSidebar.AgregarPaciente]: '/expediente_paciente',
+      [OpcionesSidebar.ConfigHistorias]: '/configuracion_historias',
+      [OpcionesSidebar.NuevoUsuario]: '/register',
+      [OpcionesSidebar.Plantillas]: '/plantillas_correos',
     };
 
     return routesMap[option] || null;

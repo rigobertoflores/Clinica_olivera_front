@@ -13,6 +13,7 @@ import { ChangePassComponent } from './components/change-pass/change-pass.compon
 import { TratamientosComponent } from './tratamientos/tratamientos.component';
 import { InformesoConfiguracionComponent } from './informeso-configuracion/informeso-configuracion.component';
 import { CalculadoraIMCComponent } from './calculadora-imc/calculadora-imc.component';
+import { PlantillasCorreosComponent } from './plantillas-correos/plantillas-correos.component';
 
 export const routes: Routes = [
     { 'path': 'login', component: LoginComponent },
@@ -28,4 +29,6 @@ export const routes: Routes = [
     { 'path': 'tratamientos', component: TratamientosComponent, canActivate: [AuthGuard] },
     { 'path': 'configuracion_informesoperatorios', component: InformesoConfiguracionComponent, canActivate: [AuthGuard] },
     { 'path': 'imc', component: CalculadoraIMCComponent, canActivate: [AuthGuard] },
+    { 'path': 'plantillas_correos', component: PlantillasCorreosComponent, canActivate: [AuthGuard] },
+    
 ];
