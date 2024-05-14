@@ -89,6 +89,22 @@ export class Service {
     );
   }
 
+  Delete(api: string, nombre_api: string, data: any): Observable<any> {
+    const url = `${api}${nombre_api}/${data}`;
+    return this.http.delete(url).pipe(
+      map((response: any) => {
+        if (response) {
+          if (response.hasError && response.errorCode == 401) {
+            return;
+          }
+          return response;
+        } else {
+          return [];
+        }
+      })
+    );
+  }
+
   GetTratamiento(): Observable<any> {
     const nombre_api = 'GetTratamientos';
     const url1 = `${this.apiTratamientos}${nombre_api}`;
