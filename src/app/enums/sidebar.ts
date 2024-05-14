@@ -4,5 +4,6 @@ export enum OpcionesSidebar {
     Tratamientos = 'tratamientos',
     AgregarPaciente = 'expediente_paciente',  
     ConfigHistorias = 'ConfigHistorias',  
-    NuevoUsuario = 'NuevoUsuario',  
+    NuevoUsuario = 'NuevoUsuario', 
+    Impresion = 'ConfiguracionImpresion',  
   }
