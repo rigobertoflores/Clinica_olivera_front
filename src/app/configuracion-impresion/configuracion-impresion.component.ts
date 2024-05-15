@@ -43,9 +43,12 @@ export class ConfiguracionImpresionComponent implements OnInit {
         this.user = JSON.parse(userJson).email.split('@')[0];
       }
     }
-     const userprint = this.listaimpre.find(
+    let userprint :   ConfiguracionImpresion  | undefined;
+    if(this.listaimpre!=undefined){
+      userprint = this.listaimpre.find(
        (print) => print.usuario == this.user
     );
+  }
     const id=this.configimpresion.get('id')?.value;
     if ((id == 0 || id==null) && userprint!=undefined) {
         Swal.fire({

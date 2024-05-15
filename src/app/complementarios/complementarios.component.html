@@ -1,0 +1,34 @@
+<div class="col-12">
+    <div class="card card-primary">
+        <div class="card-header">
+            <h4 class="card-title">Imagenes de la paciente</h4>
+        </div>
+        <div class="card-body">
+            <div class="row justify-content-center">
+                <div class="image-grid">
+                    <div *ngFor="let documento of documentos" class="image-container">
+                        <img [src]="documento.src" [alt]="documento.alt"
+                            (click)="openDialog(documento.src)">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="exampleInputFile">Subir Complementario</label>
+                    <div class="input-group">
+                        <div class="custom-file">
+                           <input #input type="file" class="custom-file-input"
+                                id="exampleInputFile"
+                                (change)="onFileSelected($event)">
+                            <label class="custom-file-label"
+                                for="exampleInputFile">Choose file</label>
+                        </div>
+                        <div class="input-group-append">
+                            <button type="button" class="btn btn-primary"
+                                (click)="upload()">Guardar Imagen</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

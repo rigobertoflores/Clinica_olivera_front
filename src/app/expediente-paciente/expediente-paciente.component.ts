@@ -25,6 +25,7 @@ import { TesteditorinformesoComponent } from '../testeditorinformeso/testeditori
 import { LoadingComponent } from '../loading/loading.component';
 import { catchError, finalize, of } from 'rxjs';
 import Swal from 'sweetalert2';
+import { ComplementariosComponent } from "../complementarios/complementarios.component";
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -36,12 +37,11 @@ export const appConfig: ApplicationConfig = {
 
 
 @Component({
-  selector: 'app-expediente-paciente',
-  standalone: true,
-  templateUrl: './expediente-paciente.component.html',
-  styleUrl: './expediente-paciente.component.css',
-  imports: [MenuComponent, SidebarComponent, ReactiveFormsModule, CommonModule, StandaloneGalleryComponent, TesteditorComponent, TesteditorHistoriaComponent,NotasComponent,LoadingComponent, LottieComponent,TesteditorinformesoComponent]
-
+    selector: 'app-expediente-paciente',
+    standalone: true,
+    templateUrl: './expediente-paciente.component.html',
+    styleUrl: './expediente-paciente.component.css',
+    imports: [MenuComponent, SidebarComponent, ReactiveFormsModule, CommonModule, StandaloneGalleryComponent, TesteditorComponent, TesteditorHistoriaComponent, NotasComponent, LoadingComponent, LottieComponent, TesteditorinformesoComponent, ComplementariosComponent]
 })
 
 export class ExpedientePacienteComponent implements OnInit {
