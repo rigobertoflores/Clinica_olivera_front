@@ -1,3 +1,4 @@
 export interface PrintText {
-    text: string;
+  text: string;
+  user: string;
   }
