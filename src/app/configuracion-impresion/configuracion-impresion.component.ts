@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, FormsModule } from '@angular/forms';
 import { SidebarComponent } from '../components/sidebar/sidebar.component';
 import { MenuComponent } from '../components/menu/menu.component';
@@ -26,7 +26,7 @@ export class ConfiguracionImpresionComponent implements OnInit {
   configimpresion: FormGroup;
   listaimpre: ConfiguracionImpresion[];
   user: string;
-  userseleccionado: number=0;
+  userseleccionado: number = 0;
 
   constructor(private authService: UserService, private Service: Service) {}
 
@@ -43,44 +43,42 @@ export class ConfiguracionImpresionComponent implements OnInit {
         this.user = JSON.parse(userJson).email.split('@')[0];
       }
     }
-    let userprint :   ConfiguracionImpresion  | undefined;
-    if(this.listaimpre!=undefined){
-      userprint = this.listaimpre.find(
-       (print) => print.usuario == this.user
-    );
-  }
-    const id=this.configimpresion.get('id')?.value;
-    if ((id == 0 || id==null) && userprint!=undefined) {
-        Swal.fire({
-          icon: 'error',
-          title: 'Oops...',
-          text: 'El Doctor ya cuenta con una plantilla de receta',
-        });
+    let userprint: ConfiguracionImpresion | undefined;
+    if (this.listaimpre != undefined) {
+      userprint = this.listaimpre.find((print) => print.usuario == this.user);
+    }
+    const id = this.configimpresion.get('id')?.value;
+    if ((id == 0 || id == null) && userprint != undefined) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'El Doctor ya cuenta con una plantilla de receta',
+      });
       this.resetForm();
       return;
     }
 
-      if (!this.configimpresion.invalid) {
-        const impresion: ConfiguracionImpresion = {
-          id: this.configimpresion.get('id')?.value || 0,
-          largo: this.configimpresion?.get('largo')?.value,
-          ancho: this.configimpresion.get('ancho')?.value,
-          margenDerecho: this.configimpresion?.get('margen_derecho')?.value,
-          margenIzquierdo: this.configimpresion.get('margen_izquierdo')?.value,
-          margenArriba: this.configimpresion?.get('margen_arriba')?.value,
-          margenAbajo: this.configimpresion.get('margen_abajo')?.value,
-          encabezado: this.configimpresion.get('encabezado')?.value,
-          espacio: this.configimpresion.get('espacio')?.value,
-          usuario: this.user,
-        };
-        this.Service.postData('PostConfiguraImprimir', impresion).subscribe(
-          (result: ConfiguracionImpresion[]) => {
-            this.listaimpre = result;
-            this.userseleccionado = 0;
-            this.resetForm();
-          }
-        );
-      }
+    if (!this.configimpresion.invalid) {
+      const impresion: ConfiguracionImpresion = {
+        id: this.configimpresion.get('id')?.value || 0,
+        largo: this.configimpresion?.get('largo')?.value,
+        ancho: this.configimpresion.get('ancho')?.value,
+        margenDerecho: this.configimpresion?.get('margen_derecho')?.value,
+        margenIzquierdo: this.configimpresion.get('margen_izquierdo')?.value,
+        margenArriba: this.configimpresion?.get('margen_arriba')?.value,
+        margenAbajo: this.configimpresion.get('margen_abajo')?.value,
+        encabezado: this.configimpresion.get('encabezado')?.value,
+        espacio: this.configimpresion.get('espacio')?.value,
+        usuario: this.user,
+      };
+      this.Service.postData('PostConfiguraImprimir', impresion).subscribe(
+        (result: ConfiguracionImpresion[]) => {
+          this.listaimpre = result;
+          this.userseleccionado = 0;
+          this.resetForm();
+        }
+      );
+    }
   }
 
   cargarFormulario() {
@@ -102,7 +100,7 @@ export class ConfiguracionImpresionComponent implements OnInit {
     this.Service.getUnico('ListaImpresionUsuario').subscribe(
       (data: ConfiguracionImpresion[]) => {
         if (data != null) {
-          this.listaimpre = data;          
+          this.listaimpre = data;
         }
       }
     );
@@ -116,7 +114,7 @@ export class ConfiguracionImpresionComponent implements OnInit {
         (print) => print.id == this.userseleccionado
       );
       if (userprint != null) {
-         this.configimpresion.get('id')?.setValue(userprint.id);
+        this.configimpresion.get('id')?.setValue(userprint.id);
         this.configimpresion.get('largo')?.setValue(userprint.largo);
         this.configimpresion.get('ancho')?.setValue(userprint.ancho);
         this.configimpresion

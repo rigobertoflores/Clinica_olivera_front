@@ -20,7 +20,7 @@
                                 id="exampleInputFile"
                                 (change)="onFileSelected($event)">
                             <label class="custom-file-label"
-                                for="exampleInputFile">Choose file</label>
+                                for="exampleInputFile">{{selectedFile?.name}}</label>
                         </div>
                         <div class="input-group-append">
                             <button type="button" class="btn btn-primary"
