@@ -5,7 +5,7 @@ import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import Swal from 'sweetalert2';
 import { Service } from '../Services/Service';
 import { Plantilla } from '../interface/Plantilla';
-import { UrlsBackend, UrlsPlantillas } from '../enums/urls_back';
+import { UrlsBackend, UrlsPacientes, UrlsPlantillas } from '../enums/urls_back';
 import { CommonModule } from '@angular/common';
 import { LoadingComponent } from '../loading/loading.component';
 
@@ -33,10 +33,13 @@ export class PlantillasCorreosComponent implements OnInit {
   plantillas: Plantilla[] = [];
   plantillaSelected: boolean = false;
   currentPlantillaId: any;
+  pacientesActivos: any;
+  pacientesInactivos: any;
 
   ngOnInit(): void {
     this.getPlantillas();
     this.cargarFormulario();
+    this.getPacientes();
     console.log('this.getPlantillas()', this.getPlantillas());
     console.log('plantillas', this.plantillas);
     console.log('allPlantillas', this.allPlantillas);
@@ -110,7 +113,7 @@ export class PlantillasCorreosComponent implements OnInit {
       console.log(this.agregarPForm.value);
       this.Service.PostData(
         UrlsBackend.ApiNotificacion,
-        UrlsPlantillas.Insert,
+        UrlsPlantillas.Post,
         plantillaNew
       ).subscribe((result) => {
         this.agregarPForm.patchValue({
@@ -132,7 +135,22 @@ export class PlantillasCorreosComponent implements OnInit {
     }
   }
 
-  getPacientes() {}
+  getPacientes() {
+    this.Service.GetData(
+      UrlsBackend.ApiPacientes,
+      UrlsPacientes.GetPacientesNotificaciones,
+      ''
+    ).subscribe({
+      next: (result: Plantilla[]) => {
+        console.log('pacientestodos', result);
+        this.pacientesActivos = result.filter(x => x == "pacientesActivos");
+      },
+      error: (error) => {
+        // Manejar error aquí
+      },
+      complete: () => {},
+    });
+  }
 
   filtrarPlantillas(buscarTexto: string) {
     if (!buscarTexto) {
@@ -164,33 +182,37 @@ export class PlantillasCorreosComponent implements OnInit {
 
   update() {
     this.showLoading = true;
-    // const treatmentsEdit: Tratamiento = {
-    //   id: this.mostrarTratamientosForm.get('idV')?.value,
-    //   nombre: this.mostrarTratamientosForm.get('nameV')?.value,
-    //   descripcionEnfermedad:
-    //     this.mostrarTratamientosForm.get('descriptionV')?.value,
-    //   tratamiento: this.mostrarTratamientosForm.get('treatmentsV')?.value,
-    //   palabrasClaves: this.mostrarTratamientosForm.get('wordsV')?.value,
-    // };
-    // this.Service.EditTratamiento(treatmentsEdit).subscribe({
-    //   next: (response) => {
-    //     Swal.fire({
-    //       position: 'center',
-    //       icon: 'success',
-    //       title: 'Se ha editado el tratamiento',
-    //       showConfirmButton: false,
-    //       timer: 2000,
-    //     });
-    //     this.cleanFormmMostrarTratamientos();
-    //     this.getTreatments();
-    //     this.tratamientoSeleccionado = false;
-    //   },
-    //   error: (error) => {
-    //     this.cleanFormmMostrarTratamientos();
-    //     this.tratamientoSeleccionado = false;
-    //     this.Loading = false;
-    //   },
-    // });
+    const plantillaEdit: Plantilla = {
+      id: this.mostrarPlantillaForm.get('idSelected')?.value,
+      Nombre: this.mostrarPlantillaForm.get('nameSelected')?.value,
+      FechaEnvio: this.mostrarPlantillaForm.get('fechaSelected')?.value,
+      Asunto: this.mostrarPlantillaForm.get('asuntoSelected')?.value,
+      CuerpoEmail: this.mostrarPlantillaForm.get('cuerpoSelected')?.value,
+      Adjunto: '',
+    };
+    this.Service.PostData(
+      UrlsBackend.ApiNotificacion,
+      UrlsPlantillas.Post,
+      plantillaEdit
+    ).subscribe({
+      next: (response) => {
+        Swal.fire({
+          position: 'center',
+          icon: 'success',
+          title: 'Se ha editado la plantilla',
+          showConfirmButton: false,
+          timer: 2000,
+        });
+        this.cleanFormMostrarPlantilla();
+        this.getPlantillas();
+        this.plantillaSelected = false;
+      },
+      error: (error) => {
+        this.cleanFormMostrarPlantilla();
+        this.plantillaSelected = false;
+        this.showLoading = false;
+      },
+    });
   }
 
   delete() {
@@ -208,7 +230,11 @@ export class PlantillasCorreosComponent implements OnInit {
       confirmButtonText: 'Si, eliminar',
     }).then((result) => {
       if (result.isConfirmed) {
-        this.Service.Delete(UrlsBackend.ApiNotificacion,UrlsPlantillas.Delete,id).subscribe({
+        this.Service.Delete(
+          UrlsBackend.ApiNotificacion,
+          UrlsPlantillas.Delete,
+          id
+        ).subscribe({
           next: (response) => {
             this.cleanFormMostrarPlantilla();
             this.getPlantillas();

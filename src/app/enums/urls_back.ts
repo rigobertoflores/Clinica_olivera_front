@@ -15,7 +15,11 @@ export enum UrlsTratamientos {
 export enum UrlsPlantillas {
   Get = 'GetPlantilla',
   GetById = 'GetPlantillaId',
-  Insert = 'PostInsertPlantillas',
-  Edit = '',
+  Post = 'PostPlantillas',
   Delete = 'DeletePlantilla',
+}
+
+export enum UrlsPacientes {
+  GetPacientesNotificaciones = 'GetPacientesNotificacionesCitas'
+  
 }

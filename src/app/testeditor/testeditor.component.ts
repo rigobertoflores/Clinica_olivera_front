@@ -119,10 +119,11 @@ tratamientoSeleccionado: number=0;
     confirmartratamiento(data:[id:number,data:string]){
       const trat= this.allTreatments.find(tratamiento => tratamiento.id == this.tratamientoSeleccionado);
       Swal.fire({
-        title: 'Seguro desea agregar el tratamiento: '+ trat?.nombre,
-        text:'Tratamiento : '+
-          trat?.tratamiento
-       ,
+        title: 'Seguro desea agregar el tratamiento: ' + trat?.nombre,
+        heightAuto: true,
+        width: 'auto',
+        padding: '1em',
+        text: 'Tratamiento : ' + trat?.tratamiento,
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
@@ -131,7 +132,8 @@ tratamientoSeleccionado: number=0;
       }).then((result) => {
         if (result.isConfirmed) {
           this.guardarTratamientoReceta(data);
-     }else this.tratamientoSeleccionado=0; });
+        } else this.tratamientoSeleccionado = 0;
+      });
     }
 
 
