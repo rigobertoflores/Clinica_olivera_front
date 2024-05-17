@@ -4,7 +4,7 @@ import { SidebarComponent } from '../components/sidebar/sidebar.component';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import Swal from 'sweetalert2';
 import { Service } from '../Services/Service';
-import { Plantilla } from '../interface/Plantilla';
+import { PacientesPlantillas, Plantilla } from '../interface/Plantilla';
 import { UrlsBackend, UrlsPacientes, UrlsPlantillas } from '../enums/urls_back';
 import { CommonModule } from '@angular/common';
 import { LoadingComponent } from '../loading/loading.component';
@@ -67,11 +67,15 @@ export class PlantillasCorreosComponent implements OnInit {
       buscarPlantilla: new FormControl(''),
     });
 
-    this.buscarPlantillaForm
-      .get('buscarPlantilla')
-      .valueChanges.subscribe((val: string) => {
-        this.filtrarPlantillas(val);
-      });
+    // this.buscarPlantillaForm
+    //   .get('buscarPlantilla')
+    //   .valueChanges.subscribe((val: string) => {
+    //     this.filtrarPlantillas(val);
+    //   });
+    
+     this.RelacionPlantillaPacienteForm = new FormGroup({
+      
+     });
   }
 
   getPlantillas() {
@@ -141,9 +145,10 @@ export class PlantillasCorreosComponent implements OnInit {
       UrlsPacientes.GetPacientesNotificaciones,
       ''
     ).subscribe({
-      next: (result: Plantilla[]) => {
+      next: (result: PacientesPlantillas) => {
         console.log('pacientestodos', result);
-        this.pacientesActivos = result.filter(x => x == "pacientesActivos");
+        this.pacientesActivos = result.pacientesActivos;
+        this.pacientesInactivos = result.pacientesInactivos;
       },
       error: (error) => {
         // Manejar error aquí

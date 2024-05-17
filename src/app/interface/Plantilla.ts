@@ -6,3 +6,16 @@ export interface Plantilla {
   FechaEnvio: string;
   Adjunto: string;
 }
+
+
+export interface PacientesPlantillas {
+  pacientesActivos: { pacientesActivos: NotificacionPacientes };
+  pacientesInactivos: { pacientesInactivos: NotificacionPacientes };
+}
+
+export interface NotificacionPacientes {
+  email: string;
+  fechaConsulta: string;
+  nombre: string;
+}
+

@@ -35,7 +35,7 @@
                             <h2 class="text-center display-4">Buscar Plantilla</h2>
                             <div class="row">
                                 <div class="col-md-8 offset-md-2">
-                                    <form [formGroup]="buscarPlantillaForm" method="post">
+                                    <form [formGroup]="buscarPlantillaForm" method="get">
                                         <div class="input-group">
                                             <input type="search" class="form-control form-control-lg"
                                                 placeholder="Escriba aquí" formControlName="buscarPlantilla">
@@ -154,128 +154,124 @@
 
                                                 <div class="card-body">
                                                     <div id="accordion">
-                                                        <div *ngFor="let plantilla of plantillas" class="card colorCard">
+                                                        <div *ngFor="let plantilla of plantillas"
+                                                            class="card colorCard">
                                                             <div class="card-header">
                                                                 <h4 class="card-title w-100">
                                                                     <a class="d-block w-100 collapsed"
                                                                         data-toggle="collapse" href="#collapseOne"
                                                                         aria-expanded="false">
-                                                                    {{ plantilla.nombre }}
+                                                                        {{ plantilla.nombre }}
                                                                     </a>
                                                                 </h4>
                                                             </div>
                                                             <div id="collapseOne" class="collapse"
-                                                                data-parent="#accordion" style="">
-                                                                <div class="card-body">
-                                                                    <div class="col-md-4">
-                                                                        <p><strong>Asunto:</strong> {{ plantilla.asunto }}</p>
-                                                                        <p><strong>Fecha de Envío:</strong> {{ plantilla.fechaEnvio }}</p>
-                                                                        <p><strong>Cuerpo del Email:</strong></p>
-                                                                        <p>{{ plantilla.cuerpoEmail }}</p>
-                                                                    </div>
-                                                                    <div class="col-md-6">
-                                                                    <div class="col-md-4">
-                                                                        <div class="card">
-                                                                            <div class="card-header">
-                                                                                <h3 class="card-title">
-                                                                                    <i class="fas fa-text-width"></i>
-                                                                                    Pacientes Agregados
-                                                                                </h3>
+                                                                data-parent="#accordion">
+                                                                <div class="card-body col-md-12">
+                                                                    <div class="col-md-12">
+                                                                        <div class="row">
+                                                                            <div class="col-md-3">
+                                                                                <p><strong>Asunto:</strong> {{
+                                                                                    plantilla.asunto
+                                                                                    }}</p>
+                                                                                <p><strong>Fecha de Envío:</strong> {{
+                                                                                    plantilla.fechaEnvio }}</p>
+                                                                                <p><strong>Cuerpo del Email:</strong>
+                                                                                </p>
+                                                                                <p>{{ plantilla.cuerpoEmail }}</p>
                                                                             </div>
-                                                                    
-                                                                            <div class="card-body">
-                                                                                <ul>
-                                                                                    <li>Lorem ipsum dolor sit amet</li>
-                                                                                    <li>Consectetur adipiscing elit</li>
-                                                                                    <li>Integer molestie lorem at massa</li>
-                                                                                    <li>Facilisis in pretium nisl aliquet</li>
-                                                                                    <li>Nulla volutpat aliquam velit
+<!-- Pacienetes a Agregar -->
+                                                                            <div class="col-md-3">
+                                                                                <div class="card">
+                                                                                    <div class="card-header">
+                                                                                        <h3 class="card-title">
+                                                                                            <i
+                                                                                                class="fas fa-text-width"></i>
+                                                                                            Pacientes Agregados
+                                                                                        </h3>
+                                                                                    </div>
+                                                                                    <div class="card-body">
                                                                                         <ul>
-                                                                                            <li>Phasellus iaculis neque</li>
-                                                                                            <li>Purus sodales ultricies</li>
-                                                                                            <li>Vestibulum laoreet porttitor sem</li>
-                                                                                            <li>Ac tristique libero volutpat at</li>
+                                                                                            <li>Lorem ipsum dolor sit
+                                                                                                amet</li>
                                                                                         </ul>
-                                                                                    </li>
-                                                                                    <li>Faucibus porta lacus fringilla vel</li>
-                                                                                    <li>Aenean sit amet erat nunc</li>
-                                                                                    <li>Eget porttitor lorem</li>
-                                                                                </ul>
+                                                                                    </div>
+                                                                                </div>
                                                                             </div>
-                                                                    
-                                                                        </div>
-                                                                    
-                                                                    </div>
-                                                                    <div class="col-md-4">
-                                                                        <div class="card">
-                                                                            <div class="card-header">
-                                                                                <h3 class="card-title">
-                                                                                    <i class="fas fa-text-width"></i>
-                                                                                    Pacientes Activos
-                                                                                </h3>
-                                                                            </div>
-                                                                    
-                                                                            <div class="card-body">
-                                                                                <ul>
-                                                                                    <li>Lorem ipsum dolor sit amet</li>
-                                                                                    <li>Consectetur adipiscing elit</li>
-                                                                                    <li>Integer molestie lorem at massa</li>
-                                                                                    <li>Facilisis in pretium nisl aliquet</li>
-                                                                                    <li>Nulla volutpat aliquam velit
+                                                                            <!-- Pacientes Activos -->
+                                                                            <div class="col-md-3">
+                                                                                <div class="card">
+                                                                                    <div class="card-header">
+                                                                                        <h3 class="card-title">
+                                                                                            <i
+                                                                                                class="fas fa-text-width"></i>
+                                                                                            Pacientes Activos
+                                                                                        </h3>
+                                                                                    </div>
+                                                                                    <div class="card-body">
                                                                                         <ul>
-                                                                                            <li>Phasellus iaculis neque</li>
-                                                                                            <li>Purus sodales ultricies</li>
-                                                                                            <li>Vestibulum laoreet porttitor sem</li>
-                                                                                            <li>Ac tristique libero volutpat at</li>
+                                                                                            <li>Lorem ipsum dolor sit
+                                                                                                amet</li>
+                                                                                          
                                                                                         </ul>
-                                                                                    </li>
-                                                                                    <li>Faucibus porta lacus fringilla vel</li>
-                                                                                    <li>Aenean sit amet erat nunc</li>
-                                                                                    <li>Eget porttitor lorem</li>
-                                                                                </ul>
+                                                                                    </div>
+                                                                                </div>
                                                                             </div>
-                                                                    
-                                                                        </div>
-                                                                    
-                                                                    </div>
-                                                                    <div class="col-md-4">
-                                                                        <div class="card">
-                                                                            <div class="card-header">
-                                                                                <h3 class="card-title">
-                                                                                    <i class="fas fa-text-width"></i>
-                                                                                    Pacientes Inactivos
-                                                                                </h3>
-                                                                            </div>
-                                                                    
-                                                                            <div class="card-body">
-                                                                                <ul>
-                                                                                    <li>Lorem ipsum dolor sit amet</li>
-                                                                                    <li>Consectetur adipiscing elit</li>
-                                                                                    <li>Integer molestie lorem at massa</li>
-                                                                                    <li>Facilisis in pretium nisl aliquet</li>
-                                                                                    <li>Nulla volutpat aliquam velit
+                                                                            <!-- Pacientes inactivos -->
+                                                                            <div class="col-md-3">
+                                                                                <div class="card">
+                                                                                    <div class="card-header">
+                                                                                        <h3 class="card-title">
+                                                                                            <i
+                                                                                                class="fas fa-text-width"></i>
+                                                                                            Pacientes Inactivos
+                                                                                        </h3>
+                                                                                    </div>
+                                                                                    <div class="card-body">
                                                                                         <ul>
-                                                                                            <li>Phasellus iaculis neque</li>
-                                                                                            <li>Purus sodales ultricies</li>
-                                                                                            <li>Vestibulum laoreet porttitor sem</li>
-                                                                                            <li>Ac tristique libero volutpat at</li>
+                                                                                            <li>Lorem ipsum dolor sit
+                                                                                                amet</li>
+                                                                                            <li>Consectetur adipiscing
+                                                                                                elit</li>
+                                                                                            <li>Integer molestie lorem
+                                                                                                at massa</li>
+                                                                                            <li>Facilisis in pretium
+                                                                                                nisl aliquet</li>
+                                                                                            <li>Nulla volutpat aliquam
+                                                                                                velit
+                                                                                                <ul>
+                                                                                                    <li>Phasellus
+                                                                                                        iaculis neque
+                                                                                                    </li>
+                                                                                                    <li>Purus sodales
+                                                                                                        ultricies</li>
+                                                                                                    <li>Vestibulum
+                                                                                                        laoreet
+                                                                                                        porttitor sem
+                                                                                                    </li>
+                                                                                                    <li>Ac tristique
+                                                                                                        libero volutpat
+                                                                                                        at</li>
+                                                                                                </ul>
+                                                                                            </li>
+                                                                                            <li>Faucibus porta lacus
+                                                                                                fringilla vel</li>
+                                                                                            <li>Aenean sit amet erat
+                                                                                                nunc</li>
+                                                                                            <li>Eget porttitor lorem
+                                                                                            </li>
                                                                                         </ul>
-                                                                                    </li>
-                                                                                    <li>Faucibus porta lacus fringilla vel</li>
-                                                                                    <li>Aenean sit amet erat nunc</li>
-                                                                                    <li>Eget porttitor lorem</li>
-                                                                                </ul>
+                                                                                    </div>
+                                                                                </div>
                                                                             </div>
-                                                                    
-                                                                        </div>
-                                                                    
-                                                                    </div>
+                                                                        </div> <!-- Cierre de row -->
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
+
 
                                             </div>
 
