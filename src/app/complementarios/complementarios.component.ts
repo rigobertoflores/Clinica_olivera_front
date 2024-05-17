@@ -22,6 +22,7 @@ import { CommonModule } from '@angular/common';
     FormsModule,
     ReactiveFormsModule,
     CommonModule,
+    StandaloneGalleryComponent
   ],
 })
 export class ComplementariosComponent implements OnInit {
