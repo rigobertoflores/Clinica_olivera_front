@@ -841,6 +841,7 @@
                                                         <div *ngFor="let image of images" class="image-container">
                                                             <img [src]="image.src" [alt]="image.alt"
                                                                 (click)="openDialog(image.src)">
+                                                                <span class="fas fa-trash delete-icon" (click)="deleteImage(image.id)"></span>
                                                         </div>
                                                     </div>
 

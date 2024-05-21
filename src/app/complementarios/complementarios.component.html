@@ -9,6 +9,7 @@
                     <div *ngFor="let documento of documentos" class="image-container">
                         <img [src]="documento.src" [alt]="documento.alt"
                             (click)="openDialog(documento.src)">
+                            <span class="fas fa-trash delete-icon" (click)="deleteComplementario(documento.id)"></span>
                     </div>
                 </div>
 

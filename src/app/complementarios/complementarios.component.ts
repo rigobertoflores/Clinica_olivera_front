@@ -28,7 +28,7 @@ import { CommonModule } from '@angular/common';
 export class ComplementariosComponent implements OnInit {
   selectedFile: any;
   parametro: any;
-  documentos: { src: string; alt: string;ext:string }[];
+  documentos: { src: string; alt: string;ext:string,id:number}[];
 
   constructor(
     private route: ActivatedRoute,
@@ -82,7 +82,8 @@ export class ComplementariosComponent implements OnInit {
         this.documentos = data.map((documento) => ({
           src: `data:image/jpeg;base64,${documento.blobData}`,
           alt: documento.nombre,
-          ext:documento.ext
+          ext:documento.ext,
+          id:documento.id
         }));
         this.cd.detectChanges();
       });
@@ -105,8 +106,33 @@ export class ComplementariosComponent implements OnInit {
         this.documentos = data.map((documento) => ({
           src: `data:image/jpeg;base64,${documento.blobData}`,
           alt: documento.nombre,
-          ext:documento.ext
+          ext:documento.ext,
+          id:documento.id
         }));
     });
+  }
+  
+  deleteComplementario(id:number){
+    this.Service.postData('DeleteComplementario',id )
+    .pipe(
+      catchError((error) => {
+        console.error('Error uploading profile image:', error);
+        return of(null);  // Continúa el flujo incluso con error
+      }),
+      finalize(() => {
+        this.cd.detectChanges();  // Forzar detección de cambios en finalize
+      })
+    )
+    .subscribe(
+      (data: Complementos[]) => {
+        this.documentos = data.map((documento) => ({
+          src: `data:image/jpeg;base64,${documento.blobData}`,
+          alt: documento.nombre,          
+          ext:documento.ext,
+          id:documento.id
+        }));
+        this.cd.detectChanges();  // Opcional, si es necesario después de cambiar 'images'
+      }
+    );
   }
 }

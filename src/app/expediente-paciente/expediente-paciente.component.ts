@@ -49,7 +49,7 @@ export class ExpedientePacienteComponent implements OnInit {
   parametro: string | null = null;
   pacientedatos: Paciente;
   PacienteFormulario: FormGroup;
-  images: { src: string; alt: string; }[];
+  images: { src: string; alt: string; id:number }[];
   imagenperfil: { src: string };
   imagenesPaciente: ImagenPaciente[];
   expediente: Expediente;
@@ -250,7 +250,8 @@ export class ExpedientePacienteComponent implements OnInit {
         if(data!=null)
         this.images = data.map((img) => ({
           src: `data:image/jpeg;base64,${img.blobData}`,
-          alt: img.letra
+          alt: img.letra,
+          id:img.id
         }));
       }
     );
@@ -313,29 +314,6 @@ export class ExpedientePacienteComponent implements OnInit {
         }
       });
     }
-  }
-
-
-  obtenerDatosDesdeHijo() {
-    // this.hijoComponent.datosDisponibles.subscribe(datos => {
-    //   console.log('Datos recibidos del componente hijo:', datos);
-    //   if(datos){
-    //     const receta : RecetaxPaciente={clave:this.parametro || "0",receta:datos,fecha: this.fechaActual,id:this.editreceta}
-    //     this.Service.postData('PostReceta',receta).subscribe(
-    //       (result:RecetaxPaciente[])=>{
-    //        this.recetas=result;
-    //        console.log(result);
-    //       }
-    //     )
-    //   }
-    // });
-  }
-
-  obtenerDatosDesdeHijoActualizados() {
-    // this.hijoComponent.testeditordata.subscribe(datos => {
-    //   console.log('Datos recibidos del componente hijo:', datos);
-
-    // });
   }
 
   GuardarReceta(receta: any) {
@@ -426,28 +404,6 @@ export class ExpedientePacienteComponent implements OnInit {
     reader.readAsDataURL(file);
   }
 
-  // upload(): void {
-  //   this.showLoading =true;
-  //   if (!this.selectedFile) {
-  //     alert('Por favor, selecciona un archivo primero.');
-  //     return;
-  //   }
-
-  //   const formData = new FormData();
-  //   formData.append('image', this.selectedFile, this.selectedFile.name);
-  //   formData.append('id', this.parametro || '');
-  //   this.Service.postData('PostImagen', formData).subscribe(
-  //     (data: ImagenPaciente[]) => {
-  //       this.images = data.map((img) => ({
-  //         src: `data:image/jpeg;base64,${img.blobData}`,
-  //         alt: img.letra
-  //       }));
-  //     }
-  //         )
-  // }
-
- 
-
   upload(): void {
     this.showLoading = true;
     this.cd.detectChanges();  // Forzar la detección de cambios aquí
@@ -484,7 +440,8 @@ export class ExpedientePacienteComponent implements OnInit {
         (data: ImagenPaciente[]) => {
           this.images = data.map((img) => ({
             src: `data:image/jpeg;base64,${img.blobData}`,
-            alt: img.letra
+            alt: img.letra,
+            id:img.id
           }));
           this.cd.detectChanges();  // Opcional, si es necesario después de cambiar 'images'
         }
@@ -576,7 +533,29 @@ export class ExpedientePacienteComponent implements OnInit {
         );
     }
 
-  
+    deleteImage(id:number){
+      this.Service.postData('DeleteImagenPaciente',id )
+      .pipe(
+        catchError((error) => {
+          console.error('Error uploading profile image:', error);
+          return of(null);  // Continúa el flujo incluso con error
+        }),
+        finalize(() => {
+          this.showLoading = false;
+          this.cd.detectChanges();  // Forzar detección de cambios en finalize
+        })
+      )
+      .subscribe(
+        (data: ImagenPaciente[]) => {
+          this.images = data.map((img) => ({
+            src: `data:image/jpeg;base64,${img.blobData}`,
+            alt: img.letra,
+            id:img.id
+          }));
+          this.cd.detectChanges();  // Opcional, si es necesario después de cambiar 'images'
+        }
+      );
+    }
     
   
 }
