@@ -41,12 +41,12 @@
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" href="#informe" data-toggle="tab">Justificaciones e Informes</a>
+                                </li>                               
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#analisis" data-toggle="tab">Complementarios</a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" href="#imagendeperfil" data-toggle="tab">Imagen de Perfil</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="#analisis" data-toggle="tab">Complementarios</a>
                                 </li>
                                 
                             </ul>
@@ -92,7 +92,7 @@
                                                         </div>
                                                         <div class="row">
                                                             <div class="col-md-12 colsm-12">
-                                                                <div class="card card-primary card-outline">
+                                                                <div class="card card-primary card-outline collapsed-card">
                                                                     <div class="card-header">
                                                                         <h2 class="card-title m-0">Información Personal
                                                                             y de Contacto</h2>
@@ -100,7 +100,7 @@
                                                                             <button type="button" class="btn btn-tool"
                                                                                 data-card-widget="collapse"
                                                                                 title="Collapse">
-                                                                                <i class="fas fa-minus"
+                                                                                <i class="fas fa-plus"
                                                                                     style="color: black; "></i>
                                                                             </button>
                                                                         </div>
@@ -236,7 +236,7 @@
                                                         </div>
                                                         <div class="row">
                                                             <div class="col-md-12 colsm-12">
-                                                                <div class="card card-primary card-outline">
+                                                                <div class="card card-primary card-outline collapsed-card">
                                                                     <div class="card-header">
                                                                         <h2 class="card-title m-0">Información del
                                                                             Esposo (si aplica)</h2>
@@ -244,7 +244,7 @@
                                                                             <button type="button" class="btn btn-tool"
                                                                                 data-card-widget="collapse"
                                                                                 title="Collapse">
-                                                                                <i class="fas fa-minus"
+                                                                                <i class="fas fa-plus"
                                                                                     style="color: black; "></i>
                                                                             </button>
                                                                         </div>
@@ -293,7 +293,7 @@
                                                         </div>
                                                         <div class="row">
                                                             <div class="col-md-12 colsm-12">
-                                                                <div class="card card-primary card-outline">
+                                                                <div class="card card-primary card-outline collapsed-card">
                                                                     <div class="card-header">
                                                                         <h2 class="card-title m-0">Historial Médico y
                                                                             Antecedentes Familiares</h2>
@@ -301,7 +301,7 @@
                                                                             <button type="button" class="btn btn-tool"
                                                                                 data-card-widget="collapse"
                                                                                 title="Collapse">
-                                                                                <i class="fas fa-minus"
+                                                                                <i class="fas fa-plus"
                                                                                     style="color: black; "></i>
                                                                             </button>
                                                                         </div>
@@ -388,7 +388,7 @@
                                                         </div>
                                                         <div class="row">
                                                             <div class="col-md-12 colsm-12">
-                                                                <div class="card card-primary card-outline">
+                                                                <div class="card card-primary card-outline collapsed-card">
                                                                     <div class="card-header">
                                                                         <h2 class="card-title m-0">Hábitos Personales
                                                                         </h2>
@@ -396,7 +396,7 @@
                                                                             <button type="button" class="btn btn-tool"
                                                                                 data-card-widget="collapse"
                                                                                 title="Collapse">
-                                                                                <i class="fas fa-minus"
+                                                                                <i class="fas fa-plus"
                                                                                     style="color: black; "></i>
                                                                             </button>
                                                                         </div>
@@ -476,7 +476,7 @@
                                                         </div>
                                                         <div class="row">
                                                             <div class="col-md-12 colsm-12">
-                                                                <div class="card card-primary card-outline">
+                                                                <div class="card card-primary card-outline collapsed-card">
                                                                     <div class="card-header">
                                                                         <h2 class="card-title m-0">Grupo Sanguíneo y
                                                                             Enfermedades Previas</h2>
@@ -484,7 +484,7 @@
                                                                             <button type="button" class="btn btn-tool"
                                                                                 data-card-widget="collapse"
                                                                                 title="Collapse">
-                                                                                <i class="fas fa-minus"
+                                                                                <i class="fas fa-plus"
                                                                                     style="color: black; "></i>
                                                                             </button>
                                                                         </div>
@@ -883,7 +883,7 @@
                                     <div class="col-12">
                                         <div class="card card-primary">
                                             <div class="card-header">
-                                                <h4 class="card-title">Imagenes de la paciente</h4>
+                                                <h4 class="card-title">Imagenes de Perfil</h4>
                                             </div>
                                             <div class="card-body">
                                                 <div class="row justify-content-center">
@@ -902,7 +902,7 @@
                                                                     (change)="onFileSelectedPerfil($event)">
                                                                     <canvas id="canvas" width="128" height="128" style="display:none;"></canvas>
                                                                 <label class="custom-file-label"
-                                                                    for="exampleInputFile">Choose file</label>
+                                                                    for="exampleInputFile">{{selectedFile?.name}}</label>
                                                             </div>
                                                             <div class="input-group-append">
                                                                 <button type="button" class="btn btn-primary"

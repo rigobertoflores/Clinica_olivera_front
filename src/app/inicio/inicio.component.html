@@ -68,7 +68,7 @@
                                                     Fecha prox.Consulta
                                                 </th>
                                                 <td mat-cell *matCellDef="let element">
-                                                    {{ element.fechaConsulta }}
+                                                       {{ convertirFecha(element.fechaConsulta) }}
                                                 </td>
                                             </ng-container>
 
@@ -89,7 +89,7 @@
                                                     sortActionDescription="Ordenar por sexo">
                                                     Sexo
                                                 </th>
-                                                <td mat-cell *matCellDef="let element">D
+                                                <td mat-cell *matCellDef="let element">
                                                     {{ element.sexo }}
                                                 </td>
                                             </ng-container>

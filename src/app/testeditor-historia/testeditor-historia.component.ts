@@ -7,6 +7,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { Service } from './../Services/Service';
 import { CommonModule } from '@angular/common';
 import { Expediente } from '../interface/Expediente';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-testeditor-historia',
@@ -87,9 +88,8 @@ export class TesteditorHistoriaComponent implements OnInit,AfterViewInit {
           expediente1: data.expediente1 || "",
           id:data.id,
           historiaId:data.historiaId
+        }       
         }
-       
-      }
       setTimeout(() => this.ajustarAltura(document.getElementById('nombreinputtexthistoria') as HTMLTextAreaElement), 0);
     }
     );
@@ -112,6 +112,13 @@ export class TesteditorHistoriaComponent implements OnInit,AfterViewInit {
               
             }
             setTimeout(() => this.ajustarAltura(document.getElementById('nombreinputtexthistoria') as HTMLTextAreaElement), 0);
+            Swal.fire({
+              position: 'center',
+              icon: 'success',
+              title: 'Se actualizó la historia del paciente',
+              showConfirmButton: false,
+              timer: 2000,
+            });
         }
       )   
     

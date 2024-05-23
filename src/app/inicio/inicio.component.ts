@@ -157,4 +157,19 @@ export class InicioComponent implements OnInit, AfterViewInit {
     this.router.navigate(['/expediente_paciente', 0]);
     }
   
+    convertirFecha(fecha: string): string {
+      const partes = fecha.split('-');
+      if (partes.length !== 3) {
+        return '01/01/1992'
+      }
+  
+      const [year, month, day] = partes;
+  
+      // Validar que los componentes de la fecha son numéricos
+      if (isNaN(Number(year)) || isNaN(Number(month)) || isNaN(Number(day))) {
+        return '01/01/1992'
+      }
+  
+      return `${day.padStart(2, '0')}/${month.padStart(2, '0')}/${year}`;
+  }
 }

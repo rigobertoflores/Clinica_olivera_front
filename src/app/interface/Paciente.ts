@@ -52,6 +52,6 @@ export interface Paciente {
   displasias: string;
   alergia: string;
   nombre: string;
-  fechaConsulta: string | null;
-  fechaUltimaConsulta: string | null;
+  fechaConsulta: string;
+  fechaUltimaConsulta: string;
 }

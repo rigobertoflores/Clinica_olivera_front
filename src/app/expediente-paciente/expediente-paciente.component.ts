@@ -555,9 +555,8 @@ export class ExpedientePacienteComponent implements OnInit {
           this.cd.detectChanges();  // Opcional, si es necesario después de cambiar 'images'
         }
       );
-    }
+    }    
     
-  
 }
    
 
