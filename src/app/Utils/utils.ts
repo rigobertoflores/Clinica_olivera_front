@@ -10,7 +10,8 @@ static  getRouteForOption(option: OpcionesSidebar): string | null {
       [OpcionesSidebar.AgregarPaciente]:'/expediente_paciente',
       [OpcionesSidebar.ConfigHistorias]:'/configuracion_historias',
       [OpcionesSidebar.NuevoUsuario]:'/register',
-      [OpcionesSidebar.Impresion]:'/configuracion_impresion'
+      [OpcionesSidebar.Impresion]:'/configuracion_impresion',
+      [OpcionesSidebar.ConfiguracionInforme]:'/configuracion_informesoperatorios'
     };
 
     return routesMap[option] || null;

@@ -21,3 +21,6 @@
 .btn-primary.btn-block {
   margin-top: 10px; /* Espaciado superior para separarlo del textarea */
 }
+.content-header {
+  padding: 60px 10px 10px 10px !important;
+}

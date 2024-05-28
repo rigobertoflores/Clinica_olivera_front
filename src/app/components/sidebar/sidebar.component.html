@@ -1,4 +1,4 @@
-<aside class="main-sidebar sidebar-dark-primary  elevation-4 fijar">
+<aside class="main-sidebar sidebar-dark-primary  elevation-4">
   <div class="main-content ">
   
   <a (click)="navigateTo(opcionesSB.Home)" class="brand-link bg-light logo-switch">
@@ -31,7 +31,15 @@
         <div class="os-content" style="padding: 0px 8px; height: 100%; width: 100%;">
           
           <nav class="mt-2">
-            <ul class="nav nav-pills nav-sidebar nav-child-indent flex-column" data-widget="treeview" role="menu">
+            <ul class="nav nav-pills nav-sidebar nav-child-indent flex-column" data-widget="treeview" role="menu">           
+             <li class="nav-item">
+                <a (click)="navigateTo(opcionesSB.Home)" class="nav-link">
+                  <i class="nav-icon fa fa-user"></i>
+                  <p>
+                    Inicio
+                  </p>
+                </a>
+              </li>
               <li class="nav-item">
                 <a (click)="navigateTo(opcionesSB.Profile)" class="nav-link">
                   <i class="nav-icon fa fa-user"></i>
@@ -84,6 +92,14 @@
               </li>
               <li class="nav-item">
                 <a (click)="navigateTo(opcionesSB.Impresion)" class="nav-link">
+                  <i class="nav-icon  fa-solid fa-file-medical"></i>
+                  <p>
+                    Configurar impresión
+                  </p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a (click)="navigateTo(opcionesSB.ConfiguracionInforme)" class="nav-link">
                   <i class="nav-icon  fa-solid fa-file-medical"></i>
                   <p>
                     Configurar impresión

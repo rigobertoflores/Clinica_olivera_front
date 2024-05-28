@@ -6,4 +6,5 @@ export enum OpcionesSidebar {
     ConfigHistorias = 'ConfigHistorias',  
     NuevoUsuario = 'NuevoUsuario', 
     Impresion = 'ConfiguracionImpresion',  
+    ConfiguracionInforme = 'ConfiguracionInforme',  
   }

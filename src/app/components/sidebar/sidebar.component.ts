@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Renderer2, RendererFactory2 } from '@angular/core';
 import { UserService } from '../../Services/user.service';
 import { Router } from '@angular/router';
 import { OpcionesSidebar } from '../../enums/sidebar';
@@ -19,8 +19,9 @@ export class SidebarComponent implements OnInit {
   imagendefault: string = 'assets/user4-128x128.jpg';
   imagenPerfilUrl: string | null;
   opcionesSB: typeof OpcionesSidebar;
+  private renderer: Renderer2;
 
-  constructor(private authService: UserService, private router: Router) {
+  constructor(private authService: UserService, private router: Router,rendererFactory: RendererFactory2) {
     this.routing = Utils;
     if (this.authService.isAuthenticated()) {
       const userJson = localStorage.getItem('user');
@@ -30,6 +31,7 @@ export class SidebarComponent implements OnInit {
         console.log('user logado', this.user);
       }
     }
+    this.renderer = rendererFactory.createRenderer(null, null);
   }
 
   async ngOnInit() {
@@ -40,6 +42,9 @@ export class SidebarComponent implements OnInit {
       localStorage.getItem('photoURL')
     );
     this.opcionesSB = OpcionesSidebar;
+    this.renderer.removeClass(document.body, 'sidebar-open');
+    this.renderer.addClass(document.body, 'sidebar-closed');
+    this.renderer.addClass(document.body, 'sidebar-collapse');
   }
 
   navigateTo(option: OpcionesSidebar): void {

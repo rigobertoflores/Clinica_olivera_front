@@ -9,3 +9,7 @@
   font-weight: 600;
   padding: 5px;
 }
+
+.content-header {
+  padding: 60px 10px 10px 10px !important;
+}

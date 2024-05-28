@@ -11,3 +11,7 @@
   buttonedit:hover {
     background-color: transparent; /* Mantiene el fondo transparente */
   }
+
+  .content-header {
+    padding: 60px 10px 10px 10px !important;
+}

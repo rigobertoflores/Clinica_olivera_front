@@ -7,3 +7,6 @@
     cursor: pointer; /* Cambia el cursor para indicar que es clickeable */
     text-decoration: underline; /* Subraya el texto para simular un enlace */
   }
+  .content-header {
+    padding: 60px 10px 10px 10px !important;
+}
