@@ -11,8 +11,6 @@
                     <li class="nav-item"><a class="nav-link" href="#nuevaPlantila" data-toggle="tab">Agregar
                             Plantilla</a>
                     </li>
-                    <li class="nav-item"><a class="nav-link" href="#agregarPacientesAPlantillas"
-                            data-toggle="tab">Agregar usuarios a las plantillas</a></li>
                 </ul>
             </div>
             <div class="card-body">
@@ -50,22 +48,45 @@
                             </div>
                         </div>
                         <div class="row pt-4">
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <div class="card card-primary">
                                     <div class="card-body">
-                                        <h2>Plantillas de Correos</h2>
-                                        <ul>
-                                            <li *ngFor="let plantilla of plantillas" class="texto pt-2"
-                                                (click)="viewDetails(plantilla)">
-                                                <span class="icono"><i class="fa-solid fa-transporter-empty"></i></span>
-                                                {{ plantilla.nombre }}<br>
-                                            </li>
+                                        <h2>Plantillas de Correos
+                                            <span class="question">
+                                                <i class="fa-solid fa-circle-question"
+                                                    title="De click en el nombre de la plantilla para editar o eliminar"></i>
+                                            </span>
+                                        </h2>
+                                        <ul class="no-bullets">
+                                            <div *ngFor="let plantilla of plantillas" class="form-group">
+                                                <li class="texto pt-2">
+                                                    <div class="plantilla-item">
+                                                        <span class="icono">
+                                                            <i class="fa-solid fa-envelope-circle-check"></i>
+                                                        </span>
+                                                        <span class="plantilla-nombre"
+                                                            title="De click en el nombre para editar o eliminar"
+                                                            (click)="viewDetails(plantilla)">
+                                                            {{ plantilla.nombre }}
+                                                        </span>
+                                                        <button type="button"
+                                                            (click)="mostrarAgregarPacientes(plantilla)"
+                                                            class="btn btn-block btn-outline-primary btn-xs btnAgregar"
+                                                            title="Agregar usuarios a la plantilla">
+                                                            <span class="icono">
+                                                                <i class="fa-solid fa-user-plus"></i>
+                                                            </span>
+                                                        </button>
+                                                    </div>
+                                                </li>
+                                                <br>
+                                            </div>
                                         </ul>
                                     </div>
                                 </div>
                             </div>
-
-                            <div class="col-md-6" *ngIf="plantillaSelected">
+                            <!-- Visualizar plantilla seleccionada -->
+                            <div class="col-md-8" *ngIf="plantillaSelected">
                                 <div class="card card-primary">
                                     <div class="card-body">
                                         <form [formGroup]="mostrarPlantillaForm" method="post">
@@ -106,12 +127,149 @@
 
                                 </div>
                             </div>
+                            <!-- Termina Visualizar plantilla seleccionada -->
+                            <!-- Agregar Pacienetes a plantilla -->
+                            <div class="col-md-8" *ngIf="modalAgregarPacientes">
+                                <div class="card card-primary">
+                                    <div class="card-header">
+                                        <h3 class="card-title">Agregar Pacientes
+                                            <span class="icono">
+                                                <i class="fa-solid fa-users"></i>
+                                            </span>
+                                        </h3>
+                                    </div>
+
+                                    <div class="card-body">
+                                        <form [formGroup]="RelacionPlantillaPacienteForm" method="post">
+                                            <div class="col-md-12">
+                                                <div class="card-body col-md-12">
+                                                    <div class="col-md-12">
+                                                        <div class="row">
+                                                            <div class="col-sm-12">
+                                                                <div class="form-group d-flex justify-content-end">
+                                                                    <div class="form-check form-check-inline">
+                                                                        <input class="form-check-input" type="radio"
+                                                                            formControlName="pacientesTipo"
+                                                                            value="activos" id="pActivos">
+                                                                        <label class="form-check-label"
+                                                                            for="pActivos">Pacientes Activos</label>
+                                                                    </div>
+                                                                    <div class="form-check form-check-inline">
+                                                                        <input class="form-check-input" type="radio"
+                                                                            formControlName="pacientesTipo"
+                                                                            value="inactivos" id="pInactivos">
+                                                                        <label class="form-check-label"
+                                                                            for="pInactivos">Pacientes Inactivos</label>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-md-4">
+                                                                <input type="hidden" formControlName="idPlantPac">
+                                                                <p><strong>Asunto:</strong> {{
+                                                                    RelacionPlantillaPacienteForm.get('asuntoPlantPac').value
+                                                                    }}</p>
+                                                                <p><strong>Fecha de Envío:</strong>
+                                                                    {{RelacionPlantillaPacienteForm.get('fechaPlantPac').value
+                                                                    }}</p>
+                                                                <p><strong>Cuerpo del Email:</strong>
+                                                                </p>
+                                                                <p>{{
+                                                                    RelacionPlantillaPacienteForm.get('cuerpoPlantPac').value
+                                                                    }}</p>
+                                                            </div>
+
+                                                            <!-- Pacientes Agregados -->
+                                                            <div class="col-md-4">
+                                                                <div class="card">
+                                                                    <div class="card-header">
+                                                                        <h3 class="card-title">
+                                                                            <i class="fa-solid fa-users-viewfinder"></i>
+                                                                            Pacientes Agregados
+                                                                        </h3>
+                                                                    </div>
+                                                                    <div class="card-body">
+                                                                        <div class="pacientes-container"
+                                                                            *ngIf="pacientesVinculados && pacientesVinculados.length > 0; else noVinculados">
+                                                                            <ul class="no-bullets">
+                                                                                <li
+                                                                                    *ngFor="let paciente of pacientesVinculados">
+                                                                                    <i class="icono-agregar fa-solid fa-user-minus icono"
+                                                                                        (click)="devincularPaciente(paciente)"
+                                                                                        style="cursor: pointer; margin-left: 10px;"></i>
+                                                                                    <span>{{paciente.nombrePaciente}}
+                                                                                        <br><br></span>
+                                                                                </li>
+                                                                            </ul>
+                                                                        </div>
+                                                                        <ng-template #noVinculados>
+                                                                            <p>No existen pacientes vinculados a la
+                                                                                plantilla
+                                                                                actualmente.</p>
+                                                                        </ng-template>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <!-- Pacientes-->
+                                                            <div class="col-md-4">
+                                                                <div class="card">
+                                                                    <div class="card-header">
+                                                                        <h3 class="card-title .colorPActivos">
+                                                                            <i class={{iconoHeaderPacientes}}></i>
+                                                                            {{headerPacientes}}
+                                                                        </h3>
+                                                                    </div>
+                                                                    <div class="card-body">
+                                                                        <div class="pacientes-container">
+                                                                            <div *ngFor="let paciente of allPacientes">
+                                                                                <ul class="no-bullets">
+                                                                                    <li><i class="icono-agregar fa-solid fa-user-plus icono"
+                                                                                            (click)="agregarPaciente(paciente)"
+                                                                                            style="cursor: pointer; margin-left: 10px;"></i>
+                                                                                        <span>{{paciente.nombre}}
+                                                                                            <br><br></span>
+                                                                                    </li>
+                                                                                </ul>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                        </div> <!-- Cierre de row -->
+                                                        <div class="col-sm-4">
+                                                            <button type="button"
+                                                                class="btn btn-block btn-outline-primary"
+                                                                (click)="guardarnuevosVinculos()">
+                                                                Guardar <span
+                                                                    class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                                                    {{pacientesVinculados.length}}
+                                                                    <span class="visually-hidden">Pacientes
+                                                                        vinculados</span>
+                                                                </span></button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Termina Agregar Pacienetes a plantilla -->
                         </div>
                     </div>
 
                     <div class="tab-pane" id="nuevaPlantila">
                         <div class="col-md-12">
                             <div class="card card-primary">
+                                <div class="card-header">
+                                    <h3 class="card-title">Agregar Plantilla
+                                        <span class="icono">
+                                            <i class="fa-solid fa-address-card"></i>
+                                        </span>
+                                    </h3>
+                                </div>
                                 <div class="card-body">
                                     <form [formGroup]="agregarPForm" method="post">
                                         <div class="form-group">
@@ -119,6 +277,7 @@
                                                 formControlName="name" placeholder="Nombre de la plantilla:">
                                         </div>
                                         <div class="form-group">
+                                            <label for="inputFecha">Fecha para enviar plantilla</label>
                                             <input #input type="date" id="inputFecha" formControlName="fecha"
                                                 class="form-control" />
                                         </div>
@@ -140,155 +299,10 @@
                             </div>
                         </div>
                     </div>
-
-                    <div class="tab-pane" id="agregarPacientesAPlantillas">
-                        <div class="col-md-12">
-                            <div class="card card-primary">
-                                <div class="card-body">
-                                    <form [formGroup]="RelacionPlantillaPacienteForm" method="post">
-                                        <div class="col-md-12">
-                                            <div class="card">
-                                                <div class="card-header">
-                                                    <h3 class="card-title">Agregar Pacientes</h3>
-                                                </div>
-
-                                                <div class="card-body">
-                                                    <div id="accordion">
-                                                        <div *ngFor="let plantilla of plantillas"
-                                                            class="card colorCard">
-                                                            <div class="card-header">
-                                                                <h4 class="card-title w-100">
-                                                                    <a class="d-block w-100 collapsed"
-                                                                        data-toggle="collapse" href="#collapseOne"
-                                                                        aria-expanded="false">
-                                                                        {{ plantilla.nombre }}
-                                                                    </a>
-                                                                </h4>
-                                                            </div>
-                                                            <div id="collapseOne" class="collapse"
-                                                                data-parent="#accordion">
-                                                                <div class="card-body col-md-12">
-                                                                    <div class="col-md-12">
-                                                                        <div class="row">
-                                                                            <div class="col-md-3">
-                                                                                <p><strong>Asunto:</strong> {{
-                                                                                    plantilla.asunto
-                                                                                    }}</p>
-                                                                                <p><strong>Fecha de Envío:</strong> {{
-                                                                                    plantilla.fechaEnvio }}</p>
-                                                                                <p><strong>Cuerpo del Email:</strong>
-                                                                                </p>
-                                                                                <p>{{ plantilla.cuerpoEmail }}</p>
-                                                                            </div>
-<!-- Pacienetes a Agregar -->
-                                                                            <div class="col-md-3">
-                                                                                <div class="card">
-                                                                                    <div class="card-header">
-                                                                                        <h3 class="card-title">
-                                                                                            <i
-                                                                                                class="fas fa-text-width"></i>
-                                                                                            Pacientes Agregados
-                                                                                        </h3>
-                                                                                    </div>
-                                                                                    <div class="card-body">
-                                                                                        <ul>
-                                                                                            <li>Lorem ipsum dolor sit
-                                                                                                amet</li>
-                                                                                        </ul>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
-                                                                            <!-- Pacientes Activos -->
-                                                                            <div class="col-md-3">
-                                                                                <div class="card">
-                                                                                    <div class="card-header">
-                                                                                        <h3 class="card-title">
-                                                                                            <i
-                                                                                                class="fas fa-text-width"></i>
-                                                                                            Pacientes Activos
-                                                                                        </h3>
-                                                                                    </div>
-                                                                                    <div class="card-body">
-                                                                                        <ul>
-                                                                                            <li>Lorem ipsum dolor sit
-                                                                                                amet</li>
-                                                                                          
-                                                                                        </ul>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
-                                                                            <!-- Pacientes inactivos -->
-                                                                            <div class="col-md-3">
-                                                                                <div class="card">
-                                                                                    <div class="card-header">
-                                                                                        <h3 class="card-title">
-                                                                                            <i
-                                                                                                class="fas fa-text-width"></i>
-                                                                                            Pacientes Inactivos
-                                                                                        </h3>
-                                                                                    </div>
-                                                                                    <div class="card-body">
-                                                                                        <ul>
-                                                                                            <li>Lorem ipsum dolor sit
-                                                                                                amet</li>
-                                                                                            <li>Consectetur adipiscing
-                                                                                                elit</li>
-                                                                                            <li>Integer molestie lorem
-                                                                                                at massa</li>
-                                                                                            <li>Facilisis in pretium
-                                                                                                nisl aliquet</li>
-                                                                                            <li>Nulla volutpat aliquam
-                                                                                                velit
-                                                                                                <ul>
-                                                                                                    <li>Phasellus
-                                                                                                        iaculis neque
-                                                                                                    </li>
-                                                                                                    <li>Purus sodales
-                                                                                                        ultricies</li>
-                                                                                                    <li>Vestibulum
-                                                                                                        laoreet
-                                                                                                        porttitor sem
-                                                                                                    </li>
-                                                                                                    <li>Ac tristique
-                                                                                                        libero volutpat
-                                                                                                        at</li>
-                                                                                                </ul>
-                                                                                            </li>
-                                                                                            <li>Faucibus porta lacus
-                                                                                                fringilla vel</li>
-                                                                                            <li>Aenean sit amet erat
-                                                                                                nunc</li>
-                                                                                            <li>Eget porttitor lorem
-                                                                                            </li>
-                                                                                        </ul>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div> <!-- Cierre de row -->
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-
-                                            </div>
-
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
                 </div>
-
             </div>
         </div>
-
     </div>
-
 </div>
 
 <div class="lottie-container" *ngIf="showLoading">

@@ -1,13 +1,22 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MenuComponent } from '../components/menu/menu.component';
 import { SidebarComponent } from '../components/sidebar/sidebar.component';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import Swal from 'sweetalert2';
 import { Service } from '../Services/Service';
-import { PacientesPlantillas, Plantilla } from '../interface/Plantilla';
+import {
+  NotificacionPacientes,
+  PacientesPlantillas,
+  Plantilla,
+} from '../interface/Plantilla';
 import { UrlsBackend, UrlsPacientes, UrlsPlantillas } from '../enums/urls_back';
 import { CommonModule } from '@angular/common';
 import { LoadingComponent } from '../loading/loading.component';
+import {
+  AsociacionPlantillaPaciente,
+  RelacionPlantilllaPaciente,
+} from '../interface/PlantillasPacientes';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-plantillas-correos',
@@ -22,7 +31,7 @@ import { LoadingComponent } from '../loading/loading.component';
   templateUrl: './plantillas-correos.component.html',
   styleUrl: './plantillas-correos.component.css',
 })
-export class PlantillasCorreosComponent implements OnInit {
+export class PlantillasCorreosComponent implements OnInit, OnDestroy {
   listadoPForm: any;
   agregarPForm: any;
   RelacionPlantillaPacienteForm: any;
@@ -35,6 +44,14 @@ export class PlantillasCorreosComponent implements OnInit {
   currentPlantillaId: any;
   pacientesActivos: any;
   pacientesInactivos: any;
+  modalAgregarPacientes: boolean = false;
+  allPacientes: any;
+  headerPacientes: any;
+  iconoHeaderPacientes: any;
+  pacientesAInsertar: Array<NotificacionPacientes> =
+    new Array<NotificacionPacientes>();
+  pacientesVinculados: any = [];
+  pacientesADesvincular: NotificacionPacientes[] = [];
 
   ngOnInit(): void {
     this.getPlantillas();
@@ -43,14 +60,23 @@ export class PlantillasCorreosComponent implements OnInit {
     console.log('this.getPlantillas()', this.getPlantillas());
     console.log('plantillas', this.plantillas);
     console.log('allPlantillas', this.allPlantillas);
+    this.updateAllPacientes(
+      this.RelacionPlantillaPacienteForm.get('pacientesTipo').value
+    );
   }
 
   constructor(private Service: Service) {}
+  ngOnDestroy(): void {
+    this.pacientesADesvincular = [];
+    this.pacientesAInsertar = [];
+  }
 
   cargarFormulario() {
+    const today = new Date();
+    const formattedDate = today.toISOString().substring(0, 10);
     this.agregarPForm = new FormGroup({
       name: new FormControl(''),
-      fecha: new FormControl(''),
+      fecha: new FormControl(formattedDate),
       asunto: new FormControl(''),
       cuerpo: new FormControl(''),
     });
@@ -72,10 +98,19 @@ export class PlantillasCorreosComponent implements OnInit {
     //   .valueChanges.subscribe((val: string) => {
     //     this.filtrarPlantillas(val);
     //   });
-    
-     this.RelacionPlantillaPacienteForm = new FormGroup({
-      
-     });
+
+    this.RelacionPlantillaPacienteForm = new FormGroup({
+      idPlantPac: new FormControl(''),
+      asuntoPlantPac: new FormControl(''),
+      fechaPlantPac: new FormControl(''),
+      cuerpoPlantPac: new FormControl(''),
+      pacientesTipo: new FormControl('activos'),
+    });
+    this.RelacionPlantillaPacienteForm.get(
+      'pacientesTipo'
+    ).valueChanges.subscribe((value: string) => {
+      this.updateAllPacientes(value);
+    });
   }
 
   getPlantillas() {
@@ -149,6 +184,24 @@ export class PlantillasCorreosComponent implements OnInit {
         console.log('pacientestodos', result);
         this.pacientesActivos = result.pacientesActivos;
         this.pacientesInactivos = result.pacientesInactivos;
+        console.log('this.pacientesActivos', this.pacientesActivos);
+      },
+      error: (error) => {
+        // Manejar error aquí
+      },
+      complete: () => {},
+    });
+  }
+
+  getPacientesVinculados(plantillaId: any) {
+    this.Service.GetData(
+      UrlsBackend.ApiNotificacion,
+      `${UrlsPlantillas.GetPacientesVinculadosPP}/${plantillaId}`,
+      plantillaId
+    ).subscribe({
+      next: (result: any) => {
+        console.log('pacientesVinculados', result);
+        this.pacientesVinculados = result;
       },
       error: (error) => {
         // Manejar error aquí
@@ -171,7 +224,7 @@ export class PlantillasCorreosComponent implements OnInit {
     console.log('plantSelected', plantSelected);
     const fecha = new Date(plantSelected.fechaEnvio);
     const formattedDate = fecha.toISOString().substring(0, 10); // Corta el string para obtener solo la fecha
-
+    this.modalAgregarPacientes = false;
     this.plantillaSelected = true;
     this.mostrarPlantillaForm.patchValue({
       idSelected: plantSelected.id,
@@ -277,4 +330,232 @@ export class PlantillasCorreosComponent implements OnInit {
       cuerpoSelected: '',
     });
   }
+
+  cleanMostrarAgregarPacientes() {
+    this.mostrarPlantillaForm.patchValue({
+      idPlantPac: '',
+      fechaPlantPac: '',
+      asuntoPlantPac: '',
+      cuerpoPlantPac: '',
+    });
+  }
+  mostrarAgregarPacientes(plantilla: any) {
+    this.plantillaSelected = false;
+    this.modalAgregarPacientes = true;
+    this.cleanMostrarAgregarPacientes();
+    const fecha = new Date(plantilla.fechaEnvio);
+    const formattedDate = fecha.toISOString().substring(0, 10);
+    this.RelacionPlantillaPacienteForm.patchValue({
+      idPlantPac: plantilla.id,
+      fechaPlantPac: formattedDate,
+      asuntoPlantPac: plantilla.asunto,
+      cuerpoPlantPac: plantilla.cuerpoEmail,
+    });
+    this.getPacientesVinculados(
+      parseInt(this.RelacionPlantillaPacienteForm.get('idPlantPac').value)
+    );
+    const pacientesTipo =
+      this.RelacionPlantillaPacienteForm.get('pacientesTipo').value;
+    this.updateAllPacientes(pacientesTipo);
+  }
+
+  updateAllPacientes(pacientesTipo: string) {
+    if (pacientesTipo === 'activos') {
+      this.allPacientes = this.pacientesActivos;
+      this.headerPacientes = 'Pacientes Activos';
+      this.iconoHeaderPacientes = 'fa-solid fa-users-rectangle';
+    } else {
+      this.allPacientes = this.pacientesInactivos;
+      this.headerPacientes = 'Pacientes Inactivos';
+      this.iconoHeaderPacientes = 'fa-solid fa-users-slash';
+    }
+  }
+
+  agregarPaciente(paciente: any) {
+    console.log('pacienteaAgregar', paciente);
+    if (
+      this.pacientesVinculados.filter(
+        (x: { [x: string]: any }) => x['pacienteId'] == paciente.id
+      ).length == 0
+    ) {
+      this.pacientesAInsertar.push(paciente);
+      const temp = {
+        pacienteId: paciente.id,
+        email: '',
+        fechaConsulta: '',
+        nombrePaciente: paciente.nombre,
+      };
+
+      this.pacientesVinculados[this.pacientesVinculados.length] = temp;
+    } else {
+      Swal.fire({
+        position: 'center',
+        icon: 'info',
+        title: 'Este paciente ya está vinculado a la plantilla actual',
+        showConfirmButton: false,
+        timer: 2000,
+      });
+    }
+    console.log('this.pacientesAInsertar', this.pacientesAInsertar);
+    console.log('this.pacientesVinculados', this.pacientesVinculados);
+    // enviar al backend
+  }
+
+  devincularPaciente(paciente: NotificacionPacientes) {
+    this.pacientesADesvincular[this.pacientesADesvincular.length] = paciente;
+    console.log('this.pacientesADesvincular', this.pacientesADesvincular);
+    const index = this.pacientesVinculados.findIndex(
+      (pac: { id: any }) => paciente.id === pac.id
+    );
+    if (index !== -1) {
+      this.pacientesVinculados.splice(index, 1);
+    }
+  }
+
+  // guardarnuevosVinculos() {
+  //   this.showLoading = true;
+  //      if (this.pacientesAInsertar.length > 0) {
+  //     let dataInsertar: RelacionPlantilllaPaciente[] = this.pacientesAInsertar.map(
+  //       (paciente) => {
+  //         return {
+  //           id: 0,
+  //           plantillaId: parseInt(
+  //             this.RelacionPlantillaPacienteForm.get('idPlantPac').value
+  //           ),
+  //           pacienteId: parseInt(paciente.id),
+  //           nombrePlantilla:
+  //             this.RelacionPlantillaPacienteForm.get(
+  //               'asuntoPlantPac'
+  //             ).value.toString(),
+  //           nombrePaciente: paciente.nombre.toString(),
+  //           status: '',
+  //           fechaCreacion: new Date(),
+  //           fechaUltActualizacion: new Date(),
+  //         };
+  //       }
+  //     );
+  //     //       const formData = new FormData();
+  //     // formData.append('pacientesAgregar', JSON.stringify(dataInsertar));
+  //     // formData.append(
+  //     //   'pacientesEliminar',
+  //     //   JSON.stringify(this.pacientesADesvincular)
+  //     // );
+  //     this.Service.PostData(
+  //       UrlsBackend.ApiNotificacion,
+  //       UrlsPlantillas.PostAgregarVinculo,
+  //       dataInsertar
+  //     ).subscribe((result) => {
+  //       Swal.fire({
+  //         position: 'center',
+  //         icon: 'success',
+  //         title: 'Se han guardado los cambios correctamente',
+  //         showConfirmButton: false,
+  //         timer: 2000,
+  //       });
+  //       this.getPacientesVinculados(
+  //         parseInt(this.RelacionPlantillaPacienteForm.get('idPlantPac').value)
+  //       );
+  //       console.log(result);
+  //     });
+  //   }
+
+  //    if (this.pacientesADesvincular.length > 0) {
+
+  //      this.Service.PostData(
+  //        UrlsBackend.ApiNotificacion,
+  //        UrlsPlantillas.DeleteEliminarVinculo,
+  //        this.pacientesADesvincular
+  //      ).subscribe((result) => {
+  //        Swal.fire({
+  //          position: 'center',
+  //          icon: 'success',
+  //          title: 'Se han guardado los cambios correctamente',
+  //          showConfirmButton: false,
+  //          timer: 2000,
+  //        });
+  //        this.getPacientesVinculados(
+  //          parseInt(this.RelacionPlantillaPacienteForm.get('idPlantPac').value)
+  //        );
+  //        console.log(result);
+  //      });
+  //    }
+  //   this.pacientesADesvincular = [];
+  //   this.pacientesAInsertar = [];
+  //     this.showLoading = true;
+  // }
+
+async guardarnuevosVinculos() {
+  this.showLoading = true;
+
+  try {
+    const promises = [];
+
+    if (this.pacientesAInsertar.length > 0) {
+      const dataInsertar: RelacionPlantilllaPaciente[] = this.pacientesAInsertar.map(
+        (paciente) => {
+          return {
+            id: 0,
+            plantillaId: parseInt(this.RelacionPlantillaPacienteForm.get('idPlantPac').value),
+            pacienteId: parseInt(paciente.id),
+            nombrePlantilla: this.RelacionPlantillaPacienteForm.get('asuntoPlantPac').value.toString(),
+            nombrePaciente: paciente.nombre.toString(),
+            status: '',
+            fechaCreacion: new Date(),
+            fechaUltActualizacion: new Date(),
+          };
+        }
+      );
+      console.log('this.pacientesAInsertar', this.pacientesAInsertar);
+
+      promises.push(
+        firstValueFrom(this.Service.PostData(UrlsBackend.ApiNotificacion, UrlsPlantillas.PostAgregarVinculo, dataInsertar))
+      );
+    }
+
+    if (this.pacientesADesvincular.length > 0) {
+      console.log('pacientesADesvincular', this.pacientesADesvincular);
+      const idsElimanr: string[] = this.pacientesADesvincular.map(pd => pd.id); 
+      promises.push(
+        firstValueFrom(
+          this.Service.Delete(
+            UrlsBackend.ApiNotificacion,
+            UrlsPlantillas.DeleteEliminarVinculo,
+            idsElimanr           
+          )
+        )
+      );
+    }
+
+    await Promise.all(promises);
+
+    Swal.fire({
+      position: 'center',
+      icon: 'success',
+      title: 'Se han guardado los cambios correctamente',
+      showConfirmButton: false,
+      timer: 2000,
+    });
+
+    // Limpiar las listas después de completar todas las operaciones
+    this.pacientesADesvincular = [];
+    this.pacientesAInsertar = [];
+    this.showLoading = false;
+
+    // Recargar los pacientes vinculados
+    this.getPacientesVinculados(parseInt(this.RelacionPlantillaPacienteForm.get('idPlantPac').value));
+  } catch (error) {
+    // Manejar errores si es necesario
+    console.error('Error:', error);
+    Swal.fire({
+      position: 'center',
+      icon: 'error',
+      title: 'Se produjo un error al guardar los cambios',
+      showConfirmButton: true,
+    });
+    this.showLoading = false;
+    this.pacientesADesvincular = [];
+    this.pacientesAInsertar = [];
+  }
+}
+
 }

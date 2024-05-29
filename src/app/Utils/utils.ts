@@ -11,6 +11,7 @@ static  getRouteForOption(option: OpcionesSidebar): string | null {
       [OpcionesSidebar.ConfigHistorias]: '/configuracion_historias',
       [OpcionesSidebar.NuevoUsuario]: '/register',
       [OpcionesSidebar.Plantillas]: '/plantillas_correos',
+      [OpcionesSidebar.EnviarNotificaciones]: '/enviar_notificaciones',
     };
 
     return routesMap[option] || null;

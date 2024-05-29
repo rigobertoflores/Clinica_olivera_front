@@ -1,0 +1,41 @@
+<app-menu></app-menu>
+<app-sidebar></app-sidebar>
+<div class="content-wrapper" style="min-height: 1604.8px">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header p-4">
+                <ul class="nav nav-pills">
+                    <li class="nav-item"><a class="nav-link active" href="#notificacionesCitas" data-toggle="tab">Enviar
+                            Notificaciones de Citas</a>
+                    </li>
+                    <li class="nav-item"><a class="nav-link" href="#enviarEmails " data-toggle="tab">Enviar correos de
+                            fechas especiales</a></li>
+                </ul>
+            </div>
+            <div class="card-body">
+                <div class="tab-content">
+                    <div class="tab-pane active" id="mostrarTratamiento">
+                        <div class="container-fluid">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label>Seleccione una plantilla de correo</label>
+                                    <select class="form control" (change)="selectOption($event.target.value)">
+                                        <option *ngFor="let option of filteredOptions" [value]="option.value">{{
+                                            option.label }}</option>
+                                    </select>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="lottie-container" *ngIf="showLoading">
+    <ng-container>
+        <app-loading></app-loading>
+    </ng-container>
+</div>

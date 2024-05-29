@@ -11,9 +11,10 @@ export interface Plantilla {
 export interface PacientesPlantillas {
   pacientesActivos: { pacientesActivos: NotificacionPacientes };
   pacientesInactivos: { pacientesInactivos: NotificacionPacientes };
-}
+  }
 
 export interface NotificacionPacientes {
+  id: string;
   email: string;
   fechaConsulta: string;
   nombre: string;
