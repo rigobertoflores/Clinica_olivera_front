@@ -11,7 +11,8 @@ static  getRouteForOption(option: OpcionesSidebar): string | null {
       [OpcionesSidebar.ConfigHistorias]:'/configuracion_historias',
       [OpcionesSidebar.NuevoUsuario]:'/register',
       [OpcionesSidebar.Impresion]:'/configuracion_impresion',
-      [OpcionesSidebar.ConfiguracionInforme]:'/configuracion_informesoperatorios'
+      [OpcionesSidebar.ConfiguracionInforme]:'/configuracion_informesoperatorios',
+      [OpcionesSidebar.IMC]:'/imc'
     };
 
     return routesMap[option] || null;
