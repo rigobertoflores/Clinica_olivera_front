@@ -1,12 +1,19 @@
-/* .select2-hidden-accessible {
-    border: 0 !important;
-    clip: rect(0 0 0 0) !important;
-    -webkit-clip-path: inset(50%) !important;
-    clip-path: inset(50%) !important;
-    height: 1px !important;
-    overflow: hidden !important;
-    padding: 0 !important;
-    position: absolute !important;
-    width: 1px !important;
-    white-space: nowrap !important;
-} */
+.no-bullets {
+    list-style-type: none;
+    /* Elimina las viñetas */
+    padding: 0;
+    /* Opcional: elimina el padding por defecto */
+    margin: 0;
+    /* Opcional: elimina el margin por defecto */
+}
+
+.plantilla-nombre {
+    flex-grow: 1;
+    /* Ocupa el espacio disponible */
+    
+}
+
+.icono {
+    margin-right: 10px;
+    /* Espacio entre el icono y el nombre */
+}

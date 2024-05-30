@@ -20,8 +20,10 @@ export enum UrlsPlantillas {
   GetPacientesVinculadosPP = 'PacientesVinculadosPP',
   PostAgregarVinculo = 'AgregarVinculoPlantillasPacientes',
   DeleteEliminarVinculo = 'EliminarVinculoPlantillasPacientes',
+  SendEmail = 'SendEmail',
 }
 
 export enum UrlsPacientes {
   GetPacientesNotificaciones = 'GetPacientesNotificacionesCitas',
+  GetCitasPorFecha ='GetCitasPorFecha',
 }
