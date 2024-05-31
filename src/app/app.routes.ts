@@ -15,6 +15,7 @@ import { InformesoConfiguracionComponent } from './informeso-configuracion/infor
 import { CalculadoraIMCComponent } from './calculadora-imc/calculadora-imc.component';
 import { PlantillasCorreosComponent } from './plantillas-correos/plantillas-correos.component';
 import { EnviarNotificacionesComponent } from './enviar-notificaciones/enviar-notificaciones.component';
+import { ConsultarNotificacionesComponent } from './consultar-notificaciones/consultar-notificaciones.component';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -68,6 +69,11 @@ export const routes: Routes = [
   {
     path: 'enviar_notificaciones',
     component: EnviarNotificacionesComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'consultar_notificaciones',
+    component: ConsultarNotificacionesComponent,
     canActivate: [AuthGuard],
   },
 ];

@@ -1,10 +1,10 @@
 export interface Plantilla {
   id: number;
-  Nombre: string;
-  Asunto: string;
-  CuerpoEmail: string;
-  FechaEnvio: string;
-  Adjunto: string;
+  nombre: string;
+  asunto: string;
+  cuerpoEmail: string;
+  fechaEnvio: string;
+  adjunto: string;
 }
 
 
@@ -20,3 +20,13 @@ export interface NotificacionPacientes {
   nombre: string;
 }
 
+export interface NotificacionStatus {
+  id: number;
+  pacienteId: string;
+  plantillaId: string;
+  nombrePaciente: string;
+  nombrePlantilla: string;
+  fechaCreacion: string;
+  fechaUltActualizacion: string;
+  status: string;
+}

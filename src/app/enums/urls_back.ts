@@ -21,6 +21,7 @@ export enum UrlsPlantillas {
   PostAgregarVinculo = 'AgregarVinculoPlantillasPacientes',
   DeleteEliminarVinculo = 'EliminarVinculoPlantillasPacientes',
   SendEmail = 'SendEmail',
+  ObtenerStatusCorreos = 'ObtenerStatusCorreos',
 }
 
 export enum UrlsPacientes {

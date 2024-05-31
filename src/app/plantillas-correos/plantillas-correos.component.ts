@@ -17,6 +17,7 @@ import {
   RelacionPlantilllaPaciente,
 } from '../interface/PlantillasPacientes';
 import { firstValueFrom } from 'rxjs';
+import { contains } from 'jquery';
 
 @Component({
   selector: 'app-plantillas-correos',
@@ -32,11 +33,10 @@ import { firstValueFrom } from 'rxjs';
   styleUrl: './plantillas-correos.component.css',
 })
 export class PlantillasCorreosComponent implements OnInit, OnDestroy {
-  listadoPForm: any;
-  agregarPForm: any;
-  RelacionPlantillaPacienteForm: any;
-  buscarPlantillaForm: any;
-  mostrarPlantillaForm: any;
+  agregarPForm: FormGroup;
+  RelacionPlantillaPacienteForm: FormGroup;
+  // buscarPlantillaForm: FormGroup;
+  mostrarPlantillaForm: FormGroup;
   showLoading: boolean = false;
   allPlantillas: Plantilla[] = [];
   plantillas: Plantilla[] = [];
@@ -52,6 +52,7 @@ export class PlantillasCorreosComponent implements OnInit, OnDestroy {
     new Array<NotificacionPacientes>();
   pacientesVinculados: any = [];
   pacientesADesvincular: NotificacionPacientes[] = [];
+valfiltro: any;
 
   ngOnInit(): void {
     this.getPlantillas();
@@ -60,8 +61,9 @@ export class PlantillasCorreosComponent implements OnInit, OnDestroy {
     console.log('this.getPlantillas()', this.getPlantillas());
     console.log('plantillas', this.plantillas);
     console.log('allPlantillas', this.allPlantillas);
+
     this.updateAllPacientes(
-      this.RelacionPlantillaPacienteForm.get('pacientesTipo').value
+      this.RelacionPlantillaPacienteForm.get('pacientesTipo')?.value
     );
   }
 
@@ -89,13 +91,13 @@ export class PlantillasCorreosComponent implements OnInit, OnDestroy {
       cuerpoSelected: new FormControl(''),
     });
 
-    this.buscarPlantillaForm = new FormGroup({
-      buscarPlantilla: new FormControl(''),
-    });
+    // this.buscarPlantillaForm = new FormGroup({
+    //   buscarPlantilla: new FormControl(''),
+    // });
 
     // this.buscarPlantillaForm
     //   .get('buscarPlantilla')
-    //   .valueChanges.subscribe((val: string) => {
+    //   ?.valueChanges.subscribe((val: string) => {
     //     this.filtrarPlantillas(val);
     //   });
 
@@ -108,7 +110,7 @@ export class PlantillasCorreosComponent implements OnInit, OnDestroy {
     });
     this.RelacionPlantillaPacienteForm.get(
       'pacientesTipo'
-    ).valueChanges.subscribe((value: string) => {
+    )?.valueChanges.subscribe((value: string) => {
       this.updateAllPacientes(value);
     });
   }
@@ -141,11 +143,11 @@ export class PlantillasCorreosComponent implements OnInit, OnDestroy {
     this.showLoading = true;
     const plantillaNew: Plantilla = {
       id: 0,
-      Nombre: this.agregarPForm.get('name')?.value,
-      FechaEnvio: this.agregarPForm.get('fecha')?.value,
-      Asunto: this.agregarPForm.get('asunto')?.value,
-      CuerpoEmail: this.agregarPForm.get('cuerpo')?.value,
-      Adjunto: '',
+      nombre: this.agregarPForm.get('name')?.value,
+      fechaEnvio: this.agregarPForm.get('fecha')?.value,
+      asunto: this.agregarPForm.get('asunto')?.value,
+      cuerpoEmail: this.agregarPForm.get('cuerpo')?.value,
+      adjunto: '',
     };
 
     if (!this.agregarPForm.invalid) {
@@ -210,12 +212,12 @@ export class PlantillasCorreosComponent implements OnInit, OnDestroy {
     });
   }
 
-  filtrarPlantillas(buscarTexto: string) {
-    if (!buscarTexto) {
-      this.plantillas = this.allPlantillas; // Si no hay texto de búsqueda, muestra todos los tratamientos
+  filtrarPlantillas(val: string) {
+    if (!val) {
+      this.plantillas = this.allPlantillas;
     } else {
-      this.plantillas = this.allPlantillas.filter((p) =>
-        p.Nombre.toLowerCase().includes(buscarTexto.toLowerCase())
+      this.plantillas = this.allPlantillas?.filter(p=>
+        p.nombre?.toLowerCase().includes(val.toLowerCase())
       );
     }
   }
@@ -242,11 +244,11 @@ export class PlantillasCorreosComponent implements OnInit, OnDestroy {
     this.showLoading = true;
     const plantillaEdit: Plantilla = {
       id: this.mostrarPlantillaForm.get('idSelected')?.value,
-      Nombre: this.mostrarPlantillaForm.get('nameSelected')?.value,
-      FechaEnvio: this.mostrarPlantillaForm.get('fechaSelected')?.value,
-      Asunto: this.mostrarPlantillaForm.get('asuntoSelected')?.value,
-      CuerpoEmail: this.mostrarPlantillaForm.get('cuerpoSelected')?.value,
-      Adjunto: '',
+      nombre: this.mostrarPlantillaForm.get('nameSelected')?.value,
+      fechaEnvio: this.mostrarPlantillaForm.get('fechaSelected')?.value,
+      asunto: this.mostrarPlantillaForm.get('asuntoSelected')?.value,
+      cuerpoEmail: this.mostrarPlantillaForm.get('cuerpoSelected')?.value,
+      adjunto: '',
     };
     this.Service.PostData(
       UrlsBackend.ApiNotificacion,
@@ -352,10 +354,10 @@ export class PlantillasCorreosComponent implements OnInit, OnDestroy {
       cuerpoPlantPac: plantilla.cuerpoEmail,
     });
     this.getPacientesVinculados(
-      parseInt(this.RelacionPlantillaPacienteForm.get('idPlantPac').value)
+      parseInt(this.RelacionPlantillaPacienteForm.get('idPlantPac')?.value)
     );
     const pacientesTipo =
-      this.RelacionPlantillaPacienteForm.get('pacientesTipo').value;
+      this.RelacionPlantillaPacienteForm.get('pacientesTipo')?.value;
     this.updateAllPacientes(pacientesTipo);
   }
 
@@ -484,78 +486,91 @@ export class PlantillasCorreosComponent implements OnInit, OnDestroy {
   //     this.showLoading = true;
   // }
 
-async guardarnuevosVinculos() {
-  this.showLoading = true;
+  async guardarnuevosVinculos() {
+    this.showLoading = true;
 
-  try {
-    const promises = [];
+    try {
+      const promises = [];
 
-    if (this.pacientesAInsertar.length > 0) {
-      const dataInsertar: RelacionPlantilllaPaciente[] = this.pacientesAInsertar.map(
-        (paciente) => {
-          return {
-            id: 0,
-            plantillaId: parseInt(this.RelacionPlantillaPacienteForm.get('idPlantPac').value),
-            pacienteId: parseInt(paciente.id),
-            nombrePlantilla: this.RelacionPlantillaPacienteForm.get('asuntoPlantPac').value.toString(),
-            nombrePaciente: paciente.nombre.toString(),
-            status: '',
-            fechaCreacion: new Date(),
-            fechaUltActualizacion: new Date(),
-          };
-        }
-      );
-      console.log('this.pacientesAInsertar', this.pacientesAInsertar);
+      if (this.pacientesAInsertar.length > 0) {
+        const dataInsertar: RelacionPlantilllaPaciente[] =
+          this.pacientesAInsertar.map((paciente) => {
+            return {
+              id: 0,
+              plantillaId: parseInt(
+                this.RelacionPlantillaPacienteForm.get('idPlantPac')?.value
+              ),
+              pacienteId: parseInt(paciente.id),
+              nombrePlantilla:
+                this.RelacionPlantillaPacienteForm.get(
+                  'asuntoPlantPac'
+                )?.value.toString(),
+              nombrePaciente: paciente.nombre.toString(),
+              status: '',
+              fechaCreacion: new Date(),
+              fechaUltActualizacion: new Date(),
+            };
+          });
+        console.log('this.pacientesAInsertar', this.pacientesAInsertar);
 
-      promises.push(
-        firstValueFrom(this.Service.PostData(UrlsBackend.ApiNotificacion, UrlsPlantillas.PostAgregarVinculo, dataInsertar))
-      );
-    }
-
-    if (this.pacientesADesvincular.length > 0) {
-      console.log('pacientesADesvincular', this.pacientesADesvincular);
-      const idsElimanr: string[] = this.pacientesADesvincular.map(pd => pd.id); 
-      promises.push(
-        firstValueFrom(
-          this.Service.Delete(
-            UrlsBackend.ApiNotificacion,
-            UrlsPlantillas.DeleteEliminarVinculo,
-            idsElimanr           
+        promises.push(
+          firstValueFrom(
+            this.Service.PostData(
+              UrlsBackend.ApiNotificacion,
+              UrlsPlantillas.PostAgregarVinculo,
+              dataInsertar
+            )
           )
-        )
+        );
+      }
+
+      if (this.pacientesADesvincular.length > 0) {
+        console.log('pacientesADesvincular', this.pacientesADesvincular);
+        const idsElimanr: string[] = this.pacientesADesvincular.map(
+          (pd) => pd.id
+        );
+        promises.push(
+          firstValueFrom(
+            this.Service.Delete(
+              UrlsBackend.ApiNotificacion,
+              UrlsPlantillas.DeleteEliminarVinculo,
+              idsElimanr
+            )
+          )
+        );
+      }
+
+      await Promise.all(promises);
+
+      Swal.fire({
+        position: 'center',
+        icon: 'success',
+        title: 'Se han guardado los cambios correctamente',
+        showConfirmButton: false,
+        timer: 2000,
+      });
+
+      // Limpiar las listas después de completar todas las operaciones
+      this.pacientesADesvincular = [];
+      this.pacientesAInsertar = [];
+      this.showLoading = false;
+
+      // Recargar los pacientes vinculados
+      this.getPacientesVinculados(
+        parseInt(this.RelacionPlantillaPacienteForm.get('idPlantPac')?.value)
       );
+    } catch (error) {
+      // Manejar errores si es necesario
+      console.error('Error:', error);
+      Swal.fire({
+        position: 'center',
+        icon: 'error',
+        title: 'Se produjo un error al guardar los cambios',
+        showConfirmButton: true,
+      });
+      this.showLoading = false;
+      this.pacientesADesvincular = [];
+      this.pacientesAInsertar = [];
     }
-
-    await Promise.all(promises);
-
-    Swal.fire({
-      position: 'center',
-      icon: 'success',
-      title: 'Se han guardado los cambios correctamente',
-      showConfirmButton: false,
-      timer: 2000,
-    });
-
-    // Limpiar las listas después de completar todas las operaciones
-    this.pacientesADesvincular = [];
-    this.pacientesAInsertar = [];
-    this.showLoading = false;
-
-    // Recargar los pacientes vinculados
-    this.getPacientesVinculados(parseInt(this.RelacionPlantillaPacienteForm.get('idPlantPac').value));
-  } catch (error) {
-    // Manejar errores si es necesario
-    console.error('Error:', error);
-    Swal.fire({
-      position: 'center',
-      icon: 'error',
-      title: 'Se produjo un error al guardar los cambios',
-      showConfirmButton: true,
-    });
-    this.showLoading = false;
-    this.pacientesADesvincular = [];
-    this.pacientesAInsertar = [];
   }
-}
-
 }

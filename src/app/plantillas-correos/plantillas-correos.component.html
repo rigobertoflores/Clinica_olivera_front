@@ -16,34 +16,33 @@
             <div class="card-body">
                 <div class="tab-content">
                     <div class="tab-pane active" id="listaDePlantila">
-                        <div class="container-fluid">
-
-                            <div class="row">
-                                <div class="col-md-8 offset-md-2">
-                                    <form [formGroup]="listadoPForm" method="post">
-                                        <div class="input-group">
-
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-
+                      
                         <div class="container-fluid">
                             <h2 class="text-center display-4">Buscar Plantilla</h2>
                             <div class="row">
                                 <div class="col-md-8 offset-md-2">
-                                    <form [formGroup]="buscarPlantillaForm" method="get">
+                                    <!-- <form [formGroup]="buscarPlantillaForm" method="get">
                                         <div class="input-group">
                                             <input type="search" class="form-control form-control-lg"
-                                                placeholder="Escriba aquí" formControlName="buscarPlantilla">
+                                                placeholder="Escriba aquí" formControlName="buscarPlantilla" (keyup)="filtrarPlantillas($event)">
                                             <div class="input-group-append">
-                                                <button type="submit" class="btn btn-lg btn-default">
+                                                <button type="button" class="btn btn-lg btn-default">
                                                     <i class="fa fa-search"></i>
                                                 </button>
                                             </div>
                                         </div>
-                                    </form>
+                                    </form> -->
+                                    
+                                        <div class="input-group">
+                                            <input type="search" class="form-control form-control-lg" placeholder="Escriba aquí"  #inputElement (keyup)="filtrarPlantillas(inputElement.value)"
+                           >
+                                            <div class="input-group-append">
+                                                <button type="button" class="btn btn-lg btn-default">
+                                                    <i class="fa fa-search"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    
                                 </div>
                             </div>
                         </div>

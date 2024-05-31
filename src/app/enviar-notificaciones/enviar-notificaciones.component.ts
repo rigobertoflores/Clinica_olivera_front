@@ -28,11 +28,11 @@ export class EnviarNotificacionesComponent implements OnInit, OnDestroy {
   plantillas: Plantilla[];
   datosPlantillaSelected: Plantilla = {
     id: 0,
-    Nombre: '',
-    Asunto: '',
-    CuerpoEmail: '',
-    FechaEnvio: '',
-    Adjunto: '',
+    nombre: '',
+    asunto: '',
+    cuerpoEmail: '',
+    fechaEnvio: '',
+    adjunto: '',
   };
   mostrarDatosPlantillaSelected: boolean = false;
   mostrarPacientesdeFechaSelected: boolean = false;
@@ -75,7 +75,11 @@ export class EnviarNotificacionesComponent implements OnInit, OnDestroy {
         this.plantillas = result;
       },
       error: (error) => {
-        // Manejar error aquí
+         Swal.fire({
+           icon: 'error',
+           title: 'Oops...',
+           text: 'Ocurrió un error al obtener los pacientes con citas para la fecha seleccionada',
+         });
       },
       complete: () => {
         this.showLoading = false; // Finalizar carga
