@@ -71,29 +71,26 @@
                                                 </div>
                                             </div>
 
-                                            <div class="col-md-6" *ngIf="tratamientoSeleccionado">
-                                                <div class="card card-primary">
-                                                    <div class="card-body">
-                                                        <form [formGroup]="mostrarTratamientosForm" method="post">
-                                                            <input type="hidden" formControlName="idV">
-                                                            <div class="form-group">
-                                                                <label for="Mostrar">Nombre del tratamiento</label>
-                                                                <input type="text" id="inputNameMostrar"
-                                                                    class="form-control" formControlName="nameV">
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label for="inputPalabrasMostrar">Palabras
-                                                                    claves</label>
-                                                                <input type="text" id="inputPalabrasMostrar"
-                                                                    class="form-control" formControlName="wordsV">
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label for="inputDescriptionMostrar">Descripción
-                                                                    Enfermedad</label>
-                                                                <textarea id="inputDescriptionMostrar"
-                                                                    class="form-control" rows="4"
-                                                                    formControlName="descriptionV"></textarea>
-                                                            </div>
+                            <div class="col-md-6" *ngIf="tratamientoSeleccionado">
+                                <div class="card card-primary">
+                                    <div class="card-body">
+                                        <form [formGroup]="mostrarTratamientosForm" method="post">
+                                            <input type="hidden" formControlName="idV">
+                                            <div class="form-group">
+                                                <label for="inputNameMostrar">Nombre del tratamiento</label>
+                                                <input type="text" id="inputNameMostrar" class="form-control"
+                                                    formControlName="nameV">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="inputPalabrasMostrar">Palabras claves</label>
+                                                <input type="text" id="inputPalabrasMostrar" class="form-control"
+                                                    formControlName="wordsV">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="inputDescriptionMostrar">Descripción Enfermedad</label>
+                                                <textarea id="inputDescriptionMostrar" class="form-control" rows="4"
+                                                    formControlName="descriptionV"></textarea>
+                                            </div>
 
                                                             <div class="form-group">
                                                                 <label for="inputTratamientoMostrar">Tratamiento</label>

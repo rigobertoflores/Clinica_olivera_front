@@ -146,24 +146,26 @@ export class TesteditorComponent implements OnInit {
     });
   }
 
-  confirmartratamiento(data: [id: number, data: string]) {
-    const trat = this.allTreatments.find(
-      (tratamiento) => tratamiento.id == this.tratamientoSeleccionado
-    );
-    Swal.fire({
-      title: 'Seguro desea agregar el tratamiento: ' + trat?.nombre,
-      text: 'Tratamiento : ' + trat?.tratamiento,
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Si, Agregar',
-    }).then((result) => {
-      if (result.isConfirmed) {
-        this.guardarTratamientoReceta(data);
-      } else this.tratamientoSeleccionado = 0;
-    });
-  }
+    
+    confirmartratamiento(data:[id:number,data:string]){
+      const trat= this.allTreatments.find(tratamiento => tratamiento.id == this.tratamientoSeleccionado);
+      Swal.fire({
+        title: 'Seguro desea agregar el tratamiento: ' + trat?.nombre,
+        heightAuto: true,
+        width: 'auto',
+        padding: '1em',
+        text: 'Tratamiento : ' + trat?.tratamiento,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Si, Agregar',
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.guardarTratamientoReceta(data);
+        } else this.tratamientoSeleccionado = 0;
+      });
+    }
 
   guardarTratamientoReceta(data: [id: number, data: string]) {
     if (this.tratamientoSeleccionado == 0 && data[1] != null) {
