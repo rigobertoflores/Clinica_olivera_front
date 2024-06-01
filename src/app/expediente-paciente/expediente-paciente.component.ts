@@ -42,7 +42,7 @@ export const appConfig: ApplicationConfig = {
     templateUrl: './expediente-paciente.component.html',
     styleUrl: './expediente-paciente.component.css',
     imports: [MenuComponent, SidebarComponent, ReactiveFormsModule, CommonModule, StandaloneGalleryComponent, TesteditorComponent, TesteditorHistoriaComponent, NotasComponent, LoadingComponent, LottieComponent, TesteditorinformesoComponent, ComplementariosComponent]
-})
+   })
 
 export class ExpedientePacienteComponent implements OnInit {
  
@@ -67,7 +67,7 @@ export class ExpedientePacienteComponent implements OnInit {
   selectedFile: any;
   notas: nota[];
   showLoading: boolean = false;
-
+  fechaconsultaactual: string;
   isLoading = false;
   @ViewChildren('input') inputs!: QueryList<ElementRef>; // Asume que todos los campos de entrada tienen la referencia #input
 
@@ -158,7 +158,7 @@ export class ExpedientePacienteComponent implements OnInit {
       (data: Paciente) => {
         this.cargarFormulario(data);
         this.pacientedatos = data;
-        
+        this.fechaconsultaactual = data.fechaConsulta;
       }
     );
   }
@@ -295,24 +295,33 @@ export class ExpedientePacienteComponent implements OnInit {
   saveData() {
     if (!this.PacienteFormulario.invalid) {
       this.showLoading = true; // Inicia la carga
-      this.Service.postData('PostPaciente', this.PacienteFormulario.value).subscribe({
-        next: (result) => {
-          // Se llama si la operación es exitosa
-          this.cargarFormulario(result);
-          this.pacientedatos = result;          
-          this.pacientedatos.nombre = result.nombre;
-        },
-        error: (error) => {
-          // Se llama en caso de error en la operación
-          console.error('Error al guardar los datos del paciente:', error);
-          this.showLoading = false; 
-          // Aquí podrías manejar el error, por ejemplo, mostrando un mensaje al usuario
-        },
-        complete: () => {
-          // Esto se ejecutará después de completar la suscripción, exitosa o no
-          this.showLoading = false; // Termina la carga
-        }
-      });
+      if (this.fechaconsultaactual != this.PacienteFormulario.get('fechaConsulta')?.value)
+         this.PacienteFormulario.get('fechaUltimaConsulta')?.setValue(
+           this.fechaconsultaactual
+         );
+        this.Service.postData(
+          'PostPaciente',
+          this.PacienteFormulario.value
+        ).subscribe({
+          next: (result) => {
+            // Se llama si la operación es exitosa
+            this.cargarFormulario(result);
+            this.pacientedatos = result;
+            this.pacientedatos.nombre = result.nombre;
+             this.fechaconsultaactual =
+               this.PacienteFormulario.get('fechaConsulta')?.value;
+          },
+          error: (error) => {
+            // Se llama en caso de error en la operación
+            console.error('Error al guardar los datos del paciente:', error);
+            this.showLoading = false;
+            // Aquí podrías manejar el error, por ejemplo, mostrando un mensaje al usuario
+          },
+          complete: () => {
+            // Esto se ejecutará después de completar la suscripción, exitosa o no
+            this.showLoading = false; // Termina la carga
+          },
+        });
     }
   }
 

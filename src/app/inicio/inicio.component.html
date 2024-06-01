@@ -69,7 +69,7 @@
                                                     Fecha prox.Consulta
                                                 </th>
                                                 <td mat-cell *matCellDef="let element">
-                                                       {{ convertirFecha(element.fechaConsulta) }}
+                                                       {{ element.fechaConsulta | date: 'MM/dd/yyyy' }}
                                                 </td>
                                             </ng-container>
 

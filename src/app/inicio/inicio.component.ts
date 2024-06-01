@@ -22,6 +22,7 @@ import { FotoPaciente } from '../interface/FotoPaciente';
 import { ImagenPaciente } from '../interface/ImagenPaciente';
 import { UserService } from '../Services/user.service';
 import { LoadingComponent } from '../loading/loading.component';  
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-inicio',
@@ -37,13 +38,13 @@ import { LoadingComponent } from '../loading/loading.component';
     MatFormFieldModule,
     MatInputModule,
     MatIconModule,
-    LoadingComponent
+    LoadingComponent,
+    DatePipe,
   ],
   templateUrl: './inicio.component.html',
   styleUrl: './inicio.component.css',
 })
 export class InicioComponent implements OnInit, AfterViewInit {
-
   fechaActual: Date = new Date();
   dia: any = this.fechaActual.getDate();
   mes: any = this.fechaActual.getMonth() + 1; // Los meses empiezan en 0
@@ -51,7 +52,7 @@ export class InicioComponent implements OnInit, AfterViewInit {
   fechadenacimiento: Date | null;
   telefono: string;
   email: string | null;
-  fecha_ultimaconsulta: string | null;
+  fecha_ultimaconsulta: Date | null;
   dataSource = new MatTableDataSource<Paciente>();
   title = 'expedientes-medicos-cancun';
   contenido: string = '';
@@ -59,12 +60,18 @@ export class InicioComponent implements OnInit, AfterViewInit {
   nombre: string;
   edad: number;
   listaPacientes: Paciente[];
-  displayedColumns: string[] = ['fecha_proximaconsulta', 'nombre', 'sexo','editar'];
+  displayedColumns: string[] = [
+    'fecha_proximaconsulta',
+    'nombre',
+    'sexo',
+    'editar',
+  ];
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
-  images: { src: string; alt: string; }={src:"",alt:"no hay imagen"};
+  images: { src: string; alt: string } = { src: '', alt: 'no hay imagen' };
   clave: number;
   showLoading: boolean = false;
+  datePipe: DatePipe;
 
   constructor(
     private Service: Service,
@@ -80,14 +87,10 @@ export class InicioComponent implements OnInit, AfterViewInit {
   ngOnInit() {
     this.showLoading = true;
     this.formatearfecha();
-    this.cargarContenidoPacientePrincipal();
-    
   }
 
   ngAfterViewInit() {
-   
-    this.cargarListadodePacientes(); 
-   
+    this.cargarListadodePacientes();
   }
 
   formatearfecha() {
@@ -96,21 +99,22 @@ export class InicioComponent implements OnInit, AfterViewInit {
     }/${this.año}`;
   }
 
-  cargarContenidoPacientePrincipal() {
-    this.Service.getUnico('UsuarioMasactual').subscribe((data: Paciente) => {
-      this.nombre = data.nombre;
-      let anoNacimiento: Date = new Date(data.fechaDeNacimiento);
-      this.edad = this.año - anoNacimiento.getFullYear();
-      this.fecha_ultimaconsulta = data.fechaUltimaConsulta;
-      this.telefono = data.telefono;
-      this.email = data.email;
-      this.clave=data.clave;
-      this.cargarFotoPaciente(data.clave);      
-    });
-  }
+  // cargarContenidoPacientePrincipal() {
+      
+  //   });
+  // }
 
   cargarListadodePacientes() {
     this.Service.getList('GetPacientes').subscribe((data: Paciente[]) => {
+      if(data[0]){
+        this.nombre = data[0].nombre;
+        let anoNacimiento: Date = new Date(data[0].fechaDeNacimiento);
+        this.edad = this.año - anoNacimiento.getFullYear();
+        (this.fecha_ultimaconsulta = null), (this.telefono = data[0].telefono);
+        this.email = data[0].email;
+        this.clave = data[0].clave;
+        this.cargarFotoPaciente(this.clave);
+      }
       this.dataSource = new MatTableDataSource<Paciente>(data);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
@@ -144,32 +148,19 @@ export class InicioComponent implements OnInit, AfterViewInit {
     // Por ejemplo, abrir un diálogo de edición o navegar a una ruta de edición con el ID del elemento
   }
 
-  cargarFotoPaciente(id:number) {
-       this.Service.getUnicoParams('GetFotoPaciente', id).subscribe(
+  cargarFotoPaciente(id: number) {
+    this.Service.getUnicoParams('GetFotoPaciente', id).subscribe(
       (data: FotoPaciente) => {
-        if(data!=null)
-        this.images ={src:`data:image/jpeg;base64,${data.blobData}`,alt:"no hay imagen"} ;
-          
-        });
-  } 
+        if (data != null)
+          this.images = {
+            src: `data:image/jpeg;base64,${data.blobData}`,
+            alt: 'no hay imagen',
+          };
+      }
+    );
+  }
 
   agregarPaciente() {
     this.router.navigate(['/expediente_paciente', 0]);
-    }
-  
-    convertirFecha(fecha: string): string {
-      const partes = fecha.split('-');
-      if (partes.length !== 3) {
-        return '01/01/1992'
-      }
-  
-      const [year, month, day] = partes;
-  
-      // Validar que los componentes de la fecha son numéricos
-      if (isNaN(Number(year)) || isNaN(Number(month)) || isNaN(Number(day))) {
-        return '01/01/1992'
-      }
-  
-      return `${day.padStart(2, '0')}/${month.padStart(2, '0')}/${year}`;
   }
 }
