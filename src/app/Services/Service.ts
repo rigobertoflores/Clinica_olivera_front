@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable, map } from 'rxjs';
 import { ImagenPaciente } from '../interface/ImagenPaciente';
 import { FotoPaciente } from '../interface/FotoPaciente';
@@ -28,6 +28,23 @@ export class Service {
 
   getList(nombre_api: string): Observable<any[]> {
     return this.http.get<any[]>(this.api + nombre_api);
+  } 
+
+  getListPagination(
+    nombre_api: string,
+    pageIndex: number,
+    pageSize: number,
+    filter: string = ''
+  ): Observable<any> {
+    let params = new HttpParams()
+      .set('pageIndex', pageIndex.toString())
+      .set('pageSize', pageSize.toString());
+
+    if (filter) {
+      params = params.set('filter', filter);
+    }
+
+     return this.http.get<any>(`${this.api}${nombre_api}`, { params });
   }
 
   getListParams(nombre_api: string, id: string | number): Observable<any[]> {

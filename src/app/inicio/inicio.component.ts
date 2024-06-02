@@ -72,6 +72,7 @@ export class InicioComponent implements OnInit, AfterViewInit {
   clave: number;
   showLoading: boolean = false;
   datePipe: DatePipe;
+  filter: string=" ";
 
   constructor(
     private Service: Service,
@@ -87,11 +88,46 @@ export class InicioComponent implements OnInit, AfterViewInit {
   ngOnInit() {
     this.showLoading = true;
     this.formatearfecha();
+     this.loadPatients();
   }
 
   ngAfterViewInit() {
-    this.cargarListadodePacientes();
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
+
+    this.paginator.page.subscribe(() => {
+      this.loadPatients();
+    });
   }
+
+  loadPatients() {
+    const pageIndex = this.paginator ? this.paginator.pageIndex : 0;
+    const pageSize = this.paginator ? this.paginator.pageSize : 10;
+
+     this.Service.getListPagination(
+       'GetPacientes',
+       pageIndex,
+       pageSize,
+       this.filter
+     ).subscribe(data => {
+       if (data.items[0]) {
+         this.nombre = data.items[0].nombre;
+         let anoNacimiento: Date = new Date(data.items[0].fechaDeNacimiento);
+         this.edad = this.año - anoNacimiento.getFullYear();
+         (this.fecha_ultimaconsulta = null),
+           (this.telefono = data.items[0].telefono);
+         this.email = data.items[0].email;
+         this.clave = data.items[0].clave;
+         this.cargarFotoPaciente(this.clave);
+       }
+       this.dataSource = new MatTableDataSource<Paciente>(data.items);
+       this.paginator.length = data.totalCount;
+       this.dataSource.sort = this.sort;
+       this.showLoading = false;
+     });
+  }
+
+  
 
   formatearfecha() {
     this.fechaFormateada = `${this.dia < 10 ? '0' + this.dia : this.dia}/${
@@ -100,13 +136,13 @@ export class InicioComponent implements OnInit, AfterViewInit {
   }
 
   // cargarContenidoPacientePrincipal() {
-      
+
   //   });
   // }
 
   cargarListadodePacientes() {
     this.Service.getList('GetPacientes').subscribe((data: Paciente[]) => {
-      if(data[0]){
+      if (data[0]) {
         this.nombre = data[0].nombre;
         let anoNacimiento: Date = new Date(data[0].fechaDeNacimiento);
         this.edad = this.año - anoNacimiento.getFullYear();
@@ -132,12 +168,11 @@ export class InicioComponent implements OnInit, AfterViewInit {
   }
 
   applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
-
-    if (this.dataSource.paginator) {
-      this.dataSource.paginator.firstPage();
-    }
+        this.filter = (event.target as HTMLInputElement).value
+          .trim()
+          .toLowerCase();
+        this.paginator.pageIndex = 0; // Reset page index to 0 when applying filter
+        this.loadPatients();
   }
 
   editarElemento(id: number) {
