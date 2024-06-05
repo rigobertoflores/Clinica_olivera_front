@@ -1,7 +1,8 @@
 export enum UrlsBackend {
-  ApiPacientes = 'https://localhost:7210/CliniaOv/CliniaOvController/',
-  ApiTratamientos = 'https://localhost:7210/api/Tratamientos/TratamientosController/',
-  ApiNotificacion = 'https://localhost:7210/api/NotificationEmail/NotificationEmailController/',
+  ApiPacientes = 'https://clinicaolivera.azurewebsites.net/CliniaOv/CliniaOvController/',
+  ApiTratamientos = 'https://clinicaolivera.azurewebsites.net/api/Tratamientos/TratamientosController/',
+  ApiNotificacion = 'https://clinicaolivera.azurewebsites.net/api/NotificationEmail/NotificationEmailController/',
+  ApiAuth = 'https://clinicaolivera.azurewebsites.net/api/Authentication/AuthenticationController/',
 }
 
 export enum UrlsTratamientos {
@@ -26,5 +27,9 @@ export enum UrlsPlantillas {
 
 export enum UrlsPacientes {
   GetPacientesNotificaciones = 'GetPacientesNotificacionesCitas',
-  GetCitasPorFecha ='GetCitasPorFecha',
+  GetCitasPorFecha = 'GetCitasPorFecha',
+}
+
+export enum UrlsAuth {
+  GetUsersPermitidos = 'GetUsersPermitidos',
 }

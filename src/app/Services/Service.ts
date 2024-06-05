@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable, map } from 'rxjs';
 import { ImagenPaciente } from '../interface/ImagenPaciente';
 import { FotoPaciente } from '../interface/FotoPaciente';
@@ -8,13 +8,13 @@ import { FotoPaciente } from '../interface/FotoPaciente';
   providedIn: 'root',
 })
 export class Service {
-  private api = 'https://localhost:7210/CliniaOv/CliniaOvController/';
-  private apiTratamientos =
-    'https://localhost:7210/api/Tratamientos/TratamientosController/';
-  // private api =
-  //   'https://clinicaolivera.azurewebsites.net/CliniaOv/CliniaOvController/';
+  // private api = 'https://localhost:7210/CliniaOv/CliniaOvController/';
   // private apiTratamientos =
-  //   'https://clinicaolivera.azurewebsites.net/api/Tratamientos/TratamientosController/';
+  //   'https://localhost:7210/api/Tratamientos/TratamientosController/';
+  private api =
+    'https://clinicaolivera.azurewebsites.net/CliniaOv/CliniaOvController/';
+  private apiTratamientos =
+    'https://clinicaolivera.azurewebsites.net/api/Tratamientos/TratamientosController/';
 
   constructor(private http: HttpClient) {}
 
@@ -71,6 +71,11 @@ export class Service {
         }
       })
     );
+  }
+
+  getUsers(api: string, nombre_api: string, email: string): Observable<any> {
+    let params = new HttpParams().set('email', email);
+    return this.http.get<any>(`${api}${nombre_api}`, { params });
   }
 
   GetData(api: string, nombre_api: string, data: any): Observable<any> {
