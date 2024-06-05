@@ -90,6 +90,11 @@ export class Service {
     );
   }
 
+  getUsers(api: string, nombre_api: string, email: string): Observable<any> {
+    let params = new HttpParams().set('email', email);
+    return this.http.get<any>(`${api}${nombre_api}`, { params });
+  }
+
   GetData(api: string, nombre_api: string, data: any): Observable<any> {
     const url = `${api}${nombre_api}`;
     return this.http.get(url, data).pipe(
