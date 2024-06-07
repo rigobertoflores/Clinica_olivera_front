@@ -22,13 +22,13 @@ import { CommonModule } from '@angular/common';
     FormsModule,
     ReactiveFormsModule,
     CommonModule,
-    StandaloneGalleryComponent
+    StandaloneGalleryComponent,
   ],
 })
 export class ComplementariosComponent implements OnInit {
   selectedFile: any;
   parametro: any;
-  documentos: { src: string; alt: string;ext:string,id:number}[];
+  documentos: { src: string; alt: string; ext: string; id: number }[];
 
   constructor(
     private route: ActivatedRoute,
@@ -82,8 +82,8 @@ export class ComplementariosComponent implements OnInit {
         this.documentos = data.map((documento) => ({
           src: `data:image/jpeg;base64,${documento.blobData}`,
           alt: documento.nombre,
-          ext:documento.ext,
-          id:documento.id
+          ext: documento.ext,
+          id: documento.id,
         }));
         this.cd.detectChanges();
       });
@@ -92,11 +92,12 @@ export class ComplementariosComponent implements OnInit {
   openDialog(imageUrl: string): void {
     this.dialog.open(StandaloneGalleryComponent, {
       data: {
-        documento: imageUrl,
+        img: imageUrl,
       },
-      panelClass: 'custom-dialog-container',
+      panelClass: 'custom-dialog-container', // Opcional: para estilos personalizados3
     });
   }
+
   cargarComplementariosPaciente(parametrourl: any) {
     this.Service.getListParams(
       'GetComplementariosPaciente',
@@ -106,33 +107,31 @@ export class ComplementariosComponent implements OnInit {
         this.documentos = data.map((documento) => ({
           src: `data:image/jpeg;base64,${documento.blobData}`,
           alt: documento.nombre,
-          ext:documento.ext,
-          id:documento.id
+          ext: documento.ext,
+          id: documento.id,
         }));
     });
   }
-  
-  deleteComplementario(id:number){
-    this.Service.postData('DeleteComplementario',id )
-    .pipe(
-      catchError((error) => {
-        console.error('Error uploading profile image:', error);
-        return of(null);  // Continúa el flujo incluso con error
-      }),
-      finalize(() => {
-        this.cd.detectChanges();  // Forzar detección de cambios en finalize
-      })
-    )
-    .subscribe(
-      (data: Complementos[]) => {
+
+  deleteComplementario(id: number) {
+    this.Service.postData('DeleteComplementario', id)
+      .pipe(
+        catchError((error) => {
+          console.error('Error uploading profile image:', error);
+          return of(null); // Continúa el flujo incluso con error
+        }),
+        finalize(() => {
+          this.cd.detectChanges(); // Forzar detección de cambios en finalize
+        })
+      )
+      .subscribe((data: Complementos[]) => {
         this.documentos = data.map((documento) => ({
           src: `data:image/jpeg;base64,${documento.blobData}`,
-          alt: documento.nombre,          
-          ext:documento.ext,
-          id:documento.id
+          alt: documento.nombre,
+          ext: documento.ext,
+          id: documento.id,
         }));
-        this.cd.detectChanges();  // Opcional, si es necesario después de cambiar 'images'
-      }
-    );
+        this.cd.detectChanges(); // Opcional, si es necesario después de cambiar 'images'
+      });
   }
 }
