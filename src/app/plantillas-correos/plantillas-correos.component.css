@@ -39,6 +39,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+    flex-wrap: nowrap;
 }
 
 .icono {
@@ -50,7 +51,10 @@
     flex-grow: 1;
     /* Ocupa el espacio disponible */
     font-weight: bold;
-}
+    margin-right: 10px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    }
 
 .btnAgregar {
     margin-left: auto; /* Alinea el botón a la derecha */
@@ -59,8 +63,22 @@
     /* Centra el texto del botón */
     white-space: nowrap;
     /* Evita que el texto se quiebre */
+    padding: 0.25rem 0.5rem;
 }
 .form-check-inline {
     margin-right: 30px;
     margin-left: 5px;
+}
+@media (max-width: 576px) {
+    .plantilla-item {
+        flex-direction: row;
+            align-items: center;
+    }
+
+    .btnAgregar {
+    margin-left: 10px;
+        width: auto;
+        padding: 0.25rem 0.5rem;
+    }
+                 
 }

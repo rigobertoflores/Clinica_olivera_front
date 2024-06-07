@@ -52,7 +52,8 @@ export class PlantillasCorreosComponent implements OnInit, OnDestroy {
     new Array<NotificacionPacientes>();
   pacientesVinculados: any = [];
   pacientesADesvincular: NotificacionPacientes[] = [];
-valfiltro: any;
+  valfiltro: any;
+  isButtonDisabled: boolean = true;
 
   ngOnInit(): void {
     this.getPlantillas();
@@ -61,6 +62,12 @@ valfiltro: any;
     console.log('this.getPlantillas()', this.getPlantillas());
     console.log('plantillas', this.plantillas);
     console.log('allPlantillas', this.allPlantillas);
+    if (
+      this.pacientesAInsertar.length == 0 &&
+      this.pacientesVinculados.length == 0
+    ) {
+      this.isButtonDisabled = true;
+    }
 
     this.updateAllPacientes(
       this.RelacionPlantillaPacienteForm.get('pacientesTipo')?.value
@@ -90,16 +97,6 @@ valfiltro: any;
       asuntoSelected: new FormControl(''),
       cuerpoSelected: new FormControl(''),
     });
-
-    // this.buscarPlantillaForm = new FormGroup({
-    //   buscarPlantilla: new FormControl(''),
-    // });
-
-    // this.buscarPlantillaForm
-    //   .get('buscarPlantilla')
-    //   ?.valueChanges.subscribe((val: string) => {
-    //     this.filtrarPlantillas(val);
-    //   });
 
     this.RelacionPlantillaPacienteForm = new FormGroup({
       idPlantPac: new FormControl(''),
@@ -216,7 +213,7 @@ valfiltro: any;
     if (!val) {
       this.plantillas = this.allPlantillas;
     } else {
-      this.plantillas = this.allPlantillas?.filter(p=>
+      this.plantillas = this.allPlantillas?.filter((p) =>
         p.nombre?.toLowerCase().includes(val.toLowerCase())
       );
     }
@@ -342,6 +339,7 @@ valfiltro: any;
     });
   }
   mostrarAgregarPacientes(plantilla: any) {
+    this.isButtonDisabled = true;
     this.plantillaSelected = false;
     this.modalAgregarPacientes = true;
     this.cleanMostrarAgregarPacientes();
@@ -374,6 +372,7 @@ valfiltro: any;
   }
 
   agregarPaciente(paciente: any) {
+    this.isButtonDisabled = true;
     console.log('pacienteaAgregar', paciente);
     if (
       this.pacientesVinculados.filter(
@@ -389,6 +388,7 @@ valfiltro: any;
       };
 
       this.pacientesVinculados[this.pacientesVinculados.length] = temp;
+      this.isButtonDisabled = false;
     } else {
       Swal.fire({
         position: 'center',
@@ -412,79 +412,10 @@ valfiltro: any;
     if (index !== -1) {
       this.pacientesVinculados.splice(index, 1);
     }
+    this.isButtonDisabled = false;
   }
 
-  // guardarnuevosVinculos() {
-  //   this.showLoading = true;
-  //      if (this.pacientesAInsertar.length > 0) {
-  //     let dataInsertar: RelacionPlantilllaPaciente[] = this.pacientesAInsertar.map(
-  //       (paciente) => {
-  //         return {
-  //           id: 0,
-  //           plantillaId: parseInt(
-  //             this.RelacionPlantillaPacienteForm.get('idPlantPac').value
-  //           ),
-  //           pacienteId: parseInt(paciente.id),
-  //           nombrePlantilla:
-  //             this.RelacionPlantillaPacienteForm.get(
-  //               'asuntoPlantPac'
-  //             ).value.toString(),
-  //           nombrePaciente: paciente.nombre.toString(),
-  //           status: '',
-  //           fechaCreacion: new Date(),
-  //           fechaUltActualizacion: new Date(),
-  //         };
-  //       }
-  //     );
-  //     //       const formData = new FormData();
-  //     // formData.append('pacientesAgregar', JSON.stringify(dataInsertar));
-  //     // formData.append(
-  //     //   'pacientesEliminar',
-  //     //   JSON.stringify(this.pacientesADesvincular)
-  //     // );
-  //     this.Service.PostData(
-  //       UrlsBackend.ApiNotificacion,
-  //       UrlsPlantillas.PostAgregarVinculo,
-  //       dataInsertar
-  //     ).subscribe((result) => {
-  //       Swal.fire({
-  //         position: 'center',
-  //         icon: 'success',
-  //         title: 'Se han guardado los cambios correctamente',
-  //         showConfirmButton: false,
-  //         timer: 2000,
-  //       });
-  //       this.getPacientesVinculados(
-  //         parseInt(this.RelacionPlantillaPacienteForm.get('idPlantPac').value)
-  //       );
-  //       console.log(result);
-  //     });
-  //   }
-
-  //    if (this.pacientesADesvincular.length > 0) {
-
-  //      this.Service.PostData(
-  //        UrlsBackend.ApiNotificacion,
-  //        UrlsPlantillas.DeleteEliminarVinculo,
-  //        this.pacientesADesvincular
-  //      ).subscribe((result) => {
-  //        Swal.fire({
-  //          position: 'center',
-  //          icon: 'success',
-  //          title: 'Se han guardado los cambios correctamente',
-  //          showConfirmButton: false,
-  //          timer: 2000,
-  //        });
-  //        this.getPacientesVinculados(
-  //          parseInt(this.RelacionPlantillaPacienteForm.get('idPlantPac').value)
-  //        );
-  //        console.log(result);
-  //      });
-  //    }
-  //   this.pacientesADesvincular = [];
-  //   this.pacientesAInsertar = [];
-  //     this.showLoading = true;
-  // }
+  
 
   async guardarnuevosVinculos() {
     this.showLoading = true;
