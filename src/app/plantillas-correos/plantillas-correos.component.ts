@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MenuComponent } from '../components/menu/menu.component';
 import { SidebarComponent } from '../components/sidebar/sidebar.component';
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import Swal from 'sweetalert2';
 import { Service } from '../Services/Service';
 import {
@@ -54,6 +54,7 @@ export class PlantillasCorreosComponent implements OnInit, OnDestroy {
   pacientesADesvincular: NotificacionPacientes[] = [];
   valfiltro: any;
   isButtonDisabled: boolean = true;
+  isButtonAgregarDisabled: boolean = true;
 
   ngOnInit(): void {
     this.getPlantillas();
@@ -62,6 +63,7 @@ export class PlantillasCorreosComponent implements OnInit, OnDestroy {
     console.log('this.getPlantillas()', this.getPlantillas());
     console.log('plantillas', this.plantillas);
     console.log('allPlantillas', this.allPlantillas);
+      this.isButtonAgregarDisabled = true;
     if (
       this.pacientesAInsertar.length == 0 &&
       this.pacientesVinculados.length == 0
@@ -84,10 +86,10 @@ export class PlantillasCorreosComponent implements OnInit, OnDestroy {
     const today = new Date();
     const formattedDate = today.toISOString().substring(0, 10);
     this.agregarPForm = new FormGroup({
-      name: new FormControl(''),
+      name: new FormControl('', Validators.required),
       fecha: new FormControl(formattedDate),
-      asunto: new FormControl(''),
-      cuerpo: new FormControl(''),
+      asunto: new FormControl('', Validators.required),
+      cuerpo: new FormControl('', Validators.required),
     });
 
     this.mostrarPlantillaForm = new FormGroup({
@@ -109,6 +111,9 @@ export class PlantillasCorreosComponent implements OnInit, OnDestroy {
       'pacientesTipo'
     )?.valueChanges.subscribe((value: string) => {
       this.updateAllPacientes(value);
+    });
+    this.agregarPForm.valueChanges.subscribe(() => {
+      this.HabilitarBotonAgregar();
     });
   }
 
@@ -136,12 +141,20 @@ export class PlantillasCorreosComponent implements OnInit, OnDestroy {
     });
   }
 
+  HabilitarBotonAgregar() {
+    if (this.agregarPForm.valid) {
+      this.isButtonAgregarDisabled = false;
+    } else this.isButtonAgregarDisabled = true;
+  }
+
   addNew() {
     this.showLoading = true;
+    const today = new Date();
+    const formattedDate = today.toISOString().substring(0, 10);
     const plantillaNew: Plantilla = {
       id: 0,
       nombre: this.agregarPForm.get('name')?.value,
-      fechaEnvio: this.agregarPForm.get('fecha')?.value,
+      fechaEnvio:  formattedDate,
       asunto: this.agregarPForm.get('asunto')?.value,
       cuerpoEmail: this.agregarPForm.get('cuerpo')?.value,
       adjunto: '',
@@ -160,6 +173,7 @@ export class PlantillasCorreosComponent implements OnInit, OnDestroy {
           asunto: '',
           cuerpo: '',
         });
+             this.isButtonAgregarDisabled = true;
         Swal.fire({
           position: 'center',
           icon: 'success',
@@ -415,8 +429,6 @@ export class PlantillasCorreosComponent implements OnInit, OnDestroy {
     this.isButtonDisabled = false;
   }
 
-  
-
   async guardarnuevosVinculos() {
     this.showLoading = true;
 
@@ -462,10 +474,10 @@ export class PlantillasCorreosComponent implements OnInit, OnDestroy {
         );
         promises.push(
           firstValueFrom(
-            this.Service.Delete(
+            this.Service.PostData(
               UrlsBackend.ApiNotificacion,
               UrlsPlantillas.DeleteEliminarVinculo,
-              idsElimanr
+              this.pacientesADesvincular
             )
           )
         );

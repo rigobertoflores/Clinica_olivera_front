@@ -2,7 +2,7 @@
     <div class="col-md-12 colsm-12">
         <div class="card-body">
             <div class="form-group">
-                <label for="historiaSelect">Selecciona una Informe Operaorio</label>
+                <label for="historiaSelect">Selecciona una Informe Operatorio</label>
                 <select id="historiaSelect" class="form-control" [(ngModel)]="informeeleccionada"
                     [ngModelOptions]="{standalone: true}">
                     <option value="0">-- Seleccione un Informe--</option>
@@ -10,7 +10,7 @@
                 </select>
             </div>
             <button type="button" class="btn btn-primary btn-block" (click)="guardarinformeexpediente()">Agregar
-                Historia</button>
+            </button>
         </div>
     </div>
 </div>
@@ -21,9 +21,8 @@
         <div class="card-body">
             <div class="form-group">
                 <label for="nombreinput">Expediente</label>
-                <textarea class="texthistoria" id="nombreinputtexthistoria"
-                    [(ngModel)]="informeexpediente.informe" class="form-control"
-                    (input)="ajustarAltura($event.target)"></textarea>
+                <textarea class="texthistoria" id="nombreinputtexthistoria" [(ngModel)]="informeexpediente.informe"
+                    class="form-control" (input)="ajustarAltura($event.target)"></textarea>
                 <br>
                 <button type="button" class="btn btn-primary btn-block"
                     (click)="guardarinformedentroexpediente()">Guardar Informe</button>

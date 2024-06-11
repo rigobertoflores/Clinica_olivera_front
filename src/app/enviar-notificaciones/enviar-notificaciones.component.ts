@@ -110,6 +110,7 @@ export class EnviarNotificacionesComponent implements OnInit, OnDestroy {
     this.obtenerPacientesConCitasPorFecha(formattedDate);
   }
   obtenerPacientesConCitasPorFecha(date: string) {
+     this.showLoading = true;
     this.Service.GetData(
       UrlsBackend.ApiPacientes,
       `${UrlsPacientes.GetCitasPorFecha}/${date}`,
@@ -120,8 +121,10 @@ export class EnviarNotificacionesComponent implements OnInit, OnDestroy {
         this.cantidadCorreosEnviar = result.length;
         console.log('result', result);
         console.log('this.pacientesConcita', this.pacientesConcita);
+         this.showLoading = false;
       },
       error: (error) => {
+         this.showLoading = false;
         Swal.fire({
           icon: 'error',
           title: 'Oops...',
@@ -135,6 +138,7 @@ export class EnviarNotificacionesComponent implements OnInit, OnDestroy {
   }
 
   enviarNotificaciones() {
+    this.showLoading = true;
     const data = {
       fecha: this.FechaEnvioForm.get('fecha')?.value,
       plantilla: this.datosPlantillaSelected,
@@ -146,7 +150,8 @@ export class EnviarNotificacionesComponent implements OnInit, OnDestroy {
       data
     ).subscribe({
       next: (response) => {
-        if(response.length== this.pacientesConcita.length)
+        if (response.length == this.pacientesConcita.length)
+          this.showLoading = false;
         Swal.fire({
           position: 'center',
           icon: 'success',
@@ -154,6 +159,7 @@ export class EnviarNotificacionesComponent implements OnInit, OnDestroy {
           showConfirmButton: false,
           timer: 2000,
         });
+
       },
       error: (error) => {
         this.showLoading = false;

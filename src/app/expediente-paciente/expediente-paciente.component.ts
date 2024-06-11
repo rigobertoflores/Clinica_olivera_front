@@ -309,7 +309,14 @@ export class ExpedientePacienteComponent implements OnInit {
             this.pacientedatos = result;
             this.pacientedatos.nombre = result.nombre;
              this.fechaconsultaactual =
-               this.PacienteFormulario.get('fechaConsulta')?.value;
+              this.PacienteFormulario.get('fechaConsulta')?.value;
+            Swal.fire({
+              position: 'center',
+              icon: 'success',
+              title: 'Se han actualizado los datos correctamente',
+              showConfirmButton: false,
+              timer: 2000,
+            });            
           },
           error: (error) => {
             // Se llama en caso de error en la operación

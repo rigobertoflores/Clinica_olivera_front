@@ -29,6 +29,7 @@ export class ComplementariosComponent implements OnInit {
   selectedFile: any;
   parametro: any;
   documentos: { src: string; alt: string; ext: string; id: number }[];
+  showLoading: boolean = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -51,6 +52,7 @@ export class ComplementariosComponent implements OnInit {
   }
 
   upload(): void {
+    this.showLoading = true;
     this.cd.detectChanges(); // Forzar la detección de cambios aquí
 
     if (!this.selectedFile) {
@@ -62,6 +64,7 @@ export class ComplementariosComponent implements OnInit {
       }).then(() => {
         this.cd.detectChanges(); // Forzar la detección de cambios después de actualizar showLoading
       });
+       this.showLoading = false;
       return;
     }
 
@@ -72,9 +75,23 @@ export class ComplementariosComponent implements OnInit {
       .pipe(
         finalize(() => {
           this.cd.detectChanges(); // Forzar la detección de cambios en finalize
+             this.showLoading = false;
+          Swal.fire({
+            position: 'center',
+            icon: 'success',
+            title: 'Se ha subido correctamente el archivo',
+            showConfirmButton: false,
+            timer: 2000,
+          });
         }),
         catchError((error) => {
           console.error('Error uploading image:', error);
+             this.showLoading = false;
+          Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Ocurrió un error al subir el archivo',
+          });
           return of([]); // Maneja el error y continúa el flujo
         })
       )

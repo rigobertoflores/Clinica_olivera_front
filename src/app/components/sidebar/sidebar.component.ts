@@ -15,13 +15,18 @@ import { CommonModule } from '@angular/common';
 export class SidebarComponent implements OnInit {
   user: string;
   routing: any;
-  userAdmin: string = 'admin';
+  // userAdmin: string = 'admin';
+  userAdmin: string = 'carla.olivera1994';
   imagendefault: string = 'assets/user4-128x128.jpg';
   imagenPerfilUrl: string | null;
   opcionesSB: typeof OpcionesSidebar;
   private renderer: Renderer2;
 
-  constructor(private authService: UserService, private router: Router,rendererFactory: RendererFactory2) {
+  constructor(
+    private authService: UserService,
+    private router: Router,
+    rendererFactory: RendererFactory2
+  ) {
     this.routing = Utils;
     if (this.authService.isAuthenticated()) {
       const userJson = localStorage.getItem('user');
