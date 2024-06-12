@@ -63,6 +63,13 @@ export class ComplementariosComponent implements OnInit {
         text: 'Por favor, selecciona un archivo primero.',
       }).then(() => {
         this.cd.detectChanges(); // Forzar la detección de cambios después de actualizar showLoading
+         Swal.fire({
+           position: 'center',
+           icon: 'success',
+           title: 'Se ha guardado el archivo correctamente',
+           showConfirmButton: false,
+           timer: 2000,
+         });
       });
        this.showLoading = false;
       return;

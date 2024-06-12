@@ -1,4 +1,12 @@
-import { Component, ElementRef, EventEmitter, Input, OnInit, Output, NgModule } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  NgModule,
+} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
@@ -10,10 +18,11 @@ import { Tratamiento } from '../interface/Tratamiento';
 import Swal from 'sweetalert2';
 import { PrintText } from '../interface/PrintText';
 import { UserService } from '../Services/user.service';
+import { LoadingComponent } from '../loading/loading.component';
 @Component({
   selector: 'app-testeditor',
   standalone: true,
-  imports: [CKEditorModule, FormsModule, CommonModule],
+  imports: [CKEditorModule, FormsModule, CommonModule, LoadingComponent],
   templateUrl: './testeditor.component.html',
   styleUrl: './testeditor.component.css',
 })
@@ -21,6 +30,7 @@ export class TesteditorComponent implements OnInit {
   Loading: boolean;
   allTreatments: Tratamiento[];
   treatments: Tratamiento[];
+  showLoading: boolean = false;
 
   public Editor = ClassicEditor;
   fullScreenMode = false;
@@ -58,6 +68,7 @@ export class TesteditorComponent implements OnInit {
   }
 
   guardarEditarreceta(data: [id: number, data: string]) {
+    this.showLoading = true;
     if (data[1] != null) {
       const receta: RecetaxPaciente = {
         clave: this.clave || '0',
@@ -67,15 +78,24 @@ export class TesteditorComponent implements OnInit {
       };
       this.Service.postData('PostReceta', receta).subscribe(
         (result: RecetaxPaciente[]) => {
+          this.showLoading = false;
           this.data = '';
           this.recetas = result;
           console.log(result);
+          Swal.fire({
+            position: 'center',
+            icon: 'success',
+            title: 'Se ha guardado correctamente la receta',
+            showConfirmButton: false,
+            timer: 2000,
+          });
         }
       );
     }
   }
 
   borrarreceta(data: [id: number, data: string]) {
+    this.showLoading = true;
     if (data[1] != null) {
       const receta: RecetaxPaciente = {
         clave: this.clave || '0',
@@ -88,13 +108,20 @@ export class TesteditorComponent implements OnInit {
           this.data = '';
           this.recetas = result;
           console.log(result);
+          this.showLoading = false;
+          Swal.fire({
+            position: 'center',
+            icon: 'success',
+            title: 'Se ha eliminado correctamente la receta',
+            showConfirmButton: false,
+            timer: 2000,
+          });
         }
       );
     }
   }
 
   printContent(notas: any) {
-    
     if (notas != null) {
       if (this.authService.isAuthenticated()) {
         const userJson = localStorage.getItem('user');
@@ -104,7 +131,7 @@ export class TesteditorComponent implements OnInit {
         }
       }
 
-      const printext: PrintText = { text: notas,user:this.user };
+      const printext: PrintText = { text: notas, user: this.user };
       this.Service.postData('Print', printext).subscribe(
         (pdfBlob: any) => {
           if (pdfBlob.fileContents) {
@@ -146,9 +173,11 @@ export class TesteditorComponent implements OnInit {
     });
   }
 
-    
-    confirmartratamiento(data:[id:number,data:string]){
-      const trat= this.allTreatments.find(tratamiento => tratamiento.id == this.tratamientoSeleccionado);
+  confirmartratamiento(data: [id: number, data: string]) {
+    if (this.tratamientoSeleccionado != 0) {
+      const trat = this.allTreatments.find(
+        (tratamiento) => tratamiento.id == this.tratamientoSeleccionado
+      );
       Swal.fire({
         title: 'Seguro desea agregar el tratamiento: ' + trat?.nombre,
         heightAuto: true,
@@ -165,7 +194,16 @@ export class TesteditorComponent implements OnInit {
           this.guardarTratamientoReceta(data);
         } else this.tratamientoSeleccionado = 0;
       });
+    } else {
+      Swal.fire({
+        position: 'center',
+        icon: 'info',
+        title: 'Debe seleccionar un tratamiento',
+        showConfirmButton: false,
+        timer: 2000,
+      });
     }
+  }
 
   guardarTratamientoReceta(data: [id: number, data: string]) {
     if (this.tratamientoSeleccionado == 0 && data[1] != null) {
