@@ -91,6 +91,8 @@ export class ExpedientePacienteComponent implements OnInit {
   showLoading: boolean = false;
   fechaconsultaactual: string;
   isLoading = false;
+  maxDate: string;
+  minDate: string;
   @ViewChildren('input') inputs!: QueryList<ElementRef>; // Asume que todos los campos de entrada tienen la referencia #input
 
   constructor(
@@ -99,7 +101,15 @@ export class ExpedientePacienteComponent implements OnInit {
     public dialog: MatDialog,
     private router: Router,
     private cd: ChangeDetectorRef
-  ) {}
+  ) {
+    const currentDate = new Date();
+    const maxDateNac = new Date();
+    const minDateNac = new Date();
+    minDateNac.setFullYear(currentDate.getFullYear() - 130);
+
+    this.maxDate = this.formatDateFechaNacimiento(maxDateNac);
+    this.minDate = this.formatDateFechaNacimiento(minDateNac);
+  }
 
   ngOnInit(): void {
     this.formatearfecha();
@@ -172,7 +182,12 @@ export class ExpedientePacienteComponent implements OnInit {
       this.cargarFormulario(pacienteVacio);
     }
   }
-
+  formatDateFechaNacimiento(date: Date): string {
+    const year = date.getFullYear();
+    const month = ('0' + (date.getMonth() + 1)).slice(-2);
+    const day = ('0' + date.getDate()).slice(-2);
+    return `${year}-${month}-${day}`;
+  }
   cargarContenidoPaciente(parametrourl: any) {
     this.showLoading = true;
     this.Service.getUnicoParams('GetPacienteId', parametrourl).subscribe(
@@ -564,7 +579,7 @@ export class ExpedientePacienteComponent implements OnInit {
     this.cd.detectChanges(); // Forzar detección de cambios aquí para mostrar el loading
 
     if (!this.selectedFile) {
-           Swal.fire({
+      Swal.fire({
         icon: 'error',
         title: 'Oops...',
         text: 'Por favor, selecciona un archivo primero.',

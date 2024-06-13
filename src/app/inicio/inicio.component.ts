@@ -1,9 +1,4 @@
-import {
-  AfterViewInit,
-  Component,
-  OnInit,
-  ViewChild,
-} from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { MenuComponent } from '../components/menu/menu.component';
 import { SidebarComponent } from '../components/sidebar/sidebar.component';
 import { HttpClientModule } from '@angular/common/http';
@@ -21,7 +16,7 @@ import { Router } from '@angular/router';
 import { FotoPaciente } from '../interface/FotoPaciente';
 import { ImagenPaciente } from '../interface/ImagenPaciente';
 import { UserService } from '../Services/user.service';
-import { LoadingComponent } from '../loading/loading.component';  
+import { LoadingComponent } from '../loading/loading.component';
 import { DatePipe } from '@angular/common';
 
 @Component({
@@ -58,7 +53,7 @@ export class InicioComponent implements OnInit, AfterViewInit {
   contenido: string = '';
   fechaFormateada: string;
   nombre: string;
-  edad: number;
+  edad: number = -1;
   listaPacientes: Paciente[];
   displayedColumns: string[] = [
     'fecha_proximaconsulta',
@@ -72,7 +67,7 @@ export class InicioComponent implements OnInit, AfterViewInit {
   clave: number;
   showLoading: boolean = false;
   datePipe: DatePipe;
-  filter: string=" ";
+  filter: string = ' ';
 
   constructor(
     private Service: Service,
@@ -88,7 +83,7 @@ export class InicioComponent implements OnInit, AfterViewInit {
   ngOnInit() {
     this.showLoading = true;
     this.formatearfecha();
-     this.loadPatients();
+    this.loadPatients();
   }
 
   ngAfterViewInit() {
@@ -104,30 +99,53 @@ export class InicioComponent implements OnInit, AfterViewInit {
     const pageIndex = this.paginator ? this.paginator.pageIndex : 0;
     const pageSize = this.paginator ? this.paginator.pageSize : 10;
 
-     this.Service.getListPagination(
-       'GetPacientes',
-       pageIndex,
-       pageSize,
-       this.filter
-     ).subscribe(data => {
-       if (data.items[0]) {
-         this.nombre = data.items[0].nombre;
-         let anoNacimiento: Date = new Date(data.items[0].fechaDeNacimiento);
-         this.edad = this.año - anoNacimiento.getFullYear();
-         (this.fecha_ultimaconsulta = null),
-           (this.telefono = data.items[0].telefono);
-         this.email = data.items[0].email;
-         this.clave = data.items[0].clave;
-         this.cargarFotoPaciente(this.clave);
-       }
-       this.dataSource = new MatTableDataSource<Paciente>(data.items);
-       this.paginator.length = data.totalCount;
-       this.dataSource.sort = this.sort;
-       this.showLoading = false;
-     });
-  }
+    this.Service.getListPagination(
+      'GetPacientes',
+      pageIndex,
+      pageSize,
+      this.filter
+    ).subscribe((data) => {
+      if (data.items[0]) {
+        this.nombre = data.items[0].nombre;
 
-  
+        if (data.items[0].fechaDeNacimiento != undefined) {
+          const fechaNacimientoDate = new Date(data.items[0].fechaDeNacimiento);
+          const hoy = new Date();
+
+          let edad = hoy.getFullYear() - fechaNacimientoDate.getFullYear();
+
+          // Ajustar la edad si el cumpleaños aún no ha ocurrido este año
+          const haCumplidoAnios =
+            hoy.getMonth() > fechaNacimientoDate.getMonth() ||
+            (hoy.getMonth() === fechaNacimientoDate.getMonth() &&
+              hoy.getDate() >= fechaNacimientoDate.getDate());
+
+          if (!haCumplidoAnios) {
+            edad--;
+          }
+
+          this.edad = edad;
+                  //  let anoNacimiento: Date = new Date(data.items[0].fechaDeNacimiento);
+          //  console.log(
+          //    'anoNacimiento',
+          //    anoNacimiento,
+          //    data.items[0].fechaDeNacimiento
+          //  );
+          //  this.edad = this.año - anoNacimiento.getFullYear();
+        }
+
+        (this.fecha_ultimaconsulta = null),
+          (this.telefono = data.items[0].telefono);
+        this.email = data.items[0].email;
+        this.clave = data.items[0].clave;
+        this.cargarFotoPaciente(this.clave);
+      }
+      this.dataSource = new MatTableDataSource<Paciente>(data.items);
+      this.paginator.length = data.totalCount;
+      this.dataSource.sort = this.sort;
+      this.showLoading = false;
+    });
+  }
 
   formatearfecha() {
     this.fechaFormateada = `${this.dia < 10 ? '0' + this.dia : this.dia}/${
@@ -168,11 +186,9 @@ export class InicioComponent implements OnInit, AfterViewInit {
   }
 
   applyFilter(event: Event) {
-        this.filter = (event.target as HTMLInputElement).value
-          .trim()
-          .toLowerCase();
-        this.paginator.pageIndex = 0; // Reset page index to 0 when applying filter
-        this.loadPatients();
+    this.filter = (event.target as HTMLInputElement).value.trim().toLowerCase();
+    this.paginator.pageIndex = 0; // Reset page index to 0 when applying filter
+    this.loadPatients();
   }
 
   editarElemento(id: number) {

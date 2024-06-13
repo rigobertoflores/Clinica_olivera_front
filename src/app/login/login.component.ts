@@ -49,7 +49,16 @@ export class LoginComponent implements OnInit {
       .then((response: any) => {
         console.log('Respuesta login con google', response);
         if (response) this.router.navigate(['/inicio']);
-        else this.router.navigate(['/login']);
+        else {
+          Swal.fire({
+            position: 'center',
+            icon: 'info',
+            title: 'No tiene acceso a este sitio.',
+            showConfirmButton: false,
+            timer: 2000,
+          });
+          this.router.navigate(['/login']);
+        }
       })
       .catch((error: any) => console.log('Error en login con google', error));
   }
