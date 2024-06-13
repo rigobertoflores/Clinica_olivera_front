@@ -24,3 +24,7 @@
 .content-header {
   padding: 60px 10px 10px 10px !important;
 }
+
+.iconoTooltip {
+color: gray !important;
+}
