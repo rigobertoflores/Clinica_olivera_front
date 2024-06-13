@@ -82,3 +82,13 @@
     }
                  
 }
+
+.texto:hover {
+    color: #1f68f1;
+    /* Azul oscuro */
+    cursor: pointer;
+    /* Cambia el cursor a una mano cuando pasa sobre el texto */
+}
+.iconoTooltip {
+    color: gray !important;
+}
