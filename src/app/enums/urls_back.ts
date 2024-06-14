@@ -23,6 +23,7 @@ export enum UrlsPlantillas {
   DeleteEliminarVinculo = 'EliminarVinculoPlantillasPacientes',
   SendEmail = 'SendEmail',
   ObtenerStatusCorreos = 'ObtenerStatusCorreos',
+  SendEmailFelicitaciones = 'SendEmailFelicitaciones',
 }
 
 export enum UrlsPacientes {

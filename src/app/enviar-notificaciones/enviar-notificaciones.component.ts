@@ -36,8 +36,10 @@ export class EnviarNotificacionesComponent implements OnInit, OnDestroy {
   };
   mostrarDatosPlantillaSelected: boolean = false;
   mostrarPacientesdeFechaSelected: boolean = false;
+  mostrarDatosPlantillaFelicitacionesSelected: boolean = false;
   FechaEnvioForm: any;
   pacientesConcita: any = [];
+  pacientesVinculadosAPlantilla: any = [];
   cantidadCorreosEnviar: number = 0;
 
   ngOnInit(): void {
@@ -75,11 +77,11 @@ export class EnviarNotificacionesComponent implements OnInit, OnDestroy {
         this.plantillas = result;
       },
       error: (error) => {
-         Swal.fire({
-           icon: 'error',
-           title: 'Oops...',
-           text: 'Ocurrió un error al obtener los pacientes con citas para la fecha seleccionada',
-         });
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Ocurrió un error al obtener los pacientes con citas para la fecha seleccionada',
+        });
       },
       complete: () => {
         this.showLoading = false; // Finalizar carga
@@ -110,7 +112,7 @@ export class EnviarNotificacionesComponent implements OnInit, OnDestroy {
     this.obtenerPacientesConCitasPorFecha(formattedDate);
   }
   obtenerPacientesConCitasPorFecha(date: string) {
-     this.showLoading = true;
+    this.showLoading = true;
     this.Service.GetData(
       UrlsBackend.ApiPacientes,
       `${UrlsPacientes.GetCitasPorFecha}/${date}`,
@@ -121,10 +123,10 @@ export class EnviarNotificacionesComponent implements OnInit, OnDestroy {
         this.cantidadCorreosEnviar = result.length;
         console.log('result', result);
         console.log('this.pacientesConcita', this.pacientesConcita);
-         this.showLoading = false;
+        this.showLoading = false;
       },
       error: (error) => {
-         this.showLoading = false;
+        this.showLoading = false;
         Swal.fire({
           icon: 'error',
           title: 'Oops...',
@@ -150,6 +152,78 @@ export class EnviarNotificacionesComponent implements OnInit, OnDestroy {
       data
     ).subscribe({
       next: (response) => {
+        this.showLoading = false;
+        Swal.fire({
+          position: 'center',
+          icon: 'success',
+          title: 'Se han enviado correctamente los correos',
+          showConfirmButton: false,
+          timer: 2000,
+        });
+      },
+      error: (error) => {
+        this.showLoading = false;
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Ocurrió un error al enviar los correos',
+        });
+      },
+      complete: () => {
+        this.showLoading = false; // Finalizar carga
+      },
+    });
+  }
+
+  seleccionarPlantillaFelicitaciones(plantillaSelectedID: any) {
+    console.log('plantillaSelected', plantillaSelectedID);
+    if (plantillaSelectedID > 0) {
+      this.datosPlantillaSelected = this.plantillas.filter(
+        (p) => p.id == plantillaSelectedID
+      )[0];
+      console.log('this.datosPlantillaSelected', this.datosPlantillaSelected);
+      this.mostrarDatosPlantillaFelicitacionesSelected = true;
+
+      this.obtenerPacientesVinculadosAPlantillaCorreo(plantillaSelectedID);
+    }
+  }
+
+  obtenerPacientesVinculadosAPlantillaCorreo(plantillaId: any) {
+    console.log('11', plantillaId), (this.showLoading = true);
+    this.Service.GetData(
+      UrlsBackend.ApiNotificacion,
+      `${UrlsPlantillas.GetPacientesVinculadosPP}/${plantillaId}`,
+      plantillaId
+    ).subscribe({
+      next: (result: any) => {
+        console.log('pacientesVinculados', result);
+        this.pacientesVinculadosAPlantilla = result;
+        this.cantidadCorreosEnviar = result.length;
+        this.showLoading = false;
+      },
+      error: (error: string) => {
+        this.showLoading = false;
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Ocurrió un error al obtener los pacientes ' + error,
+        });
+      },
+      complete: () => {
+        this.showLoading = false;
+      },
+    });
+  }
+
+  enviarFelicitaciones() {
+    this.showLoading = true;
+    console.log(this.datosPlantillaSelected);
+    this.Service.PostData(
+      UrlsBackend.ApiNotificacion,
+      UrlsPlantillas.SendEmailFelicitaciones,
+      this.datosPlantillaSelected
+    ).subscribe({
+      next: (response) => {
         if (response.length == this.pacientesConcita.length)
           this.showLoading = false;
         Swal.fire({
@@ -159,7 +233,6 @@ export class EnviarNotificacionesComponent implements OnInit, OnDestroy {
           showConfirmButton: false,
           timer: 2000,
         });
-
       },
       error: (error) => {
         this.showLoading = false;
@@ -168,6 +241,9 @@ export class EnviarNotificacionesComponent implements OnInit, OnDestroy {
           title: 'Oops...',
           text: 'Ocurrió un error al enviar los correos',
         });
+      },
+      complete: () => {
+        this.showLoading = false; // Finalizar carga
       },
     });
   }
