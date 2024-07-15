@@ -221,6 +221,7 @@ export class ExpedientePacienteComponent implements OnInit {
           : null
       ),
       nombre: new FormControl(data.nombre),
+      edad: new FormControl(this.CalcularEdad(data.fechaDeNacimiento)),
       estadoCivil: new FormControl(
         data.estadoCivil === 'C.' || data.estadoCivil === 'C'
           ? 'Casado'
@@ -278,6 +279,27 @@ export class ExpedientePacienteComponent implements OnInit {
       fechaConsulta: new FormControl(data.fechaConsulta),
       fechaUltimaConsulta: new FormControl(data.fechaUltimaConsulta),
     });
+  }
+
+  CalcularEdad(fechaNacimiento: string) {
+    let edad = 0;
+    if (fechaNacimiento != undefined) {
+      const fechaNacimientoDate = new Date(fechaNacimiento);
+      const hoy = new Date();
+
+     edad = hoy.getFullYear() - fechaNacimientoDate.getFullYear();
+
+      // Ajustar la edad si el cumpleaños aún no ha ocurrido este año
+      const haCumplidoAnios =
+        hoy.getMonth() > fechaNacimientoDate.getMonth() ||
+        (hoy.getMonth() === fechaNacimientoDate.getMonth() &&
+          hoy.getDate() >= fechaNacimientoDate.getDate());
+
+      if (!haCumplidoAnios) {
+        edad--;
+      }
+    }
+    return edad;
   }
 
   formatDate(dateString: string): string {
