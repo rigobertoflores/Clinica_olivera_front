@@ -55,3 +55,41 @@
 .content-header {
   padding: 60px 10px 10px 10px !important;
 }
+
+.custom-file-input {
+  position: relative;
+  width: 100%;
+  margin: 0;
+  opacity: 0;
+  z-index: 2;
+}
+
+.custom-file-label {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  z-index: 1;
+  height: calc(1.5em + 0.75rem + 2px);
+  padding: 0.375rem 0.75rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #495057;
+  background-color: #fff;
+  border: 1px solid #ced4da;
+  border-radius: 0.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+}
+
+.custom-file-label::after {
+  content: "Buscar imagen";
+  color: white;
+  background-color: #007bff;
+  border: 1px solid #007bff;
+  padding: 0.375rem 0.75rem;
+  border-radius: 0.25rem;
+}
+
