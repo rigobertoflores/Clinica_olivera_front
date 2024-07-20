@@ -204,10 +204,36 @@
                                                                                     <div class="form-group">
                                                                                         <label
                                                                                             for="inputOcupacion">Ocupación</label>
-                                                                                        <input #input type="text"
+                                                                                        <select #input
                                                                                             id="inputOcupacion"
-                                                                                            formControlName="ocupacion"
-                                                                                            class="form-control" />
+                                                                                            class="form-control"
+                                                                                            formControlName="ocupacion">
+                                                                                            <option
+                                                                                                value="NoEspecificado">
+                                                                                                Seleccione...</option>
+                                                                                            <option value="Abogado">
+                                                                                                Abogado(a)
+                                                                                            </option>
+                                                                                            <option value="AgenteDeViajes">
+                                                                                                Agente de viajes
+                                                                                            </option>
+                                                                                            <option value="Camarero">
+                                                                                                Camarero/Camarera</option>
+                                                                                            <option value="Gobierno">Gobierno
+                                                                                            </option>
+                                                                                            <option value="Profesor">Profesor
+                                                                                            </option>
+                                                                                            <option value="TrabajadorSalud">Trabajador de la salud
+                                                                                            </option>
+                                                                                            <option value="TrabajadorTecnologia">Trabajador de la tecnología
+                                                                                            </option>
+                                                                                            <option value="TrabajadorTurismo">Trabajador del turismo
+                                                                                            </option>
+                                                                                            <option value="VendedorTours">Vendedor de tours
+                                                                                            </option>
+                                                                                            <option value="Otro">Otro
+                                                                                            </option>
+                                                                                        </select>
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
@@ -277,7 +303,7 @@
                                                                         class="card card-primary card-outline collapsed-card">
                                                                         <div class="card-header">
                                                                             <h2 class="card-title m-0">Información del
-                                                                                Esposo (si aplica)</h2>
+                                                                                Esposo/a (si aplica)</h2>
                                                                             <div class="card-tools">
                                                                                 <button type="button"
                                                                                     class="btn btn-tool"
@@ -320,10 +346,32 @@
                                                                                             for="inputOcupacionEsposo">Ocupación
                                                                                             del
                                                                                             Esposo/a</label>
-                                                                                        <input #input type="text"
-                                                                                            id="inputOcupacionEsposo"
-                                                                                            formControlName="ocupacionEsposo"
-                                                                                            class="form-control" />
+                                                                                            <select #input id="inputOcupacionEsposo" class="form-control" formControlName="ocupacionEsposo">
+                                                                                                <option value="NoEspecificado">
+                                                                                                    Seleccione...</option>
+                                                                                                <option value="Abogado">
+                                                                                                    Abogado(a)
+                                                                                                </option>
+                                                                                                <option value="AgenteDeViajes">
+                                                                                                    Agente de viajes
+                                                                                                </option>
+                                                                                                <option value="Camarero">
+                                                                                                    Camarero/Camarera</option>
+                                                                                                <option value="Gobierno">Gobierno
+                                                                                                </option>
+                                                                                                <option value="Profesor">Profesor
+                                                                                                </option>
+                                                                                                <option value="TrabajadorSalud">Trabajador de la salud
+                                                                                                </option>
+                                                                                                <option value="TrabajadorTecnologia">Trabajador de la tecnología
+                                                                                                </option>
+                                                                                                <option value="TrabajadorTurismo">Trabajador del turismo
+                                                                                                </option>
+                                                                                                <option value="VendedorTours">Vendedor de tours
+                                                                                                </option>
+                                                                                                <option value="Otro">Otro
+                                                                                                </option>
+                                                                                            </select>
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
@@ -974,7 +1022,7 @@
                                         <app-testeditor-historia [parametro]="parametro"></app-testeditor-historia>
                                     </div>
                                     <div class="tab-pane" id="imc">
-                                        <app-calculadora-imc></app-calculadora-imc>                                    
+                                        <app-calculadora-imc></app-calculadora-imc>
                                     </div>
                                     <div class="tab-pane" id="notas">
                                         <app-notas [notas]="notas" [clave]="parametro"

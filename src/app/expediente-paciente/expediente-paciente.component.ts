@@ -64,7 +64,7 @@ export const appConfig: ApplicationConfig = {
     LottieComponent,
     TesteditorinformesoComponent,
     ComplementariosComponent,
-    CalculadoraIMCComponent
+    CalculadoraIMCComponent,
   ],
 })
 export class ExpedientePacienteComponent implements OnInit {
@@ -231,14 +231,16 @@ export class ExpedientePacienteComponent implements OnInit {
           ? 'Soltero'
           : data.estadoCivil
       ),
-      ocupacion: new FormControl(data.ocupacion),
+      ocupacion: new FormControl(
+        data.ocupacion == '' ? 'NoEspecificado' : data.ocupacion
+      ),
       domicilio: new FormControl(data.domicilio),
       poblacion: new FormControl(data.poblacion),
       telefono: new FormControl(data.telefono),
       email: new FormControl(data.email),
       nombreDelEsposo: new FormControl(data.nombreDelEsposo),
       edadDelEsposo: new FormControl(data.edadDelEsposo),
-      ocupacionEsposo: new FormControl(data.ocupacionEsposo),
+      ocupacionEsposo: new FormControl( data.ocupacionEsposo == '' ? 'NoEspecificado' : data.ocupacionEsposo),
       referencia: new FormControl(data.referencia),
       diabetes: new FormControl(data.diabetes),
       hipertension: new FormControl(data.hipertension),
@@ -289,7 +291,7 @@ export class ExpedientePacienteComponent implements OnInit {
       const fechaNacimientoDate = new Date(fechaNacimiento);
       const hoy = new Date();
 
-     edad = hoy.getFullYear() - fechaNacimientoDate.getFullYear();
+      edad = hoy.getFullYear() - fechaNacimientoDate.getFullYear();
 
       // Ajustar la edad si el cumpleaños aún no ha ocurrido este año
       const haCumplidoAnios =
