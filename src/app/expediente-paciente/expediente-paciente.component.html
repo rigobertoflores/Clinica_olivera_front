@@ -32,6 +32,9 @@
                                         <a class="nav-link" href="#historia" data-toggle="tab">Historia</a>
                                     </li>
                                     <li class="nav-item">
+                                        <a class="nav-link" href="#imc" data-toggle="tab">IMC</a>
+                                    </li>
+                                    <li class="nav-item">
                                         <a class="nav-link" href="#imagendeperfil" data-toggle="tab">Imagen de
                                             Perfil</a>
                                     </li>
@@ -969,6 +972,9 @@
                                     </div>
                                     <div class="tab-pane" id="historia">
                                         <app-testeditor-historia [parametro]="parametro"></app-testeditor-historia>
+                                    </div>
+                                    <div class="tab-pane" id="imc">
+                                        <app-calculadora-imc></app-calculadora-imc>                                    
                                     </div>
                                     <div class="tab-pane" id="notas">
                                         <app-notas [notas]="notas" [clave]="parametro"

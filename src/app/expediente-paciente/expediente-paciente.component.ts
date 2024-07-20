@@ -36,6 +36,7 @@ import { LoadingComponent } from '../loading/loading.component';
 import { catchError, finalize, of } from 'rxjs';
 import Swal from 'sweetalert2';
 import { ComplementariosComponent } from '../complementarios/complementarios.component';
+import { CalculadoraIMCComponent } from '../calculadora-imc/calculadora-imc.component';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -63,6 +64,7 @@ export const appConfig: ApplicationConfig = {
     LottieComponent,
     TesteditorinformesoComponent,
     ComplementariosComponent,
+    CalculadoraIMCComponent
   ],
 })
 export class ExpedientePacienteComponent implements OnInit {
