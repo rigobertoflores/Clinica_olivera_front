@@ -1,5 +1,10 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {
+  FormControl,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+} from '@angular/forms';
 import { MenuComponent } from '../components/menu/menu.component';
 import { SidebarComponent } from '../components/sidebar/sidebar.component';
 import Swal from 'sweetalert2';
@@ -63,15 +68,15 @@ export class ComplementariosComponent implements OnInit {
         text: 'Por favor, selecciona un archivo primero.',
       }).then(() => {
         this.cd.detectChanges(); // Forzar la detección de cambios después de actualizar showLoading
-         Swal.fire({
-           position: 'center',
-           icon: 'success',
-           title: 'Se ha guardado el archivo correctamente',
-           showConfirmButton: false,
-           timer: 2000,
-         });
+        Swal.fire({
+          position: 'center',
+          icon: 'success',
+          title: 'Se ha guardado el archivo correctamente',
+          showConfirmButton: false,
+          timer: 2000,
+        });
       });
-       this.showLoading = false;
+      this.showLoading = false;
       return;
     }
 
@@ -82,7 +87,7 @@ export class ComplementariosComponent implements OnInit {
       .pipe(
         finalize(() => {
           this.cd.detectChanges(); // Forzar la detección de cambios en finalize
-             this.showLoading = false;
+          this.showLoading = false;
           Swal.fire({
             position: 'center',
             icon: 'success',
@@ -93,7 +98,7 @@ export class ComplementariosComponent implements OnInit {
         }),
         catchError((error) => {
           console.error('Error uploading image:', error);
-             this.showLoading = false;
+          this.showLoading = false;
           Swal.fire({
             icon: 'error',
             title: 'Oops...',
@@ -137,25 +142,69 @@ export class ComplementariosComponent implements OnInit {
     });
   }
 
+  // deleteComplementario(id: number) {
+  //   this.Service.postData('DeleteComplementario', id)
+  //     .pipe(
+  //       catchError((error) => {
+  //         console.error('Error uploading profile image:', error);
+  //         return of(null); // Continúa el flujo incluso con error
+  //       }),
+  //       finalize(() => {
+  //         this.cd.detectChanges(); // Forzar detección de cambios en finalize
+  //       })
+  //     )
+  //     .subscribe((data: Complementos[]) => {
+  //       this.documentos = data.map((documento) => ({
+  //         src: `data:image/jpeg;base64,${documento.blobData}`,
+  //         alt: documento.nombre,
+  //         ext: documento.ext,
+  //         id: documento.id,
+  //       }));
+  //       this.cd.detectChanges(); // Opcional, si es necesario después de cambiar 'images'
+  //     });
+  // }
+
   deleteComplementario(id: number) {
-    this.Service.postData('DeleteComplementario', id)
-      .pipe(
-        catchError((error) => {
-          console.error('Error uploading profile image:', error);
-          return of(null); // Continúa el flujo incluso con error
-        }),
-        finalize(() => {
-          this.cd.detectChanges(); // Forzar detección de cambios en finalize
-        })
-      )
-      .subscribe((data: Complementos[]) => {
-        this.documentos = data.map((documento) => ({
-          src: `data:image/jpeg;base64,${documento.blobData}`,
-          alt: documento.nombre,
-          ext: documento.ext,
-          id: documento.id,
-        }));
-        this.cd.detectChanges(); // Opcional, si es necesario después de cambiar 'images'
-      });
+    Swal.fire({
+      title: '¿Seguro desea eliminar este archivo?',
+      text: 'Se eliminará el complementario',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Sí, eliminar',
+      cancelButtonText: 'Cancelar',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.Service.postData('DeleteComplementario', id)
+          .pipe(
+            catchError((error) => {
+              console.error('Error al eliminar el tratamiento:', error);
+              return of(null); // Continúa el flujo incluso con error
+            }),
+            finalize(() => {
+              this.cd.detectChanges(); // Forzar detección de cambios en finalize
+            })
+          )
+          .subscribe((data: Complementos[]) => {
+            if (data) {
+              this.documentos = data.map((documento) => ({
+                src: `data:image/jpeg;base64,${documento.blobData}`,
+                alt: documento.nombre,
+                ext: documento.ext,
+                id: documento.id,
+              }));
+              this.cd.detectChanges(); // Opcional, si es necesario después de cambiar 'images'
+              Swal.fire({
+                title: 'Eliminado!',
+                text: 'El archivo complementario ha sido eliminado.',
+                icon: 'success',
+                showConfirmButton: false,
+                timer: 2000,
+              });
+            }
+          });
+      }
+    });
   }
 }

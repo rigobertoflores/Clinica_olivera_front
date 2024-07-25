@@ -240,7 +240,9 @@ export class ExpedientePacienteComponent implements OnInit {
       email: new FormControl(data.email),
       nombreDelEsposo: new FormControl(data.nombreDelEsposo),
       edadDelEsposo: new FormControl(data.edadDelEsposo),
-      ocupacionEsposo: new FormControl( data.ocupacionEsposo == '' ? 'NoEspecificado' : data.ocupacionEsposo),
+      ocupacionEsposo: new FormControl(
+        data.ocupacionEsposo == '' ? 'NoEspecificado' : data.ocupacionEsposo
+      ),
       referencia: new FormControl(data.referencia),
       diabetes: new FormControl(data.diabetes),
       hipertension: new FormControl(data.hipertension),
@@ -661,25 +663,69 @@ export class ExpedientePacienteComponent implements OnInit {
       });
   }
 
+  // deleteImage(id: number) {
+  //   this.Service.postData('DeleteImagenPaciente', id)
+  //     .pipe(
+  //       catchError((error) => {
+  //         console.error('Error uploading profile image:', error);
+  //         return of(null); // Continúa el flujo incluso con error
+  //       }),
+  //       finalize(() => {
+  //         this.showLoading = false;
+  //         this.cd.detectChanges(); // Forzar detección de cambios en finalize
+  //       })
+  //     )
+  //     .subscribe((data: ImagenPaciente[]) => {
+  //       this.images = data.map((img) => ({
+  //         src: `data:image/jpeg;base64,${img.blobData}`,
+  //         alt: img.letra,
+  //         id: img.id,
+  //       }));
+  //       this.cd.detectChanges(); // Opcional, si es necesario después de cambiar 'images'
+  //     });
+  // }
+
   deleteImage(id: number) {
-    this.Service.postData('DeleteImagenPaciente', id)
-      .pipe(
-        catchError((error) => {
-          console.error('Error uploading profile image:', error);
-          return of(null); // Continúa el flujo incluso con error
-        }),
-        finalize(() => {
-          this.showLoading = false;
-          this.cd.detectChanges(); // Forzar detección de cambios en finalize
-        })
-      )
-      .subscribe((data: ImagenPaciente[]) => {
-        this.images = data.map((img) => ({
-          src: `data:image/jpeg;base64,${img.blobData}`,
-          alt: img.letra,
-          id: img.id,
-        }));
-        this.cd.detectChanges(); // Opcional, si es necesario después de cambiar 'images'
-      });
+    Swal.fire({
+      title: '¿Seguro desea eliminar esta imagen?',
+      text: 'Se eliminará la imagen seleccionada.',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Sí, eliminar',
+      cancelButtonText: 'Cancelar',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.Service.postData('DeleteImagenPaciente', id)
+          .pipe(
+            catchError((error) => {
+              console.error('Error al eliminar la imagen:', error);
+              return of(null); // Continúa el flujo incluso con error
+            }),
+            finalize(() => {
+              this.showLoading = false;
+              this.cd.detectChanges(); // Forzar detección de cambios en finalize
+            })
+          )
+          .subscribe((data: ImagenPaciente[]) => {
+            if (data) {
+              this.images = data.map((img) => ({
+                src: `data:image/jpeg;base64,${img.blobData}`,
+                alt: img.letra,
+                id: img.id,
+              }));
+              this.cd.detectChanges(); // Opcional, si es necesario después de cambiar 'images'
+             Swal.fire({
+               title: 'Eliminado!',
+               text: 'La imagen ha sido eliminada exitosamente.',
+               icon: 'success',
+               showConfirmButton: false,
+               timer: 2000,
+             });
+            }
+          });
+      }
+    });
   }
 }
