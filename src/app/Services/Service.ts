@@ -28,7 +28,7 @@ export class Service {
 
   getList(nombre_api: string): Observable<any[]> {
     return this.http.get<any[]>(this.api + nombre_api);
-  } 
+  }
 
   getListPagination(
     nombre_api: string,
@@ -44,7 +44,7 @@ export class Service {
       params = params.set('filter', filter);
     }
 
-     return this.http.get<any>(`${this.api}${nombre_api}`, { params });
+    return this.http.get<any>(`${this.api}${nombre_api}`, { params });
   }
 
   getListParams(nombre_api: string, id: string | number): Observable<any[]> {
@@ -61,6 +61,22 @@ export class Service {
   postData(nombre_api: string, data: any): Observable<any> {
     const url1 = `${this.api}${nombre_api}`;
     return this.http.post(url1, data).pipe(
+      map((response: any) => {
+        if (response) {
+          if (response.hasError && response.errorCode == 401) {
+            return;
+          }
+          return response;
+        } else {
+          return [];
+        }
+      })
+    );
+  }
+
+  DeleteE(nombre_api: string, data: any): Observable<any> {
+    const url = `${this.api}${nombre_api}/${data}`;
+    return this.http.delete(url).pipe(
       map((response: any) => {
         if (response) {
           if (response.hasError && response.errorCode == 401) {

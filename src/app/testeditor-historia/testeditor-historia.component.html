@@ -25,6 +25,8 @@
                     [(ngModel)]="expediente.expediente1" class="form-control"
                     (input)="ajustarAltura($event.target)"></textarea>
                 <br>
+                <button type="button" class="btn btn-success btn-block"
+                    (click)="printContent(expediente?.expediente1)">Imprimir</button>
                 <button type="button" class="btn btn-primary btn-block"
                     (click)="guardarHistoriadentroExpediente()">Guardar Historia</button>
             </div>

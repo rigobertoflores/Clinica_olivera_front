@@ -210,4 +210,33 @@ export class TesteditorHistoriaComponent implements OnInit, AfterViewInit {
         : textarea.value.length;
     textarea.setSelectionRange(adjustedPosition, adjustedPosition);
   }
+
+  printContent(content: string) {
+    let contenidoHTML = content.replace(/\n/g, '<br>');
+    let printWindow = window.open('', '_blank', 'width=800,height=600');
+    printWindow!.document.write('<html><head><title>Print</title>');
+    printWindow!.document.write('<link rel="stylesheet" href="style.css">'); // Si tienes un archivo CSS externo
+    printWindow!.document.write('<style>');
+    printWindow!.document.write(
+      'body { font-family: Arial, sans-serif; margin: 20px; }'
+    );
+    printWindow!.document.write(
+      'h1, h2 { color: darkblue; margin-bottom: 0.5em; }'
+    );
+    printWindow!.document.write(
+      'p { font-size: 16px; line-height: 1.5; text-align: justify; margin-top: 0.5em; }'
+    );
+    printWindow!.document.write('</style>');
+    printWindow!.document.write('</head><body>');
+    printWindow!.document.write(contenidoHTML);
+    printWindow!.document.write('</body></html>');
+    printWindow!.document.close(); // Necesario para que la ventana maneje correctamente los recursos
+    printWindow!.focus(); // Foco en la ventana de impresión para el usuario
+
+    // Espera a que el contenido se cargue completamente antes de imprimir
+    setTimeout(() => {
+      printWindow!!.print();
+      printWindow!!.close();
+    }, 1000); // Espera 1 segundo para asegurarse de que todo se carga correctamente
+  }
 }

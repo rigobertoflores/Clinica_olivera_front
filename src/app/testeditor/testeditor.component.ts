@@ -7,7 +7,7 @@ import {
   Output,
   NgModule,
 } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule } from '@angular/forms';
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { ChangeEvent } from '@ckeditor/ckeditor5-angular/ckeditor.component';
@@ -19,10 +19,16 @@ import Swal from 'sweetalert2';
 import { PrintText } from '../interface/PrintText';
 import { UserService } from '../Services/user.service';
 import { LoadingComponent } from '../loading/loading.component';
+
 @Component({
   selector: 'app-testeditor',
   standalone: true,
-  imports: [CKEditorModule, FormsModule, CommonModule, LoadingComponent],
+  imports: [
+    CKEditorModule,
+    FormsModule,
+    CommonModule,
+    LoadingComponent
+  ],
   templateUrl: './testeditor.component.html',
   styleUrl: './testeditor.component.css',
 })
@@ -37,6 +43,7 @@ export class TesteditorComponent implements OnInit {
   @Input() recetas: RecetaxPaciente[];
   @Input() clave: string;
   @Input() fechaActual: string;
+  @Input() paciente: FormGroup;
 
   public model = {
     editorData: '<p>Hello, world!</p>',
@@ -45,12 +52,15 @@ export class TesteditorComponent implements OnInit {
   tratamientos: any;
   tratamientoSeleccionado: number = 0;
   user: string;
+  url: Blob;
 
   constructor(
     private el: ElementRef,
     private Service: Service,
-    private authService: UserService
-  ) {}
+    private authService: UserService,
+    private fb: FormBuilder
+  ) {
+  }
 
   ngOnInit(): void {
     this.getTreatments();
@@ -125,24 +135,28 @@ export class TesteditorComponent implements OnInit {
     if (notas != null) {
       if (this.authService.isAuthenticated()) {
         const userJson = localStorage.getItem('user');
-        console.log(this.authService, '1');
         if (userJson) {
           this.user = JSON.parse(userJson).email.split('@')[0];
         }
       }
 
-      const printext: PrintText = { text: notas, user: this.user };
+      const printext: PrintText = {
+        text: notas,
+        user: this.user,
+        nombrepaciente: this.paciente.get('nombre')?.value,
+      };
       this.Service.postData('Print', printext).subscribe(
         (pdfBlob: any) => {
           if (pdfBlob.fileContents) {
+            // Decodificar el contenido del PDF desde base64
             const binaryString = window.atob(pdfBlob.fileContents);
             const len = binaryString.length;
             const bytes = new Uint8Array(len);
             for (let i = 0; i < len; i++) {
               bytes[i] = binaryString.charCodeAt(i);
             }
-            const blob = new Blob([bytes], { type: pdfBlob.contentType });
-            const url = window.URL.createObjectURL(blob);
+            this.url = new Blob([bytes], { type: pdfBlob.contentType });
+            const url = window.URL.createObjectURL(this.url);
             window.open(url, '_blank');
           } else {
             console.error('No data received or invalid blob');
@@ -159,9 +173,16 @@ export class TesteditorComponent implements OnInit {
     this.Loading = true; // Iniciar carga
     this.Service.GetTratamiento().subscribe({
       next: (result: Tratamiento[]) => {
-        this.allTreatments = result.sort((a, b) =>
-          a.nombre.localeCompare(b.nombre)
-        );
+        // Procesar cada tratamiento para convertir los saltos de línea en <br>
+        this.allTreatments = result
+          .map((tratamiento) => {
+            return {
+              ...tratamiento,
+              descripcion: tratamiento.tratamiento.replace(/\n/g, '<br>'),
+            };
+          })
+          .sort((a, b) => a.nombre.localeCompare(b.nombre));
+
         this.treatments = this.allTreatments;
       },
       error: (error) => {
@@ -172,7 +193,6 @@ export class TesteditorComponent implements OnInit {
       },
     });
   }
-
   confirmartratamiento(data: [id: number, data: string]) {
     if (this.tratamientoSeleccionado != 0) {
       const trat = this.allTreatments.find(
@@ -218,7 +238,7 @@ export class TesteditorComponent implements OnInit {
         +'</p>';
       } else {
         if (trat && trat.tratamiento !== null) {
-          this.data += '<p>' + trat.tratamiento;
+          this.data += '<p>' + trat.tratamiento.replace(/\n/g, '<br>');
           +'</p>'; // Agregar el contenido de histo.hc al final de this.data
         }
       }
