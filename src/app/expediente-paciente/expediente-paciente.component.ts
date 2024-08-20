@@ -208,6 +208,8 @@ export class ExpedientePacienteComponent implements OnInit {
   }
 
   cargarFormulario(data: Paciente) {
+     const today = new Date();
+     const formattedDate = today.toISOString().substring(0, 10);
     this.PacienteFormulario = new FormGroup({
       clave: new FormControl(data.clave),
       sexo: new FormControl(
@@ -220,10 +222,14 @@ export class ExpedientePacienteComponent implements OnInit {
       fechaDeNacimiento: new FormControl(
         data.fechaDeNacimiento != ''
           ? this.formatDate(data.fechaDeNacimiento)
-          : null
+          : formattedDate
       ),
       nombre: new FormControl(data.nombre),
-      edad: new FormControl(this.CalcularEdad(data.fechaDeNacimiento)),
+      edad: new FormControl(
+        data.fechaDeNacimiento != ''
+          ? this.CalcularEdad(data.fechaDeNacimiento)
+          : 0
+      ),
       estadoCivil: new FormControl(
         data.estadoCivil === 'C.' || data.estadoCivil === 'C'
           ? 'Casado'
@@ -282,8 +288,14 @@ export class ExpedientePacienteComponent implements OnInit {
       condilomatosis: new FormControl(data.condilomatosis),
       displasias: new FormControl(data.displasias),
       alergia: new FormControl(data.alergia),
-      fechaConsulta: new FormControl(data.fechaConsulta),
-      fechaUltimaConsulta: new FormControl(data.fechaUltimaConsulta),
+      fechaConsulta: new FormControl(
+        data.fechaConsulta != '' ? data.fechaConsulta : formattedDate
+      ),
+      fechaUltimaConsulta: new FormControl(
+        data.fechaUltimaConsulta != ''
+          ? data.fechaUltimaConsulta
+          : formattedDate
+      ),
     });
   }
 
