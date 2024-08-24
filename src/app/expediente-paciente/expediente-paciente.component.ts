@@ -752,40 +752,40 @@ export class ExpedientePacienteComponent implements OnInit {
 
   ///IMPRIMIR TODO EL EXPEDIENTE//////////////
 
-  sections = [
-    { id: 'informacionGeneral', name: 'Información General', selected: true },
-    { id: 'historia', name: 'Historia', selected: true },
-    //{ id: 'imc', name: 'IMC', selected: true },
-    { id: 'imagenPerfil', name: 'Imagen de Perfil', selected: true },
-    { id: 'imagenes', name: 'Imágenes', selected: true },
-    { id: 'pendientes', name: 'Pendientes', selected: true },
-    { id: 'recetas', name: 'Recetas', selected: true },
-    { id: 'complementarios', name: 'Complementarios', selected: true },
-    {
-      id: 'justificacionesInformes',
-      name: 'Justificaciones e Informes',
-      selected: true,
-    },
-  ];
-  @ViewChildren('checkbox') checkboxes: QueryList<ElementRef>;
-  onPrint() {
-    this.showLoading = true;
-    const requestBody: any = {};
+  // sections = [
+  //   { id: 'informacionGeneral', name: 'Información General', selected: true },
+  //   { id: 'historia', name: 'Historia', selected: true },
+  //   //{ id: 'imc', name: 'IMC', selected: true },
+  //   { id: 'imagenPerfil', name: 'Imagen de Perfil', selected: true },
+  //   { id: 'imagenes', name: 'Imágenes', selected: true },
+  //   { id: 'pendientes', name: 'Pendientes', selected: true },
+  //   { id: 'recetas', name: 'Recetas', selected: true },
+  //   { id: 'complementarios', name: 'Complementarios', selected: true },
+  //   {
+  //     id: 'justificacionesInformes',
+  //     name: 'Justificaciones e Informes',
+  //     selected: true,
+  //   },
+  // ];
+  // @ViewChildren('checkbox') checkboxes: QueryList<ElementRef>;
+  // onPrint() {
+  //   this.showLoading = true;
+  //   const requestBody: any = {};
 
-    this.sections.forEach((section, index) => {
-      const checkbox = this.checkboxes.toArray()[index].nativeElement;
-      requestBody[section.id] = checkbox.checked ? true : false;
-    });
-    // Agregar id del paciente
-    //Agregar validacion solo para pacientes con id
+  //   this.sections.forEach((section, index) => {
+  //     const checkbox = this.checkboxes.toArray()[index].nativeElement;
+  //     requestBody[section.id] = checkbox.checked ? true : false;
+  //   });
+  //   // Agregar id del paciente
+  //   //Agregar validacion solo para pacientes con id
 
-    console.log('Objeto a enviar al controlador:', requestBody);
-    this.Service.PostData(
-      UrlsBackend.ApiPacientes,
-      UrlsPacientes.PrintComplete,
-      requestBody
-    ).subscribe((result) => {});
-  }
+  //   console.log('Objeto a enviar al controlador:', requestBody);
+  //   this.Service.PostData(
+  //     UrlsBackend.ApiPacientes,
+  //     UrlsPacientes.PrintComplete,
+  //     requestBody
+  //   ).subscribe((result) => {});
+  // }
 
   printPage() {
     // Obtener todos los tab-pane
