@@ -93,3 +93,20 @@
   border-radius: 0.25rem;
 }
 
+
+.nombreSeccion{
+  margin-left: 10px;
+  /* Ajusta este valor para más o menos espacio */
+}
+
+
+.checkSecciones {
+  width: 20px;  
+  height: 20px;
+  }
+
+
+div label {
+  font-weight: normal;
+  font-size: medium;
+}

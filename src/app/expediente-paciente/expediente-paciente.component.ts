@@ -8,6 +8,7 @@ import {
   ViewChild,
   ViewChildren,
   ChangeDetectorRef,
+  Renderer2,
 } from '@angular/core';
 import { MenuComponent } from '../components/menu/menu.component';
 import { SidebarComponent } from '../components/sidebar/sidebar.component';
@@ -37,6 +38,8 @@ import { catchError, finalize, of } from 'rxjs';
 import Swal from 'sweetalert2';
 import { ComplementariosComponent } from '../complementarios/complementarios.component';
 import { CalculadoraIMCComponent } from '../calculadora-imc/calculadora-imc.component';
+import { UrlsBackend, UrlsPacientes } from '../enums/urls_back';
+
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -96,13 +99,15 @@ export class ExpedientePacienteComponent implements OnInit {
   maxDate: string;
   minDate: string;
   @ViewChildren('input') inputs!: QueryList<ElementRef>; // Asume que todos los campos de entrada tienen la referencia #input
+  imprimirExpCompleto: boolean = false;
 
   constructor(
     private route: ActivatedRoute,
     private Service: Service,
     public dialog: MatDialog,
     private router: Router,
-    private cd: ChangeDetectorRef
+    private cd: ChangeDetectorRef,
+    private renderer: Renderer2
   ) {
     const currentDate = new Date();
     const maxDateNac = new Date();
@@ -117,6 +122,7 @@ export class ExpedientePacienteComponent implements OnInit {
     this.formatearfecha();
     this.parametro = this.route.snapshot.paramMap.get('id');
     if (Number(this.parametro) > 0) {
+      this.imprimirExpCompleto = true;
       this.cargarContenidoPaciente(this.parametro);
       this.cargarImagenPaciente(this.parametro);
       this.cargarRecetasPaciente(this.parametro);
@@ -208,8 +214,11 @@ export class ExpedientePacienteComponent implements OnInit {
   }
 
   cargarFormulario(data: Paciente) {
-     const today = new Date();
-     const formattedDate = today.toISOString().substring(0, 10);
+
+    const today = new Date();
+    const formattedDate = today.toISOString().substring(0, 10);
+    console.log(today);
+    console.log(formattedDate);
     this.PacienteFormulario = new FormGroup({
       clave: new FormControl(data.clave),
       sexo: new FormControl(
@@ -728,16 +737,165 @@ export class ExpedientePacienteComponent implements OnInit {
                 id: img.id,
               }));
               this.cd.detectChanges(); // Opcional, si es necesario después de cambiar 'images'
-             Swal.fire({
-               title: 'Eliminado!',
-               text: 'La imagen ha sido eliminada exitosamente.',
-               icon: 'success',
-               showConfirmButton: false,
-               timer: 2000,
-             });
+              Swal.fire({
+                title: 'Eliminado!',
+                text: 'La imagen ha sido eliminada exitosamente.',
+                icon: 'success',
+                showConfirmButton: false,
+                timer: 2000,
+              });
             }
           });
       }
     });
+  }
+
+  ///IMPRIMIR TODO EL EXPEDIENTE//////////////
+
+  sections = [
+    { id: 'informacionGeneral', name: 'Información General', selected: true },
+    { id: 'historia', name: 'Historia', selected: true },
+    //{ id: 'imc', name: 'IMC', selected: true },
+    { id: 'imagenPerfil', name: 'Imagen de Perfil', selected: true },
+    { id: 'imagenes', name: 'Imágenes', selected: true },
+    { id: 'pendientes', name: 'Pendientes', selected: true },
+    { id: 'recetas', name: 'Recetas', selected: true },
+    { id: 'complementarios', name: 'Complementarios', selected: true },
+    {
+      id: 'justificacionesInformes',
+      name: 'Justificaciones e Informes',
+      selected: true,
+    },
+  ];
+  @ViewChildren('checkbox') checkboxes: QueryList<ElementRef>;
+  onPrint() {
+    this.showLoading = true;
+    const requestBody: any = {};
+
+    this.sections.forEach((section, index) => {
+      const checkbox = this.checkboxes.toArray()[index].nativeElement;
+      requestBody[section.id] = checkbox.checked ? true : false;
+    });
+    // Agregar id del paciente
+    //Agregar validacion solo para pacientes con id
+
+    console.log('Objeto a enviar al controlador:', requestBody);
+    this.Service.PostData(
+      UrlsBackend.ApiPacientes,
+      UrlsPacientes.PrintComplete,
+      requestBody
+    ).subscribe((result) => {});
+  }
+
+  printPage() {
+    // Obtener todos los tab-pane
+    const tabPanes = document.querySelectorAll('.tab-pane');
+    const collapsibles = document.querySelectorAll('.collapsed-card');
+    const textareas = document.querySelectorAll('textarea');
+    const originalDisplayValues: string[] = [];
+    // Seleccionar todos los botones y selects
+    const buttons = document.querySelectorAll('button');
+    const selects = document.querySelectorAll('select');
+    const containers = document.querySelectorAll(
+   '.container-fluid, .row, .col-md-12, .card-body'
+ );
+
+    // Mostrar todos los tab-pane temporalmente
+    tabPanes.forEach((tabPane) => {
+      originalDisplayValues.push(
+        tabPane.classList.contains('active') ? 'active' : 'fade'
+      );
+      tabPane.classList.add('show', 'active');
+      tabPane.classList.remove('fade');
+    });
+
+    collapsibles.forEach((card) => {
+      card.classList.add('expand-card');
+      card.classList.remove('collapsed-card');
+    });
+    // Expandir todos los textarea según su contenido
+    textareas.forEach((textarea) => {
+      textarea.style.height = 'auto'; // Resetear la altura
+      textarea.style.height = textarea.scrollHeight + 'px'; // Ajustar la altura al contenido
+    });
+    // Seleccionar todos los botones y selects vacíos
+    const emptyButtons = document.querySelectorAll('button:empty');
+    const emptySelects = document.querySelectorAll('select');
+
+    const elementsToHide: HTMLElement[] = [];
+
+    // Ocultar botones vacíos
+    emptyButtons.forEach((button) => {
+      if (button.innerHTML.trim() === '') {
+        this.renderer.setStyle(button, 'display', 'none');
+        elementsToHide.push(button as HTMLElement);
+      }
+    });
+
+    // Ocultar selects vacíos o con opciones vacías
+    emptySelects.forEach((select) => {
+      const options = select.querySelectorAll('option');
+      let isEmpty = true;
+      options.forEach((option) => {
+        if (option.value.trim() !== '') {
+          isEmpty = false;
+        }
+      });
+      if (isEmpty || options.length === 0) {
+        this.renderer.setStyle(select, 'display', 'none');
+        elementsToHide.push(select as HTMLElement);
+      }
+    });
+
+    // Ocultar todos los botones
+    buttons.forEach((button) => {
+      this.renderer.setStyle(button, 'display', 'none');
+      elementsToHide.push(button as HTMLElement);
+    });
+
+    // Ocultar todos los selectores
+    selects.forEach((select) => {
+      this.renderer.setStyle(select, 'display', 'none');
+      elementsToHide.push(select as HTMLElement);
+    });
+
+     containers.forEach((container) => {
+       const styles = getComputedStyle(container);
+       if (parseInt(styles.marginBottom) > 20) {
+         this.renderer.setStyle(container, 'margin-bottom', '20px'); // Limitar a 2 líneas
+       }
+       if (parseInt(styles.paddingBottom) > 20) {
+         this.renderer.setStyle(container, 'padding-bottom', '20px'); // Limitar a 2 líneas
+       }
+     });
+    // Ejecutar la impresión
+    window.print();
+
+    // Restaurar el estado original de los tab-pane
+    tabPanes.forEach((tabPane, index) => {
+      if (originalDisplayValues[index] === 'fade') {
+        tabPane.classList.remove('show', 'active');
+        tabPane.classList.add('fade');
+      } else {
+        tabPane.classList.remove('fade');
+        tabPane.classList.add('show', 'active');
+      }
+    });
+    collapsibles.forEach((card) => {
+      card.classList.add('collapsed-card');
+      card.classList.remove('expand-card');
+    });
+    textareas.forEach((textarea) => {
+      textarea.style.height = ''; // Restaurar a la altura original si es necesario
+    });
+    // Restaurar la visibilidad después de la impresión
+    elementsToHide.forEach((element) => {
+      this.renderer.removeStyle(element, 'display');
+    });
+   
+     containers.forEach((container) => {
+       this.renderer.removeStyle(container, 'margin-bottom');
+       this.renderer.removeStyle(container, 'padding-bottom');
+     });
   }
 }

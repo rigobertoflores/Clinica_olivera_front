@@ -54,6 +54,10 @@
                                         <a class="nav-link" href="#informe" data-toggle="tab">Justificaciones e
                                             Informes</a>
                                     </li>
+                                <li class="nav-item" *ngIf="imprimirExpCompleto">
+                                    <a class="nav-link" href="#imprimirExpCompleto" data-toggle="tab">Imprimir Expediente Completo</a>
+                                </li>
+
 
 
                                 </ul>
@@ -214,22 +218,35 @@
                                                                                             <option value="Abogado">
                                                                                                 Abogado(a)
                                                                                             </option>
-                                                                                            <option value="AgenteDeViajes">
+                                                                                            <option
+                                                                                                value="AgenteDeViajes">
                                                                                                 Agente de viajes
                                                                                             </option>
                                                                                             <option value="Camarero">
-                                                                                                Camarero/Camarera</option>
-                                                                                            <option value="Gobierno">Gobierno
+                                                                                                Camarero/Camarera
                                                                                             </option>
-                                                                                            <option value="Profesor">Profesor
+                                                                                            <option value="Gobierno">
+                                                                                                Gobierno
                                                                                             </option>
-                                                                                            <option value="TrabajadorSalud">Trabajador de la salud
+                                                                                            <option value="Profesor">
+                                                                                                Profesor
                                                                                             </option>
-                                                                                            <option value="TrabajadorTecnologia">Trabajador de la tecnología
+                                                                                            <option
+                                                                                                value="TrabajadorSalud">
+                                                                                                Trabajador de la salud
                                                                                             </option>
-                                                                                            <option value="TrabajadorTurismo">Trabajador del turismo
+                                                                                            <option
+                                                                                                value="TrabajadorTecnologia">
+                                                                                                Trabajador de la
+                                                                                                tecnología
                                                                                             </option>
-                                                                                            <option value="VendedorTours">Vendedor de tours
+                                                                                            <option
+                                                                                                value="TrabajadorTurismo">
+                                                                                                Trabajador del turismo
+                                                                                            </option>
+                                                                                            <option
+                                                                                                value="VendedorTours">
+                                                                                                Vendedor de tours
                                                                                             </option>
                                                                                             <option value="Otro">Otro
                                                                                             </option>
@@ -346,32 +363,49 @@
                                                                                             for="inputOcupacionEsposo">Ocupación
                                                                                             del
                                                                                             Esposo/a</label>
-                                                                                            <select #input id="inputOcupacionEsposo" class="form-control" formControlName="ocupacionEsposo">
-                                                                                                <option value="NoEspecificado">
-                                                                                                    Seleccione...</option>
-                                                                                                <option value="Abogado">
-                                                                                                    Abogado(a)
-                                                                                                </option>
-                                                                                                <option value="AgenteDeViajes">
-                                                                                                    Agente de viajes
-                                                                                                </option>
-                                                                                                <option value="Camarero">
-                                                                                                    Camarero/Camarera</option>
-                                                                                                <option value="Gobierno">Gobierno
-                                                                                                </option>
-                                                                                                <option value="Profesor">Profesor
-                                                                                                </option>
-                                                                                                <option value="TrabajadorSalud">Trabajador de la salud
-                                                                                                </option>
-                                                                                                <option value="TrabajadorTecnologia">Trabajador de la tecnología
-                                                                                                </option>
-                                                                                                <option value="TrabajadorTurismo">Trabajador del turismo
-                                                                                                </option>
-                                                                                                <option value="VendedorTours">Vendedor de tours
-                                                                                                </option>
-                                                                                                <option value="Otro">Otro
-                                                                                                </option>
-                                                                                            </select>
+                                                                                        <select #input
+                                                                                            id="inputOcupacionEsposo"
+                                                                                            class="form-control"
+                                                                                            formControlName="ocupacionEsposo">
+                                                                                            <option
+                                                                                                value="NoEspecificado">
+                                                                                                Seleccione...</option>
+                                                                                            <option value="Abogado">
+                                                                                                Abogado(a)
+                                                                                            </option>
+                                                                                            <option
+                                                                                                value="AgenteDeViajes">
+                                                                                                Agente de viajes
+                                                                                            </option>
+                                                                                            <option value="Camarero">
+                                                                                                Camarero/Camarera
+                                                                                            </option>
+                                                                                            <option value="Gobierno">
+                                                                                                Gobierno
+                                                                                            </option>
+                                                                                            <option value="Profesor">
+                                                                                                Profesor
+                                                                                            </option>
+                                                                                            <option
+                                                                                                value="TrabajadorSalud">
+                                                                                                Trabajador de la salud
+                                                                                            </option>
+                                                                                            <option
+                                                                                                value="TrabajadorTecnologia">
+                                                                                                Trabajador de la
+                                                                                                tecnología
+                                                                                            </option>
+                                                                                            <option
+                                                                                                value="TrabajadorTurismo">
+                                                                                                Trabajador del turismo
+                                                                                            </option>
+                                                                                            <option
+                                                                                                value="VendedorTours">
+                                                                                                Vendedor de tours
+                                                                                            </option>
+                                                                                            <option value="Otro">Otro
+                                                                                            </option>
+                                                                                        </select>
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
@@ -1015,7 +1049,8 @@
                                     </div>
                                     <div class="tab-pane" id="recetas">
                                         <app-testeditor [recetas]="recetas" [clave]="parametro"
-                                            [fechaActual]="fechaFormateada" [paciente]="PacienteFormulario"></app-testeditor>
+                                            [fechaActual]="fechaFormateada"
+                                            [paciente]="PacienteFormulario"></app-testeditor>
 
                                     </div>
                                     <div class="tab-pane" id="historia">
@@ -1074,12 +1109,17 @@
                                     <div class="tab-pane" id="analisis">
                                         <app-complementarios></app-complementarios>
                                     </div>
+                                    <div class="tab-pane" id="imprimirExpCompleto">
+                                        <div>
+                                        <button (click)="printPage()" type="button" class="btn btn-success btn-block">Imprimir</button>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            </div>            
         </section>
 
     </div>
