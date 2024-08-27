@@ -40,7 +40,6 @@ import { ComplementariosComponent } from '../complementarios/complementarios.com
 import { CalculadoraIMCComponent } from '../calculadora-imc/calculadora-imc.component';
 import { UrlsBackend, UrlsPacientes } from '../enums/urls_back';
 
-
 export const appConfig: ApplicationConfig = {
   providers: [
     provideLottieOptions({
@@ -214,8 +213,7 @@ export class ExpedientePacienteComponent implements OnInit {
   }
 
   cargarFormulario(data: Paciente) {
-
-    const today = new Date();
+        const today = new Date();
     const formattedDate = today.toISOString().substring(0, 10);
     console.log(today);
     console.log(formattedDate);
@@ -233,7 +231,7 @@ export class ExpedientePacienteComponent implements OnInit {
           ? this.formatDate(data.fechaDeNacimiento)
           : formattedDate
       ),
-      nombre: new FormControl(data.nombre),
+      nombre: new FormControl(data.nombre),      
       edad: new FormControl(
         data.fechaDeNacimiento != ''
           ? this.CalcularEdad(data.fechaDeNacimiento)
@@ -408,7 +406,7 @@ export class ExpedientePacienteComponent implements OnInit {
         this.PacienteFormulario.value
       ).subscribe({
         next: (result) => {
-          // Se llama si la operación es exitosa
+                    // Se llama si la operación es exitosa
           this.cargarFormulario(result);
           this.pacientedatos = result;
           this.pacientedatos.nombre = result.nombre;
@@ -419,8 +417,15 @@ export class ExpedientePacienteComponent implements OnInit {
             icon: 'success',
             title: 'Se han actualizado los datos correctamente',
             showConfirmButton: false,
-            timer: 2000,
+            timer: 4000,
           });
+          // Redirigir a la nueva URL con el ID del paciente
+          this.router
+            .navigate(['/expediente_paciente', result.clave])
+            .then(() => {
+              // Opcionalmente recargar la página después de redirigir
+              window.location.reload();
+            });
         },
         error: (error) => {
           // Se llama en caso de error en la operación
@@ -797,8 +802,8 @@ export class ExpedientePacienteComponent implements OnInit {
     const buttons = document.querySelectorAll('button');
     const selects = document.querySelectorAll('select');
     const containers = document.querySelectorAll(
-   '.container-fluid, .row, .col-md-12, .card-body'
- );
+      '.container-fluid, .row, .col-md-12, .card-body'
+    );
 
     // Mostrar todos los tab-pane temporalmente
     tabPanes.forEach((tabPane) => {
@@ -859,15 +864,15 @@ export class ExpedientePacienteComponent implements OnInit {
       elementsToHide.push(select as HTMLElement);
     });
 
-     containers.forEach((container) => {
-       const styles = getComputedStyle(container);
-       if (parseInt(styles.marginBottom) > 20) {
-         this.renderer.setStyle(container, 'margin-bottom', '20px'); // Limitar a 2 líneas
-       }
-       if (parseInt(styles.paddingBottom) > 20) {
-         this.renderer.setStyle(container, 'padding-bottom', '20px'); // Limitar a 2 líneas
-       }
-     });
+    containers.forEach((container) => {
+      const styles = getComputedStyle(container);
+      if (parseInt(styles.marginBottom) > 20) {
+        this.renderer.setStyle(container, 'margin-bottom', '20px'); // Limitar a 2 líneas
+      }
+      if (parseInt(styles.paddingBottom) > 20) {
+        this.renderer.setStyle(container, 'padding-bottom', '20px'); // Limitar a 2 líneas
+      }
+    });
     // Ejecutar la impresión
     window.print();
 
@@ -892,10 +897,10 @@ export class ExpedientePacienteComponent implements OnInit {
     elementsToHide.forEach((element) => {
       this.renderer.removeStyle(element, 'display');
     });
-   
-     containers.forEach((container) => {
-       this.renderer.removeStyle(container, 'margin-bottom');
-       this.renderer.removeStyle(container, 'padding-bottom');
-     });
+
+    containers.forEach((container) => {
+      this.renderer.removeStyle(container, 'margin-bottom');
+      this.renderer.removeStyle(container, 'padding-bottom');
+    });
   }
 }
