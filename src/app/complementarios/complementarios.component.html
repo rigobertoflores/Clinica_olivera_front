@@ -25,10 +25,14 @@
                         </div>
                         <div class="input-group-append">
                             <button type="button" class="btn btn-primary"
-                                (click)="upload()">Guardar Archivo</button>
+                                (click)="upload()" [disabled]="parametro == '0'">Guardar Archivo</button>
                         </div>
                     </div>
                 </div>
+            </div>
+            <!-- Mensaje de aviso -->
+            <div *ngIf="parametro == '0'" class="alert alert-warning mt-2">
+                Los botones se habilitaran cuando guarde la información general del paciente.
             </div>
         </div>
     </div>

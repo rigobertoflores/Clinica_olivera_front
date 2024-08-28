@@ -35,8 +35,12 @@
         'alignment'] }" tagName="textarea" [editor]="Editor" [(ngModel)]="data" ></ckeditor>
     </div>
     <div class="timeline-footer">
-    <button type="button" class="btn btn-success btn-sm" (click)="printContent(data)">Imprimir</button>
-    <button type="button" class="btn btn-primary btn-sm" (click)="guardarEditarreceta([0,data])">Guardar</button>
+    <button type="button" class="btn btn-success btn-sm" (click)="printContent(data)" [disabled]="clave == '0'">Imprimir</button>
+    <button type="button" class="btn btn-primary btn-sm" (click)="guardarEditarreceta([0,data])" [disabled]="clave == '0'">Guardar</button>
+    <!-- Mensaje de aviso -->
+    <div *ngIf="clave == '0'" class="alert alert-warning mt-2">
+        Los botones se habilitaran cuando guarde la información general del paciente.
+    </div>
     </div>
     </div>
     </div>

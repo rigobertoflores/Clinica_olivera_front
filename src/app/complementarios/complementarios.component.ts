@@ -128,18 +128,20 @@ export class ComplementariosComponent implements OnInit {
   }
 
   cargarComplementariosPaciente(parametrourl: any) {
-    this.Service.getListParams(
-      'GetComplementariosPaciente',
-      parametrourl
-    ).subscribe((data: Complementos[]) => {
-      if (data != null)
-        this.documentos = data.map((documento) => ({
-          src: `data:image/jpeg;base64,${documento.blobData}`,
-          alt: documento.nombre,
-          ext: documento.ext,
-          id: documento.id,
-        }));
-    });
+    if (parametrourl != '0') {
+      this.Service.getListParams(
+        'GetComplementariosPaciente',
+        parametrourl
+      ).subscribe((data: Complementos[]) => {
+        if (data != null)
+          this.documentos = data.map((documento) => ({
+            src: `data:image/jpeg;base64,${documento.blobData}`,
+            alt: documento.nombre,
+            ext: documento.ext,
+            id: documento.id,
+          }));
+      });
+    }
   }
 
   // deleteComplementario(id: number) {

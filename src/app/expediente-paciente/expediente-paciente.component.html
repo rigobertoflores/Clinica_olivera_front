@@ -54,9 +54,10 @@
                                         <a class="nav-link" href="#informe" data-toggle="tab">Justificaciones e
                                             Informes</a>
                                     </li>
-                                <li class="nav-item" *ngIf="imprimirExpCompleto">
-                                    <a class="nav-link" href="#imprimirExpCompleto" data-toggle="tab">Imprimir Expediente Completo</a>
-                                </li>
+                                    <li class="nav-item" *ngIf="imprimirExpCompleto">
+                                        <a class="nav-link" href="#imprimirExpCompleto" data-toggle="tab">Imprimir
+                                            Expediente Completo</a>
+                                    </li>
 
 
 
@@ -1038,10 +1039,17 @@
                                                                 </div>
                                                                 <div class="input-group-append">
                                                                     <button type="button" class="btn btn-primary"
-                                                                        (click)="upload()">Guardar Imagen</button>
+                                                                        (click)="upload()"
+                                                                        [disabled]="parametro == '0'">Guardar
+                                                                        Imagen</button>
                                                                 </div>
                                                             </div>
                                                         </div>
+                                                    </div>
+                                                    <!-- Mensaje de aviso -->
+                                                    <div *ngIf="parametro == '0'" class="alert alert-warning mt-2">
+                                                        Los botones se habilitaran cuando guarde la información general
+                                                        del paciente.
                                                     </div>
                                                 </div>
                                             </div>
@@ -1092,11 +1100,17 @@
                                                                 </div>
                                                                 <div class="input-group-append">
                                                                     <button type="button" class="btn btn-primary"
-                                                                        (click)="uploadImagenPerfil()">Guardar
+                                                                        (click)="uploadImagenPerfil()"
+                                                                        [disabled]="parametro == '0'">Guardar
                                                                         Imagen</button>
                                                                 </div>
                                                             </div>
                                                         </div>
+                                                    </div>
+                                                    <!-- Mensaje de aviso -->
+                                                    <div *ngIf="parametro == '0'" class="alert alert-warning mt-2">
+                                                        Los botones se habilitaran cuando guarde la información general
+                                                        del paciente.
                                                     </div>
                                                 </div>
                                             </div>
@@ -1111,7 +1125,8 @@
                                     </div>
                                     <div class="tab-pane" id="imprimirExpCompleto">
                                         <div>
-                                        <button (click)="printPage()" type="button" class="btn btn-success btn-block">Imprimir</button>
+                                            <button (click)="printPage()" type="button"
+                                                class="btn btn-success btn-block">Imprimir</button>
                                         </div>
                                     </div>
                                 </div>
@@ -1119,7 +1134,7 @@
                         </div>
                     </div>
                 </div>
-            </div>            
+            </div>
         </section>
 
     </div>
