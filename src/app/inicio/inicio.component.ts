@@ -47,7 +47,7 @@ export class InicioComponent implements OnInit, AfterViewInit {
   fechadenacimiento: Date | null;
   telefono: string;
   email: string | null;
-  fecha_ultimaconsulta: Date | null;
+  fecha_ultimaconsulta: any | null;
   dataSource = new MatTableDataSource<Paciente>();
   title = 'expedientes-medicos-cancun';
   contenido: string = '';
@@ -63,7 +63,10 @@ export class InicioComponent implements OnInit, AfterViewInit {
   ];
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
-  images: { src: string; alt: string } = { src: '', alt: 'no hay imagen' };
+  images: { src: string; alt: string } = {
+    src: 'assets/user.png',
+    alt: 'no hay imagen',
+  };
   clave: number;
   showLoading: boolean = false;
   datePipe: DatePipe;
@@ -125,17 +128,10 @@ export class InicioComponent implements OnInit, AfterViewInit {
           }
 
           this.edad = edad;
-                  //  let anoNacimiento: Date = new Date(data.items[0].fechaDeNacimiento);
-          //  console.log(
-          //    'anoNacimiento',
-          //    anoNacimiento,
-          //    data.items[0].fechaDeNacimiento
-          //  );
-          //  this.edad = this.año - anoNacimiento.getFullYear();
         }
-
-        (this.fecha_ultimaconsulta = null),
-          (this.telefono = data.items[0].telefono);
+        let fechaUC = this.formatDate(data.items[0].fechaUltimaConsulta);
+        this.fecha_ultimaconsulta = fechaUC != null ? fechaUC : '';
+        this.telefono = data.items[0].telefono;
         this.email = data.items[0].email;
         this.clave = data.items[0].clave;
         this.cargarFotoPaciente(this.clave);
@@ -153,10 +149,7 @@ export class InicioComponent implements OnInit, AfterViewInit {
     }/${this.año}`;
   }
 
-  // cargarContenidoPacientePrincipal() {
-
-  //   });
-  // }
+  
 
   cargarListadodePacientes() {
     this.Service.getList('GetPacientes').subscribe((data: Paciente[]) => {
@@ -202,16 +195,28 @@ export class InicioComponent implements OnInit, AfterViewInit {
   cargarFotoPaciente(id: number) {
     this.Service.getUnicoParams('GetFotoPaciente', id).subscribe(
       (data: FotoPaciente) => {
-        if (data != null)
+        if (data != null) {
+          console.log('Pinta imagen de usuario');
           this.images = {
             src: `data:image/jpeg;base64,${data.blobData}`,
             alt: 'no hay imagen',
           };
+        } else {
+          console.log('Pinta imagen de usuario por defecto');
+          this.images = {
+            src: 'assets/paciente.png',
+            alt: 'imagen de usuario',
+          };
+        }
       }
     );
   }
 
   agregarPaciente() {
     this.router.navigate(['/expediente_paciente', 0]);
+  }
+  formatDate(dateString: string): string {
+    const fecha = new Date(dateString);
+    return fecha.toISOString().split('T')[0];
   }
 }
