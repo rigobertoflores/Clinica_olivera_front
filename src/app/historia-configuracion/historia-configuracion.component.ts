@@ -1,5 +1,5 @@
 import { Component, HostListener, Input, OnInit } from '@angular/core';
-import { FormControl, FormGroup, FormsModule } from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, Validators } from '@angular/forms';
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { SidebarComponent } from "../components/sidebar/sidebar.component";
@@ -36,6 +36,11 @@ export class HistoriaConfiguracionComponent implements OnInit {
   historiaSeleccionada: number = 0;
   his: Historia;
   showLoading: boolean = false;
+  fechaFormateada: string;
+  fechaActual: Date = new Date();
+  dia: any = this.fechaActual.getDate();
+  mes: any = this.fechaActual.getMonth() + 1; // Los meses empiezan en 0
+  año: number = this.fechaActual.getFullYear();
 
   ajustarAltura(elemento: HTMLTextAreaElement): void {
     elemento.style.height = 'auto'; // Resetea la altura para calcular correctamente
@@ -47,8 +52,13 @@ export class HistoriaConfiguracionComponent implements OnInit {
   ngOnInit(): void {
     this.cargarListaHistoria();
     this.cargarFormulario(this.his);
+    this.formatearfecha();
   }
-
+  formatearfecha() {
+    this.fechaFormateada = `${this.dia < 10 ? '0' + this.dia : this.dia}/${
+      this.mes < 10 ? '0' + this.mes : this.mes
+    }/${this.año}`;
+  }
   guardarEditarHistoria() {
     this.showLoading = true;
     if (!this.historiaform.invalid) {
@@ -76,6 +86,15 @@ export class HistoriaConfiguracionComponent implements OnInit {
           });
         }
       );
+    } else {
+      Swal.fire({
+        position: 'center',
+        icon: 'info',
+        title: 'Debe agregar datos para poder guardar',
+        showConfirmButton: false,
+        timer: 2000,
+      });
+       this.showLoading = false;
     }
   }
 
@@ -83,7 +102,7 @@ export class HistoriaConfiguracionComponent implements OnInit {
     this.historiaform = new FormGroup({
       hc: new FormControl(),
       id: new FormControl(),
-      nombre: new FormControl(),
+      nombre: new FormControl('', Validators.required),
     });
   }
 

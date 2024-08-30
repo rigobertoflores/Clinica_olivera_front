@@ -36,6 +36,11 @@ export class InformesoConfiguracionComponent implements OnInit {
   informeeleccionada: number = 0;
   his: informeoperatorio;
   showLoading: boolean = false;
+  fechaFormateada: string;
+  fechaActual: Date = new Date();
+  dia: any = this.fechaActual.getDate();
+  mes: any = this.fechaActual.getMonth() + 1; // Los meses empiezan en 0
+  año: number = this.fechaActual.getFullYear();
 
   ajustarAltura(elemento: HTMLTextAreaElement): void {
     elemento.style.height = 'auto'; // Resetea la altura para calcular correctamente
@@ -47,8 +52,14 @@ export class InformesoConfiguracionComponent implements OnInit {
   ngOnInit(): void {
     this.cargarListaInformeform();
     this.cargarFormulario(this.his);
+    this.formatearfecha();
   }
 
+  formatearfecha() {
+    this.fechaFormateada = `${this.dia < 10 ? '0' + this.dia : this.dia}/${
+      this.mes < 10 ? '0' + this.mes : this.mes
+    }/${this.año}`;
+  }
   guardarEditarInforme() {
     if (!this.informeform.invalid) {
       const infor: informeoperatorio = {
@@ -74,14 +85,14 @@ export class InformesoConfiguracionComponent implements OnInit {
           });
         }
       );
-    } else { 
-       Swal.fire({
-         position: 'center',
-         icon: 'info',
-         title: 'Debe agregar datos para poder guardar',
-         showConfirmButton: false,
-         timer: 2000,
-       });
+    } else {
+      Swal.fire({
+        position: 'center',
+        icon: 'info',
+        title: 'Debe agregar datos para poder guardar',
+        showConfirmButton: false,
+        timer: 2000,
+      });
     }
   }
 
@@ -107,7 +118,7 @@ export class InformesoConfiguracionComponent implements OnInit {
     if (this.informeeleccionada == 0) {
       this.informeform.get('informe')?.setValue(''); // Contenido de la historia
       this.informeform.get('id')?.setValue(0); // ID de la historia
-      this.informeform.get('nombre')?.setValue(''); // No      
+      this.informeform.get('nombre')?.setValue(''); // No
     } else {
       const inf = this.informe.find(
         (info) => info.id == this.informeeleccionada

@@ -213,7 +213,7 @@ export class ExpedientePacienteComponent implements OnInit {
   }
 
   cargarFormulario(data: Paciente) {
-        const today = new Date();
+    const today = new Date();
     const formattedDate = today.toISOString().substring(0, 10);
     console.log(today);
     console.log(formattedDate);
@@ -231,7 +231,7 @@ export class ExpedientePacienteComponent implements OnInit {
           ? this.formatDate(data.fechaDeNacimiento)
           : formattedDate
       ),
-      nombre: new FormControl(data.nombre),      
+      nombre: new FormControl(data.nombre),
       edad: new FormControl(
         data.fechaDeNacimiento != ''
           ? this.CalcularEdad(data.fechaDeNacimiento)
@@ -304,6 +304,12 @@ export class ExpedientePacienteComponent implements OnInit {
           : formattedDate
       ),
     });
+  }
+
+  onFechaDeNacimientoChange(event: any): void {
+    const fechaNacimiento = event.target.value;
+    const edadCalculada = this.CalcularEdad(fechaNacimiento);
+    this.PacienteFormulario.get('edad')?.setValue(edadCalculada);
   }
 
   CalcularEdad(fechaNacimiento: string) {
@@ -406,7 +412,7 @@ export class ExpedientePacienteComponent implements OnInit {
         this.PacienteFormulario.value
       ).subscribe({
         next: (result) => {
-                    // Se llama si la operación es exitosa
+          // Se llama si la operación es exitosa
           this.cargarFormulario(result);
           this.pacientedatos = result;
           this.pacientedatos.nombre = result.nombre;
