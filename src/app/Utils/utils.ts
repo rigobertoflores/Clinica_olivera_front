@@ -16,6 +16,7 @@ static  getRouteForOption(option: OpcionesSidebar): string | null {
       [OpcionesSidebar.Impresion]: '/configuracion_impresion',
       [OpcionesSidebar.ConfiguracionInforme]: '/configuracion_informesoperatorios',
       [OpcionesSidebar.IMC]: '/imc',
+      [OpcionesSidebar.ReportesPacientes]: '/reportes_pacientes',
     };
 
     return routesMap[option] || null;

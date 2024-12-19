@@ -66,7 +66,7 @@ export const appConfig: ApplicationConfig = {
     LottieComponent,
     TesteditorinformesoComponent,
     ComplementariosComponent,
-    CalculadoraIMCComponent,
+    CalculadoraIMCComponent,    
   ],
 })
 export class ExpedientePacienteComponent implements OnInit {
@@ -99,6 +99,7 @@ export class ExpedientePacienteComponent implements OnInit {
   minDate: string;
   @ViewChildren('input') inputs!: QueryList<ElementRef>; // Asume que todos los campos de entrada tienen la referencia #input
   imprimirExpCompleto: boolean = false;
+  url: Blob;
 
   constructor(
     private route: ActivatedRoute,
@@ -134,7 +135,7 @@ export class ExpedientePacienteComponent implements OnInit {
         sexo: '',
         fechaDeNacimiento: '', // Considera una fecha predeterminada si es necesario
         nombre: '',
-        estadoCivil: '',
+        estadoCivil: 'NoEspecificado',
         ocupacion: '',
         domicilio: '',
         poblacion: '',
@@ -144,46 +145,49 @@ export class ExpedientePacienteComponent implements OnInit {
         edadDelEsposo: null,
         ocupacionEsposo: '',
         referencia: '',
-        diabetes: '',
-        hipertension: '',
-        trombosis: '',
-        cardiopatias: '',
+        diabetes: 'NoEspecificado',
+        hipertension: 'No',
+        trombosis: 'NoEspecificado',
+        cardiopatias: 'No',
         cancer: '',
         enfermedadesGeneticas: '',
         otraEnfermedad: '',
         inmunizaciones: '',
-        alcoholismo: '',
-        tabaquismo: '',
-        tabaquismoPasivo: '',
+        alcoholismo: 'NoEspecificado',
+        tabaquismo: 'NoEspecificado',
+        tabaquismoPasivo: 'NoEspecificado',
         drogasOmedicamentos: '',
         grupoSanguineo: '',
         propiasDeLaInfancia: '',
-        rubeola: '',
-        amigdalitis: '',
-        bronquitis: '',
-        bronconeumonia: '',
+        rubeola: 'No',
+        amigdalitis: 'No',
+        bronquitis: 'No',
+        bronconeumonia: 'No',
         hepatitisViralTipo: '',
-        parasitosis: '',
-        toxoplasmosis: '',
-        citomegalovirus: '',
+        parasitosis: 'No',
+        toxoplasmosis: 'No',
+        citomegalovirus: 'No',
         herpes: '',
-        clamydiasis: '',
-        hiv: '',
-        sifilis: '',
-        micosis: '',
-        eip: '',
-        diabetesMellitus: '',
+        clamydiasis: 'No',
+        hiv: 'No',
+        sifilis: 'No',
+        micosis: 'No',
+        eip: 'No',
+        diabetesMellitus: 'No',
         otrasEndocrinas: '',
         nefropatias: '',
         digestivas: '',
         neurologicas: '',
         hematologicas: '',
         tumores: '',
-        condilomatosis: '',
+        condilomatosis: 'No',
         displasias: '',
         alergia: '',
         fechaConsulta: '',
         fechaUltimaConsulta: '',
+        cardiopatiaFamiliar: '',
+        hipertensionFamiliar: '',
+        otraEnfermedadPersonal: '',
       };
 
       this.cargarFormulario(pacienteVacio);
@@ -213,6 +217,7 @@ export class ExpedientePacienteComponent implements OnInit {
   }
 
   cargarFormulario(data: Paciente) {
+    console.log(data);
     const today = new Date();
     const formattedDate = today.toISOString().substring(0, 10);
     console.log(today);
@@ -242,6 +247,8 @@ export class ExpedientePacienteComponent implements OnInit {
           ? 'Casado'
           : data.estadoCivil === 'S'
           ? 'Soltero'
+          : data.estadoCivil == ''
+          ? 'NoEspecificado'
           : data.estadoCivil
       ),
       ocupacion: new FormControl(
@@ -257,42 +264,76 @@ export class ExpedientePacienteComponent implements OnInit {
         data.ocupacionEsposo == '' ? 'NoEspecificado' : data.ocupacionEsposo
       ),
       referencia: new FormControl(data.referencia),
-      diabetes: new FormControl(data.diabetes),
-      hipertension: new FormControl(data.hipertension),
-      trombosis: new FormControl(data.trombosis),
-      cardiopatias: new FormControl(data.cardiopatias),
+      diabetes: new FormControl(
+        data.diabetes == '' ? 'NoEspecificado' : data.diabetes
+      ),
+      hipertension: new FormControl(
+        data.hipertension == '' ? 'No' : data.hipertension
+      ),
+      trombosis: new FormControl(
+        data.trombosis == '' ? 'NoEspecificado' : data.trombosis
+      ),
+      cardiopatias: new FormControl(
+        data.cardiopatias == '' ? 'NoEspecificado' : data.cardiopatias
+      ),
+      hipertensionFamiliar: new FormControl(
+        data.hipertensionFamiliar == ''
+          ? 'NoEspecificado'
+          : data.hipertensionFamiliar
+      ),
+      cardiopatiaFamiliar: new FormControl(
+        data.cardiopatiaFamiliar == ''
+          ? 'NoEspecificado'
+          : data.cardiopatiaFamiliar
+      ),
       cancer: new FormControl(data.cancer),
       enfermedadesGeneticas: new FormControl(data.enfermedadesGeneticas),
       otraEnfermedad: new FormControl(data.otraEnfermedad),
       inmunizaciones: new FormControl(data.inmunizaciones),
-      alcoholismo: new FormControl(data.alcoholismo),
+      alcoholismo: new FormControl(
+        data.alcoholismo == '' ? 'NoEspecificado' : data.alcoholismo
+      ),
       tabaquismo: new FormControl(data.tabaquismo),
       tabaquismoPasivo: new FormControl(data.tabaquismoPasivo),
       drogasOmedicamentos: new FormControl(data.drogasOmedicamentos),
-      grupoSanguineo: new FormControl(data.grupoSanguineo),
+      grupoSanguineo: new FormControl(
+        data.grupoSanguineo == '' ? 'NoEspecificado' : data.grupoSanguineo
+      ),
       propiasDeLaInfancia: new FormControl(data.propiasDeLaInfancia),
-      rubeola: new FormControl(data.rubeola),
-      amigdalitis: new FormControl(data.amigdalitis),
-      bronquitis: new FormControl(data.bronquitis),
-      bronconeumonia: new FormControl(data.bronconeumonia),
+      rubeola: new FormControl(data.rubeola == '' ? 'No' : data.rubeola),
+      amigdalitis: new FormControl(
+        data.amigdalitis == '' ? 'No' : data.amigdalitis
+      ),
+      bronquitis: new FormControl(
+        data.bronquitis == '' ? 'No' : data.bronquitis
+      ),
+      bronconeumonia: new FormControl(
+        data.bronconeumonia == '' ? 'No' : data.bronconeumonia
+      ),
       hepatitisViralTipo: new FormControl(data.hepatitisViralTipo),
-      parasitosis: new FormControl(data.parasitosis),
+      parasitosis: new FormControl(
+        data.parasitosis == '' ? 'No' : data.parasitosis
+      ),
       toxoplasmosis: new FormControl(data.toxoplasmosis),
       citomegalovirus: new FormControl(data.citomegalovirus),
       herpes: new FormControl(data.herpes),
       clamydiasis: new FormControl(data.clamydiasis),
-      hiv: new FormControl(data.hiv),
-      sifilis: new FormControl(data.sifilis),
-      micosis: new FormControl(data.micosis),
-      eip: new FormControl(data.eip),
-      diabetesMellitus: new FormControl(data.diabetesMellitus),
+      hiv: new FormControl(data.hiv == '' ? 'NoEspecificado' : data.hiv),
+      sifilis: new FormControl(data.sifilis == '' ? 'No' : data.sifilis),
+      micosis: new FormControl(data.micosis == '' ? 'No' : data.micosis),
+      eip: new FormControl(data.eip == '' ? 'No' : data.eip),
+      diabetesMellitus: new FormControl(
+        data.diabetesMellitus == '' ? 'No' : data.diabetesMellitus
+      ),
       otrasEndocrinas: new FormControl(data.otrasEndocrinas),
       nefropatias: new FormControl(data.nefropatias),
       digestivas: new FormControl(data.digestivas),
       neurologicas: new FormControl(data.neurologicas),
       hematologicas: new FormControl(data.hematologicas),
       tumores: new FormControl(data.tumores),
-      condilomatosis: new FormControl(data.condilomatosis),
+      condilomatosis: new FormControl(
+        data.condilomatosis == '' ? 'No' : data.condilomatosis
+      ),
       displasias: new FormControl(data.displasias),
       alergia: new FormControl(data.alergia),
       fechaConsulta: new FormControl(
@@ -303,6 +344,8 @@ export class ExpedientePacienteComponent implements OnInit {
           ? data.fechaUltimaConsulta
           : formattedDate
       ),
+
+      otraEnfermedadPersonal: new FormControl(data.otraEnfermedadPersonal),
     });
   }
 
@@ -401,12 +444,20 @@ export class ExpedientePacienteComponent implements OnInit {
     if (!this.PacienteFormulario.invalid) {
       this.showLoading = true; // Inicia la carga
       if (
+        this.fechaconsultaactual != undefined &&
+        this.fechaconsultaactual != '' &&
         this.fechaconsultaactual !=
-        this.PacienteFormulario.get('fechaConsulta')?.value
-      )
+          this.PacienteFormulario.get('fechaConsulta')?.value
+      ) {
+        console.log(
+          'se actualiza el valor de la fecha de la ultima consulta',
+          this.fechaconsultaactual,
+          this.PacienteFormulario.get('fechaUltimaConsulta')?.value
+        );
         this.PacienteFormulario.get('fechaUltimaConsulta')?.setValue(
           this.fechaconsultaactual
         );
+      }
       this.Service.postData(
         'PostPaciente',
         this.PacienteFormulario.value
@@ -603,6 +654,12 @@ export class ExpedientePacienteComponent implements OnInit {
 
   @HostListener('window:keydown', ['$event'])
   handleKeyboardEvent(event: KeyboardEvent) {
+    const activeElement = document.activeElement as HTMLElement;
+
+    // Verifica si el elemento activo o su padre tienen el atributo data-allow-default
+    if (activeElement.closest('[data-allow-default="true"]')) {
+      return; // No hacer nada, permitimos el comportamiento predeterminado
+    }
     const key = event.key;
     if (['ArrowRight', 'ArrowLeft', 'ArrowUp', 'ArrowDown'].includes(key)) {
       event.preventDefault(); // Previene el desplazamiento de la página
@@ -761,152 +818,49 @@ export class ExpedientePacienteComponent implements OnInit {
     });
   }
 
-  ///IMPRIMIR TODO EL EXPEDIENTE//////////////
 
-  // sections = [
-  //   { id: 'informacionGeneral', name: 'Información General', selected: true },
-  //   { id: 'historia', name: 'Historia', selected: true },
-  //   //{ id: 'imc', name: 'IMC', selected: true },
-  //   { id: 'imagenPerfil', name: 'Imagen de Perfil', selected: true },
-  //   { id: 'imagenes', name: 'Imágenes', selected: true },
-  //   { id: 'pendientes', name: 'Pendientes', selected: true },
-  //   { id: 'recetas', name: 'Recetas', selected: true },
-  //   { id: 'complementarios', name: 'Complementarios', selected: true },
-  //   {
-  //     id: 'justificacionesInformes',
-  //     name: 'Justificaciones e Informes',
-  //     selected: true,
-  //   },
-  // ];
-  // @ViewChildren('checkbox') checkboxes: QueryList<ElementRef>;
-  // onPrint() {
-  //   this.showLoading = true;
-  //   const requestBody: any = {};
-
-  //   this.sections.forEach((section, index) => {
-  //     const checkbox = this.checkboxes.toArray()[index].nativeElement;
-  //     requestBody[section.id] = checkbox.checked ? true : false;
-  //   });
-  //   // Agregar id del paciente
-  //   //Agregar validacion solo para pacientes con id
-
-  //   console.log('Objeto a enviar al controlador:', requestBody);
-  //   this.Service.PostData(
-  //     UrlsBackend.ApiPacientes,
-  //     UrlsPacientes.PrintComplete,
-  //     requestBody
-  //   ).subscribe((result) => {});
-  // }
-
-  printPage() {
-    // Obtener todos los tab-pane
-    const tabPanes = document.querySelectorAll('.tab-pane');
-    const collapsibles = document.querySelectorAll('.collapsed-card');
-    const textareas = document.querySelectorAll('textarea');
-    const originalDisplayValues: string[] = [];
-    // Seleccionar todos los botones y selects
-    const buttons = document.querySelectorAll('button');
-    const selects = document.querySelectorAll('select');
-    const containers = document.querySelectorAll(
-      '.container-fluid, .row, .col-md-12, .card-body'
-    );
-
-    // Mostrar todos los tab-pane temporalmente
-    tabPanes.forEach((tabPane) => {
-      originalDisplayValues.push(
-        tabPane.classList.contains('active') ? 'active' : 'fade'
-      );
-      tabPane.classList.add('show', 'active');
-      tabPane.classList.remove('fade');
-    });
-
-    collapsibles.forEach((card) => {
-      card.classList.add('expand-card');
-      card.classList.remove('collapsed-card');
-    });
-    // Expandir todos los textarea según su contenido
-    textareas.forEach((textarea) => {
-      textarea.style.height = 'auto'; // Resetear la altura
-      textarea.style.height = textarea.scrollHeight + 'px'; // Ajustar la altura al contenido
-    });
-    // Seleccionar todos los botones y selects vacíos
-    const emptyButtons = document.querySelectorAll('button:empty');
-    const emptySelects = document.querySelectorAll('select');
-
-    const elementsToHide: HTMLElement[] = [];
-
-    // Ocultar botones vacíos
-    emptyButtons.forEach((button) => {
-      if (button.innerHTML.trim() === '') {
-        this.renderer.setStyle(button, 'display', 'none');
-        elementsToHide.push(button as HTMLElement);
-      }
-    });
-
-    // Ocultar selects vacíos o con opciones vacías
-    emptySelects.forEach((select) => {
-      const options = select.querySelectorAll('option');
-      let isEmpty = true;
-      options.forEach((option) => {
-        if (option.value.trim() !== '') {
-          isEmpty = false;
-        }
+  printPage() {    
+    this.showLoading = true; // Inicia la carga
+    if (Number(this.parametro) > 0) {
+      console.log('id: ', this.parametro);
+      this.Service.GetData(
+        UrlsBackend.ApiPacientes,
+        `${UrlsPacientes.PrintCompleteFile}/${this.parametro?.toString()}`,
+        Number(this.parametro)
+      ).subscribe({
+        next: (pdfBlob: any) => {
+          if (pdfBlob.fileContents) {
+            // Decodificar el contenido del PDF desde base64
+            const binaryString = window.atob(pdfBlob.fileContents);
+            const len = binaryString.length;
+            const bytes = new Uint8Array(len);
+            for (let i = 0; i < len; i++) {
+              bytes[i] = binaryString.charCodeAt(i);
+            }
+            this.url = new Blob([bytes], { type: pdfBlob.contentType });
+            const url = window.URL.createObjectURL(this.url);
+            window.open(url, '_blank');
+          } else {
+            console.error('No data received or invalid blob');
+          }
+        },
+        error: (error) => {
+          // Se llama en caso de error en la operación
+          Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Ocurrió un error al imprimir los datos del pacientes',
+          });
+          console.error('Error al imprimir los datos del paciente:', error);
+          this.showLoading = false;
+          // Aquí podrías manejar el error, por ejemplo, mostrando un mensaje al usuario
+        },
+        complete: () => {
+          // Esto se ejecutará después de completar la suscripción, exitosa o no
+          this.showLoading = false; // Termina la carga
+        },
       });
-      if (isEmpty || options.length === 0) {
-        this.renderer.setStyle(select, 'display', 'none');
-        elementsToHide.push(select as HTMLElement);
-      }
-    });
-
-    // Ocultar todos los botones
-    buttons.forEach((button) => {
-      this.renderer.setStyle(button, 'display', 'none');
-      elementsToHide.push(button as HTMLElement);
-    });
-
-    // Ocultar todos los selectores
-    selects.forEach((select) => {
-      this.renderer.setStyle(select, 'display', 'none');
-      elementsToHide.push(select as HTMLElement);
-    });
-
-    containers.forEach((container) => {
-      const styles = getComputedStyle(container);
-      if (parseInt(styles.marginBottom) > 20) {
-        this.renderer.setStyle(container, 'margin-bottom', '20px'); // Limitar a 2 líneas
-      }
-      if (parseInt(styles.paddingBottom) > 20) {
-        this.renderer.setStyle(container, 'padding-bottom', '20px'); // Limitar a 2 líneas
-      }
-    });
-    // Ejecutar la impresión
-    window.print();
-
-    // Restaurar el estado original de los tab-pane
-    tabPanes.forEach((tabPane, index) => {
-      if (originalDisplayValues[index] === 'fade') {
-        tabPane.classList.remove('show', 'active');
-        tabPane.classList.add('fade');
-      } else {
-        tabPane.classList.remove('fade');
-        tabPane.classList.add('show', 'active');
-      }
-    });
-    collapsibles.forEach((card) => {
-      card.classList.add('collapsed-card');
-      card.classList.remove('expand-card');
-    });
-    textareas.forEach((textarea) => {
-      textarea.style.height = ''; // Restaurar a la altura original si es necesario
-    });
-    // Restaurar la visibilidad después de la impresión
-    elementsToHide.forEach((element) => {
-      this.renderer.removeStyle(element, 'display');
-    });
-
-    containers.forEach((container) => {
-      this.renderer.removeStyle(container, 'margin-bottom');
-      this.renderer.removeStyle(container, 'padding-bottom');
-    });
+    }
   }
+  
 }
