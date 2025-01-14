@@ -18,6 +18,7 @@ import { EnviarNotificacionesComponent } from './enviar-notificaciones/enviar-no
 import { ConsultarNotificacionesComponent } from './consultar-notificaciones/consultar-notificaciones.component';
 import { ConfiguracionImpresionComponent } from './configuracion-impresion/configuracion-impresion.component';
 import { ReportesPacientesComponent } from './reportes-pacientes/reportes-pacientes.component';
+import { JustificacionConfiguracionComponent } from './justificacion-configuracion/justificacion-configuracion.component';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -81,6 +82,11 @@ export const routes: Routes = [
   {
     path: 'configuracion_impresion',
     component: ConfiguracionImpresionComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'configurar_justificaciones',
+    component: JustificacionConfiguracionComponent,
     canActivate: [AuthGuard],
   },
   {
